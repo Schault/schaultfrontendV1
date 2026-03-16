@@ -17,16 +17,12 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  overflow-y: auto;
-  min-height: 100vh;
-  position: relative;
 }
 
-/* CRITICAL — ensure Next.js wrappers don't break sticky/scroll */
+/* CRITICAL — ensure Next.js App Router wrappers don't break sticky/scroll */
 body > div:first-child,
 div#__next,
 div[data-nextjs-scroll-focus-boundary] {
-  min-height: 100vh;
   height: auto !important;
   overflow: visible !important;
   display: block !important;

@@ -13,19 +13,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      style={{
-        scrollBehavior: "smooth",
-      }}
-    >
+    <html lang="en" style={{ scrollBehavior: "smooth" }}>
       <body
         style={{
           margin: 0,
           padding: 0,
           overflowX: "hidden",
-          minHeight: "100vh",
-          position: "relative",
         }}
         className="bg-[#FFFFFF] font-inter text-black/90 antialiased"
       >
