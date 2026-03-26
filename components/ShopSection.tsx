@@ -9,28 +9,28 @@ const PRODUCTS = [
     name: "SCHAULT Upper",
     description: "Canvas breathable upper, snap-fit connector",
     price: "₹899",
-    image: "/images/upper.png",
+    image: "/images/upper.webp",
   },
   {
     id: "midsole",
     name: "SCHAULT Midsole",
     description: "PU-casted cushioning layer",
     price: "₹599",
-    image: "/images/midsole.png",
+    image: "/images/midsole.webp",
   },
   {
     id: "outsole",
     name: "SCHAULT Outsole",
     description: "Grip-textured rubber sole",
     price: "₹499",
-    image: "/images/outsole.png",
+    image: "/images/outsole.webp",
   },
   {
     id: "complete",
     name: "SCHAULT Complete",
     description: "Full modular set, all 3 parts",
     price: "₹1,799",
-    image: "/images/fullshoe.png",
+    image: "/images/fullshoe.webp",
   },
 ];
 
