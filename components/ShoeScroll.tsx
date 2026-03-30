@@ -13,11 +13,13 @@ import {
   useScroll,
   useMotionValueEvent,
   useMotionValue,
-  motion,
   type MotionValue,
 } from "framer-motion";
 
 const TOTAL_FRAMES = 200;
+const INITIAL_PRELOAD = 10;
+const BATCH_SIZE = 15;
+const PRELOAD_AHEAD = 20;
 
 function getFramePath(i: number): string {
   return `/sequence/ezgif-frame-${String(i + 1).padStart(3, "0")}.webp`;
@@ -44,13 +46,12 @@ export default function ShoeScroll({
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const framesRef = useRef<HTMLImageElement[]>([]);
-  const loadedCountRef = useRef(0);
+  const framesRef = useRef<HTMLImageElement[]>(new Array(TOTAL_FRAMES));
+  const loadedFramesRef = useRef(new Set<number>());
   const currentFrameRef = useRef(0);
   const rafRef = useRef<number>(0);
   const isDrawingRef = useRef(false);
 
-  const [loadProgress, setLoadProgress] = useState(0);
   const [ready, setReady] = useState(false);
 
   const { scrollYProgress } = useScroll({
@@ -76,11 +77,24 @@ export default function ShoeScroll({
     const canvas = canvasRef.current;
     if (!canvas || typeof window === "undefined") return;
 
-    const frames = framesRef.current;
-    if (frames.length === 0) return;
+    let targetRenderIndex = Math.min(Math.max(0, Math.round(index)), TOTAL_FRAMES - 1);
 
-    const clamped = Math.min(Math.max(0, Math.round(index)), frames.length - 1);
-    const img = frames[clamped];
+    // Fallback strategy: if requested frame isn't loaded, find nearest loaded frame <= index
+    if (!loadedFramesRef.current.has(targetRenderIndex)) {
+      let fallbackIndex = -1;
+      for (let i = targetRenderIndex; i >= 0; i--) {
+        if (loadedFramesRef.current.has(i)) {
+          fallbackIndex = i;
+          break;
+        }
+      }
+      targetRenderIndex = fallbackIndex !== -1 ? fallbackIndex : 0;
+    }
+
+    const frames = framesRef.current;
+    const img = frames[targetRenderIndex];
+    
+    // Safety check just in case even frame 0 hasn't fully fired onload yet but is available
     if (!img?.complete || !img.naturalWidth) return;
 
     const ctx = canvas.getContext("2d");
@@ -106,39 +120,57 @@ export default function ShoeScroll({
     ctx.fillRect(0, 0, logicalW, logicalH);
     ctx.drawImage(img, x, y, drawW, drawH);
 
-    currentFrameRef.current = clamped;
+    currentFrameRef.current = Math.min(Math.max(0, Math.round(index)), TOTAL_FRAMES - 1);
     isDrawingRef.current = false;
   }, []);
 
-  useEffect(() => {
-    const total = TOTAL_FRAMES;
-    const images = new Array<HTMLImageElement>(total);
-    framesRef.current = images;
-    loadedCountRef.current = 0;
+  const loadBatch = useCallback((startIndex: number, size: number) => {
+    const endIndex = Math.min(startIndex + size, TOTAL_FRAMES);
+    const promises: Promise<void>[] = [];
 
-    for (let i = 0; i < total; i++) {
-      const img = new Image();
-
-      const onDone = () => {
-        loadedCountRef.current += 1;
-        const pct = Math.round((loadedCountRef.current / total) * 100);
-        setLoadProgress(pct);
-
-        if (loadedCountRef.current === total) {
-          resizeCanvas();
-          setTimeout(() => {
-            drawFrame(0);
-            setReady(true);
-          }, 100);
-        }
-      };
-
-      img.onload = onDone;
-      img.onerror = onDone;
-      img.src = getFramePath(i);
-      images[i] = img;
+    for (let i = startIndex; i < endIndex; i++) {
+      if (!loadedFramesRef.current.has(i) && !framesRef.current[i]) {
+        promises.push(
+          new Promise<void>((resolve) => {
+            const img = new Image();
+            img.onload = () => {
+              loadedFramesRef.current.add(i);
+              resolve();
+            };
+            img.onerror = () => {
+              console.warn(`Failed to load frame ${i}`);
+              resolve(); // silently continue
+            };
+            img.src = getFramePath(i);
+            framesRef.current[i] = img;
+          })
+        );
+      }
     }
-  }, [resizeCanvas, drawFrame]);
+
+    return Promise.all(promises);
+  }, []);
+
+  // STEP 1: PRELOAD FIRST 10 FRAMES ON MOUNT
+  useEffect(() => {
+    let isMounted = true;
+
+    loadBatch(0, INITIAL_PRELOAD).then(() => {
+      if (!isMounted) return;
+      resizeCanvas();
+      
+      // Delay initial draw safely
+      setTimeout(() => {
+        if (!isMounted) return;
+        drawFrame(0);
+        setReady(true);
+      }, 50);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [loadBatch, resizeCanvas, drawFrame]);
 
   useEffect(() => {
     if (!ready) return;
@@ -153,12 +185,19 @@ export default function ShoeScroll({
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
     scrollProgress.set(progress);
 
-    if (!ready || framesRef.current.length === 0) return;
+    if (!ready) return;
 
     const targetIndex = Math.min(
       Math.max(Math.round(progress * (TOTAL_FRAMES - 1)), 0),
       TOTAL_FRAMES - 1
     );
+
+    // BATCH LOADING AHEAD STRATEGY
+    const aheadIndex = Math.min(targetIndex + PRELOAD_AHEAD, TOTAL_FRAMES - 1);
+    if (!loadedFramesRef.current.has(aheadIndex)) {
+      // Trigger load for the next batch starting near current index
+      loadBatch(targetIndex, BATCH_SIZE);
+    }
 
     if (isDrawingRef.current) return;
     if (targetIndex === currentFrameRef.current) return;
@@ -172,26 +211,6 @@ export default function ShoeScroll({
 
   return (
     <ScrollContext.Provider value={{ scrollProgress, scrollYProgress }}>
-      {/* Loading overlay ON TOP — scroll container is ALWAYS in the DOM */}
-      {!ready && (
-        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white">
-          <div className="absolute top-0 left-0 h-1 w-full bg-black/5">
-            <motion.div
-              className="h-full bg-[#CC0000]"
-              style={{ width: loadProgress + "%" }}
-              transition={{ duration: 0.1, ease: "easeOut" }}
-            />
-          </div>
-          <p className="font-bebas text-5xl tracking-wide text-black/90 md:text-7xl">
-            SCHAULT
-          </p>
-          <p className="mt-2 font-inter text-sm text-black/60">
-            {loadProgress}%
-          </p>
-        </div>
-      )}
-
-      {/* Scroll container — ALWAYS rendered so useScroll can attach to containerRef */}
       <div
         ref={containerRef}
         style={{
@@ -212,6 +231,9 @@ export default function ShoeScroll({
         >
           <canvas
             ref={canvasRef}
+            className={`transition-opacity duration-[1000ms] ${
+              ready ? "opacity-100" : "opacity-0"
+            }`}
             style={{
               position: "absolute",
               top: 0,
