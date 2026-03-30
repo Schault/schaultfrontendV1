@@ -5,6 +5,7 @@ import ScrollOverlays from "@/components/ScrollOverlays";
 import ShopSection from "@/components/ShopSection";
 import AboutSection from "@/components/AboutSection";
 import FAQ from "@/components/FAQ";
+import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export default function Home() {
@@ -105,6 +106,8 @@ export default function Home() {
           </Link>
         </div>
       </section>
+
+      <Footer />
     </main>
   );
 }
