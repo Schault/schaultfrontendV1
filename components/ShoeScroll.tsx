@@ -16,10 +16,19 @@ import {
   type MotionValue,
 } from "framer-motion";
 
+if (typeof window !== "undefined" && !("requestIdleCallback" in window)) {
+  (window as any).requestIdleCallback = (cb: Function) =>
+    setTimeout(() => cb({ timeRemaining: () => 50 }), 1);
+  (window as any).cancelIdleCallback = (id: number) => clearTimeout(id);
+}
+
 const TOTAL_FRAMES = 200;
 const INITIAL_PRELOAD = 10;
 const BATCH_SIZE = 15;
 const PRELOAD_AHEAD = 20;
+
+const IDLE_CHUNK_SIZE = 5;
+const IDLE_SCROLL_TIMEOUT = 2000;
 
 function getFramePath(i: number): string {
   return `/sequence/ezgif-frame-${String(i + 1).padStart(3, "0")}.webp`;
@@ -34,8 +43,7 @@ const ScrollContext = createContext<ScrollContextValue | null>(null);
 
 export function useShoeScroll() {
   const ctx = useContext(ScrollContext);
-  if (!ctx)
-    throw new Error("useShoeScroll must be used inside ShoeScroll");
+  if (!ctx) throw new Error("useShoeScroll must be used inside ShoeScroll");
   return ctx;
 }
 
@@ -52,7 +60,13 @@ export default function ShoeScroll({
   const rafRef = useRef<number>(0);
   const isDrawingRef = useRef(false);
 
+  const idleCallbackRef = useRef<number | null>(null);
+  const isScrollingRef = useRef<boolean>(false);
+  const idleLoadIndexRef = useRef<number>(INITIAL_PRELOAD); // frames 0-9 requested in Phase 1
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const [ready, setReady] = useState(false);
+  const [devLoadedCount, setDevLoadedCount] = useState(0);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -77,7 +91,10 @@ export default function ShoeScroll({
     const canvas = canvasRef.current;
     if (!canvas || typeof window === "undefined") return;
 
-    let targetRenderIndex = Math.min(Math.max(0, Math.round(index)), TOTAL_FRAMES - 1);
+    let targetRenderIndex = Math.min(
+      Math.max(0, Math.round(index)),
+      TOTAL_FRAMES - 1
+    );
 
     // Fallback strategy: if requested frame isn't loaded, find nearest loaded frame <= index
     if (!loadedFramesRef.current.has(targetRenderIndex)) {
@@ -93,8 +110,7 @@ export default function ShoeScroll({
 
     const frames = framesRef.current;
     const img = frames[targetRenderIndex];
-    
-    // Safety check just in case even frame 0 hasn't fully fired onload yet but is available
+
     if (!img?.complete || !img.naturalWidth) return;
 
     const ctx = canvas.getContext("2d");
@@ -120,7 +136,10 @@ export default function ShoeScroll({
     ctx.fillRect(0, 0, logicalW, logicalH);
     ctx.drawImage(img, x, y, drawW, drawH);
 
-    currentFrameRef.current = Math.min(Math.max(0, Math.round(index)), TOTAL_FRAMES - 1);
+    currentFrameRef.current = Math.min(
+      Math.max(0, Math.round(index)),
+      TOTAL_FRAMES - 1
+    );
     isDrawingRef.current = false;
   }, []);
 
@@ -139,7 +158,7 @@ export default function ShoeScroll({
             };
             img.onerror = () => {
               console.warn(`Failed to load frame ${i}`);
-              resolve(); // silently continue
+              resolve();
             };
             img.src = getFramePath(i);
             framesRef.current[i] = img;
@@ -151,6 +170,49 @@ export default function ShoeScroll({
     return Promise.all(promises);
   }, []);
 
+  const startIdleLoading = useCallback(() => {
+    if (isScrollingRef.current) return;
+    if (loadedFramesRef.current.size >= TOTAL_FRAMES) return;
+
+    if (idleCallbackRef.current !== null) {
+      (window as any).cancelIdleCallback(idleCallbackRef.current);
+    }
+
+    idleCallbackRef.current = (window as any).requestIdleCallback(
+      (deadline: any) => {
+        if (isScrollingRef.current) return;
+
+        let loadedInThisChunk = 0;
+        while (
+          loadedInThisChunk < IDLE_CHUNK_SIZE &&
+          idleLoadIndexRef.current < TOTAL_FRAMES &&
+          deadline.timeRemaining() > 0
+        ) {
+          const i = idleLoadIndexRef.current;
+          if (!loadedFramesRef.current.has(i) && !framesRef.current[i]) {
+            const img = new Image();
+            img.onload = () => loadedFramesRef.current.add(i);
+            img.onerror = () => {
+              console.warn(`Failed idle load ${i}`);
+            };
+            img.src = getFramePath(i);
+            framesRef.current[i] = img;
+            loadedInThisChunk++;
+          }
+          idleLoadIndexRef.current++;
+        }
+
+        if (
+          loadedFramesRef.current.size < TOTAL_FRAMES &&
+          idleLoadIndexRef.current < TOTAL_FRAMES
+        ) {
+          startIdleLoading();
+        }
+      },
+      { timeout: 5000 }
+    );
+  }, []);
+
   // STEP 1: PRELOAD FIRST 10 FRAMES ON MOUNT
   useEffect(() => {
     let isMounted = true;
@@ -158,19 +220,37 @@ export default function ShoeScroll({
     loadBatch(0, INITIAL_PRELOAD).then(() => {
       if (!isMounted) return;
       resizeCanvas();
-      
-      // Delay initial draw safely
+
       setTimeout(() => {
         if (!isMounted) return;
         drawFrame(0);
         setReady(true);
+
+        // Begin Phase 3 idle loading after initial load
+        scrollTimeoutRef.current = setTimeout(() => {
+          isScrollingRef.current = false;
+          startIdleLoading();
+        }, IDLE_SCROLL_TIMEOUT);
       }, 50);
     });
 
     return () => {
       isMounted = false;
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+      if (idleCallbackRef.current !== null) {
+        (window as any).cancelIdleCallback(idleCallbackRef.current);
+      }
     };
-  }, [loadBatch, resizeCanvas, drawFrame]);
+  }, [loadBatch, resizeCanvas, drawFrame, startIdleLoading]);
+
+  // Handle Dev Mode indicator
+  useEffect(() => {
+    if (process.env.NODE_ENV !== "development") return;
+    const interval = setInterval(() => {
+      setDevLoadedCount(loadedFramesRef.current.size);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     if (!ready) return;
@@ -187,15 +267,27 @@ export default function ShoeScroll({
 
     if (!ready) return;
 
+    // SCROLL PAUSE/RESUME IDLE LOAD LOGIC
+    isScrollingRef.current = true;
+    if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+    if (idleCallbackRef.current !== null) {
+      (window as any).cancelIdleCallback(idleCallbackRef.current);
+      idleCallbackRef.current = null;
+    }
+
+    scrollTimeoutRef.current = setTimeout(() => {
+      isScrollingRef.current = false;
+      startIdleLoading();
+    }, IDLE_SCROLL_TIMEOUT);
+
     const targetIndex = Math.min(
       Math.max(Math.round(progress * (TOTAL_FRAMES - 1)), 0),
       TOTAL_FRAMES - 1
     );
 
-    // BATCH LOADING AHEAD STRATEGY
+    // BATCH LOADING AHEAD STRATEGY (PHASE 2)
     const aheadIndex = Math.min(targetIndex + PRELOAD_AHEAD, TOTAL_FRAMES - 1);
     if (!loadedFramesRef.current.has(aheadIndex)) {
-      // Trigger load for the next batch starting near current index
       loadBatch(targetIndex, BATCH_SIZE);
     }
 
@@ -243,6 +335,13 @@ export default function ShoeScroll({
             aria-hidden
           />
           {children}
+          
+          {/* Dev Mode Load Indicator */}
+          {process.env.NODE_ENV === "development" && (
+            <div className="fixed bottom-4 right-4 z-[9999] rounded bg-black/80 px-3 py-1 font-inter text-xs text-white shadow-lg">
+              Frames: {devLoadedCount} / {TOTAL_FRAMES}
+            </div>
+          )}
         </div>
       </div>
     </ScrollContext.Provider>
