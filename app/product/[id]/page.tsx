@@ -134,12 +134,12 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
                 {/* Left Column: Image Gallery */}
                 <div className="flex flex-col gap-4">
-                    <div className="aspect-[4/3] w-full bg-black/5 flex items-center justify-center p-8 sticky top-24">
+                    <div className="aspect-[4/3] w-full bg-black/5 flex items-center justify-center overflow-hidden sticky top-24">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                             src={shoe.image}
                             alt={shoe.name}
-                            className="w-full h-full object-contain drop-shadow-2xl"
+                            className="w-full h-full object-cover"
                         />
                     </div>
                 </div>
