@@ -7,6 +7,10 @@ export const metadata: Metadata = {
     "Modular footwear with a patented snap-fit system. Upper, midsole, and outsole can be individually replaced, cleaned, or swapped.",
 };
 
+import { Providers } from "@/components/providers";
+import Navbar from "@/components/Navbar";
+import { CartDrawer } from "@/components/CartDrawer";
+
 export default function RootLayout({
   children,
 }: {
@@ -22,8 +26,12 @@ export default function RootLayout({
         }}
         className="bg-[#FFFFFF] font-inter text-black/90 antialiased"
       >
-        {children}
-        <div className="grain-overlay" aria-hidden />
+        <Providers>
+          <CartDrawer />
+          <Navbar />
+          {children}
+          <div className="grain-overlay" aria-hidden />
+        </Providers>
       </body>
     </html>
   );

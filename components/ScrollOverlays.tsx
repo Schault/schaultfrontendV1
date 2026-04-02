@@ -104,10 +104,10 @@ export default function ScrollOverlays() {
             even when only 20–30% is damaged. SCHAULT fixes that.
           </p>
           <Link
-            href="#explore"
+            href="#shop"
             className="mt-8 inline-block border-2 border-[#CC0000] bg-transparent px-8 py-3 font-inter text-sm font-medium text-[#CC0000] transition-colors duration-300 ease-in-out hover:bg-[#CC0000] hover:text-white"
           >
-            Explore SCHAULT
+            SHOP
           </Link>
         </div>
       </motion.div>

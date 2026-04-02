@@ -20,7 +20,7 @@ import {
 const TOTAL_FRAMES = 200;
 
 function getFramePath(i: number): string {
-  return `/sequence/ezgif-frame-${String(i + 1).padStart(3, "0")}.png`;
+  return `/sequence/ezgif-frame-${String(i + 1).padStart(3, "0")}.jpg`;
 }
 
 type ScrollContextValue = {

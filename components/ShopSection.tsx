@@ -1,44 +1,84 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import type { ShopifyProduct } from "@/lib/shopify";
 
-const PRODUCTS = [
+// ── Types ───────────────────────────────────────────────────────────────────
+
+type ProductType = {
+  id: string;        // used as URL slug
+  name: string;
+  description: string;
+  price: string;
+  image: string;
+  variantId?: string; // Shopify variant GID (for checkout)
+};
+
+// ── Mock / Fallback Data ────────────────────────────────────────────────────
+
+const MOCK_SHOES: ProductType[] = [
   {
-    id: "upper",
-    name: "SCHAULT Upper",
-    description: "Canvas breathable upper, snap-fit connector",
-    price: "₹899",
-    image: "/images/upper.png",
+    id: "arctic-dawn",
+    name: 'Schault "Arctic Dawn"',
+    description: "Arctic Blue & Navy. Light blue pebble-grain leather, velvety grey suede, and breathable white mesh.",
+    price: "$199.00",
+    image: "/images/shoes/bluewhite.jpg",
   },
   {
-    id: "midsole",
-    name: "SCHAULT Midsole",
-    description: "PU-casted cushioning layer",
-    price: "₹599",
-    image: "/images/midsole.png",
+    id: "ochre-earth",
+    name: 'Schault "Ochre & Earth"',
+    description: "Mustard Yellow, Forest Green & Chocolate Brown. Smooth leather and velvety suede.",
+    price: "$199.00",
+    image: "/images/shoes/yellow.jpg",
   },
   {
-    id: "outsole",
-    name: "SCHAULT Outsole",
-    description: "Grip-textured rubber sole",
-    price: "₹499",
-    image: "/images/outsole.png",
+    id: "rust-ash",
+    name: 'Schault "Rust & Ash"',
+    description: "Grey Mesh, Rust Suede & Charcoal Black. High-density performance mesh side panels.",
+    price: "$199.00",
+    image: "/images/shoes/brownblack.jpg",
   },
   {
-    id: "complete",
-    name: "SCHAULT Complete",
-    description: "Full modular set, all 3 parts",
-    price: "₹1,799",
-    image: "/images/fullshoe.png",
+    id: "cd-heritage",
+    name: 'Schault "CD" Heritage',
+    description: "Arctic White, Cream Suede & Mustard Stripe. A clean, iconic heritage piece.",
+    price: "$199.00",
+    image: "/images/shoes/whitefull.jpg",
+  },
+  {
+    id: "navy-frost",
+    name: 'Schault "Navy Frost"',
+    description: "Ice White Mesh, Dove Grey Suede & Midnight Navy. Lightweight, airy mesh frame.",
+    price: "$199.00",
+    image: "/images/shoes/darkblue.jpg",
   },
 ];
 
+// ── Helpers ─────────────────────────────────────────────────────────────────
+
+function shopifyToProduct(p: ShopifyProduct): ProductType {
+  const firstImage = p.images.edges[0]?.node;
+  const firstVariant = p.variants.edges[0]?.node;
+  const price = p.priceRange.minVariantPrice;
+
+  return {
+    id: p.handle,
+    name: p.title,
+    description: p.description,
+    price: `$${parseFloat(price.amount).toFixed(2)}`,
+    image: firstImage?.url ?? "/images/shoes/bluewhite.jpg",
+    variantId: firstVariant?.id,
+  };
+}
+
+// ── Product Card ────────────────────────────────────────────────────────────
+
 function ProductCard({
   product,
-  index,
 }: {
-  product: (typeof PRODUCTS)[0];
+  product: ProductType;
   index: number;
 }) {
   const [imgError, setImgError] = useState(false);
@@ -51,46 +91,71 @@ function ProductCard({
       transition={{ duration: 0.35, ease: "easeOut" }}
       className="group flex flex-col bg-white transition-all duration-[250ms] ease-out hover:-translate-y-1 hover:shadow-sm"
     >
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-black/5">
-        {!imgError ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={product.image}
-            alt={product.name}
-            className="h-full w-full object-contain transition-transform duration-250 group-hover:scale-[1.02]"
-            onError={() => setImgError(true)}
-          />
-        ) : (
-          <div
-            className="flex h-full w-full items-center justify-center font-inter text-xs text-black/40"
-            aria-hidden
+      <Link href={`/product/${product.id}`} className="flex flex-col flex-1 h-full w-full outline-none">
+        <div className="relative aspect-[4/3] w-full overflow-hidden bg-black/5">
+          {!imgError ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={product.image}
+              alt={product.name}
+              className="h-full w-full object-contain transition-transform duration-250 group-hover:scale-[1.02]"
+              onError={() => setImgError(true)}
+            />
+          ) : (
+            <div
+              className="flex h-full w-full items-center justify-center font-inter text-xs text-black/40"
+              aria-hidden
+            >
+              Placeholder
+            </div>
+          )}
+        </div>
+        <div className="flex flex-1 flex-col p-5">
+          <h3 className="font-bebas text-xl tracking-wide text-black/90">
+            {product.name}
+          </h3>
+          <p className="mt-1 font-inter text-xs text-black/50 line-clamp-2">
+            {product.description}
+          </p>
+          <p className="mt-3 font-inter text-sm font-semibold text-black">
+            {product.price}
+          </p>
+          <span
+            className="mt-auto w-full border border-black py-2.5 text-center font-inter text-xs uppercase tracking-wide transition-all duration-250 ease-out hover:border-[#CC0000] hover:bg-[#CC0000] hover:text-white"
           >
-            Placeholder
-          </div>
-        )}
-      </div>
-      <div className="flex flex-1 flex-col p-5">
-        <h3 className="font-bebas text-xl tracking-wide text-black/90">
-          {product.name}
-        </h3>
-        <p className="mt-1 font-inter text-xs text-black/50">
-          {product.description}
-        </p>
-        <p className="mt-3 font-inter text-sm font-semibold text-black">
-          {product.price}
-        </p>
-        <button
-          type="button"
-          className="mt-4 w-full border border-black py-2.5 font-inter text-xs uppercase tracking-wide transition-all duration-250 ease-out hover:border-[#CC0000] hover:bg-[#CC0000] hover:text-white"
-        >
-          Add to Cart
-        </button>
-      </div>
+            View Details
+          </span>
+        </div>
+      </Link>
     </motion.article>
   );
 }
 
+// ── Main Section ────────────────────────────────────────────────────────────
+
 export default function ShopSection() {
+  const [shoes, setShoes] = useState<ProductType[]>(MOCK_SHOES);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const res = await fetch("/api/products");
+        if (res.ok) {
+          const data: ShopifyProduct[] = await res.json();
+          if (data && data.length > 0) {
+            setShoes(data.map(shopifyToProduct));
+          }
+        }
+      } catch {
+        // Shopify not configured – silently use mock data
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProducts();
+  }, []);
+
   return (
     <section
       id="shop"
@@ -104,10 +169,31 @@ export default function ShopSection() {
         <p className="mt-3 font-inter text-base text-black/60">
           Mix. Match. Replace. Only pay for what you need.
         </p>
-        <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {PRODUCTS.map((product, index) => (
-            <ProductCard key={product.id} product={product} index={index} />
-          ))}
+        <h3 className="mt-16 mb-8 font-bebas text-3xl tracking-wide text-black/90">
+          SHOES
+        </h3>
+
+        {loading ? (
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="aspect-[3/4] animate-pulse bg-black/5" />
+            ))}
+          </div>
+        ) : (
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {shoes.map((product, index) => (
+              <ProductCard key={product.id} product={product} index={index} />
+            ))}
+          </div>
+        )}
+
+        <h3 className="mt-16 mb-8 font-bebas text-3xl tracking-wide text-black/90">
+          SOLES
+        </h3>
+        <div className="flex items-center justify-center p-12 border border-dashed border-black/20 bg-black/5">
+          <p className="font-inter text-sm text-black/50 uppercase tracking-wide">
+            Coming Soon
+          </p>
         </div>
       </div>
     </section>
