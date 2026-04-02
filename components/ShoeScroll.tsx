@@ -90,7 +90,7 @@ export default function ShoeScroll({
     const logicalW = canvas.width / dpr;
     const logicalH = canvas.height / dpr;
 
-    const scale = Math.min(
+    const scale = Math.max(
       logicalW / img.naturalWidth,
       logicalH / img.naturalHeight
     );
