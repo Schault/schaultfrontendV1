@@ -4,11 +4,15 @@ import { useCart } from "./providers";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { createCheckout } from "@/lib/shopify";
 
 export function CartDrawer() {
     const { isCartOpen, setIsCartOpen, items, updateQuantity, removeItem, totalPrice } = useCart();
     const [isCheckingOut, setIsCheckingOut] = useState(false);
+    const pathname = usePathname();
+
+    if (pathname.startsWith("/auth")) return null;
 
     const handleCheckout = async () => {
         setIsCheckingOut(true);

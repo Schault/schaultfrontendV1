@@ -31,6 +31,8 @@ export default function Navbar() {
   const [threshold, setThreshold] = useState(0);
   const [windowWidth, setWindowWidth] = useState(0);
 
+  if (pathname.startsWith("/auth")) return null;
+
   useEffect(() => {
     const handleResize = () => {
       // The ShoeScroll container is 500vh tall. The animation hits the last frame 
@@ -171,7 +173,7 @@ export default function Navbar() {
           {/* RIGHT: CTA Button & Mobile Toggle */}
           <div className="flex items-center gap-4">
             <Link
-              href="/profile"
+              href="/auth"
               className="text-black/80 transition-colors hover:text-[#CC0000]"
             >
               <User size={22} className="stroke-[1.5]" />
