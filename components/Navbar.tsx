@@ -31,7 +31,7 @@ export default function Navbar() {
   const [threshold, setThreshold] = useState(0);
   const [windowWidth, setWindowWidth] = useState(0);
 
-  if (pathname.startsWith("/auth")) return null;
+  const isAuthPage = pathname.startsWith("/auth");
 
   useEffect(() => {
     const handleResize = () => {
@@ -114,6 +114,8 @@ export default function Navbar() {
     [0, 12]
   );
   const backdropFilter = useMotionTemplate`blur(${blurRaw}px)`;
+
+  if (isAuthPage) return null;
 
   return (
     <>

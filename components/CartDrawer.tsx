@@ -12,7 +12,9 @@ export function CartDrawer() {
     const [isCheckingOut, setIsCheckingOut] = useState(false);
     const pathname = usePathname();
 
-    if (pathname.startsWith("/auth")) return null;
+    const isAuthPage = pathname.startsWith("/auth");
+
+    if (isAuthPage) return null;
 
     const handleCheckout = async () => {
         setIsCheckingOut(true);

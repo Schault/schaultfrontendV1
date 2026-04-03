@@ -22,6 +22,28 @@ const config: Config = {
           },
         },
       },
+      keyframes: {
+        "star-movement-bottom": {
+          "0%": { transform: "translateX(-100%)", opacity: "0" },
+          "10%": { opacity: "1" },
+          "90%": { opacity: "1" },
+          "100%": { transform: "translateX(100%)", opacity: "0" },
+        },
+        "star-movement-top": {
+          "0%": { transform: "translateX(100%)", opacity: "0" },
+          "10%": { opacity: "1" },
+          "90%": { opacity: "1" },
+          "100%": { transform: "translateX(-100%)", opacity: "0" },
+        },
+        "border-beam": {
+          "100%": { "offset-distance": "100%" },
+        },
+      },
+      animation: {
+        "star-movement-bottom": "star-movement-bottom 6s linear infinite",
+        "star-movement-top": "star-movement-top 6s linear infinite",
+        "border-beam": "border-beam 6s linear infinite",
+      },
     },
   },
   plugins: [],
