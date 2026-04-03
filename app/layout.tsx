@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import LenisProvider from "@/components/LenisProvider.tsx/Lenis";
 
 export const metadata: Metadata = {
   title: "SCHAULT — Replace parts. Not the entire shoe.",
@@ -17,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" style={{ scrollBehavior: "smooth" }}>
+    <html lang="en">
       <body
         style={{
           margin: 0,
@@ -27,10 +28,12 @@ export default function RootLayout({
         className="bg-[#FFFFFF] font-inter text-black/90 antialiased"
       >
         <Providers>
-          <CartDrawer />
-          <Navbar />
-          {children}
-          <div className="grain-overlay" aria-hidden />
+          <LenisProvider>
+            <CartDrawer />
+            <Navbar />
+            {children}
+            <div className="grain-overlay" aria-hidden />
+          </LenisProvider>
         </Providers>
       </body>
     </html>
