@@ -177,6 +177,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
                 {/* Right Column: Details & Actions */}
                 <div className="flex flex-col pt-8">
+                    <Link href="/shop" className="mb-6 inline-flex items-center gap-2 font-inter text-sm text-black/50 hover:text-[#CC0000] transition-colors w-fit">
+                        <span>&larr;</span> Back to Shop
+                    </Link>
                     <h1 className="font-bebas text-4xl md:text-5xl tracking-wide text-black/95">
                         {shoe.name}
                     </h1>
