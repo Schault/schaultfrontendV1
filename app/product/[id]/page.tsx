@@ -19,6 +19,7 @@ type ResolvedProduct = {
     price: string;
     priceValue: number;
     image: string;
+    images: string[];
     availableSizes: number[];
     allSizes: number[];
     variantId?: string; // real Shopify GID
@@ -44,6 +45,9 @@ function shopifyToResolved(p: ShopifyProduct): ResolvedProduct {
     // If no parseable sizes, default to all sizes available
     const finalAvailableSizes = availableSizes.length > 0 ? availableSizes : SIZES;
 
+    const images = p.images.edges.map(e => e.node.url);
+    if (images.length === 0) images.push("/images/shoes/bluewhite.jpg");
+
     return {
         id: p.handle,
         name: p.title,
@@ -52,7 +56,8 @@ function shopifyToResolved(p: ShopifyProduct): ResolvedProduct {
         specs: [],
         price: `$${parseFloat(price.amount).toFixed(2)}`,
         priceValue: parseFloat(price.amount),
-        image: firstImage?.url ?? "/images/shoes/bluewhite.jpg",
+        image: images[0],
+        images: images,
         availableSizes: finalAvailableSizes,
         allSizes: SIZES,
         variantId: p.variants.edges[0]?.node.id,
@@ -69,21 +74,34 @@ export default function ProductPage({ params }: { params: { id: string } }) {
         mockShoe
             ? {
                 ...mockShoe,
+                images: [mockShoe.image],
                 variantId: undefined,
             }
             : null,
     );
     const [loading, setLoading] = useState(true);
 
-    // Try to fetch the Shopify version of the product
+    const [recommended, setRecommended] = useState<ResolvedProduct[] | null>(null);
+
+    // Try to fetch the Shopify version of the product and recommendations
     useEffect(() => {
         async function fetchShopify() {
             try {
+                // Fetch current product
                 const res = await fetch(`/api/products/${params.id}`);
                 if (res.ok) {
                     const data: ShopifyProduct | null = await res.json();
                     if (data) {
                         setShoe(shopifyToResolved(data));
+                    }
+                }
+
+                // Fetch recommended products
+                const recRes = await fetch(`/api/products`);
+                if (recRes.ok) {
+                    const allData: ShopifyProduct[] | null = await recRes.json();
+                    if (allData) {
+                        setRecommended(allData.map(shopifyToResolved));
                     }
                 }
             } catch {
@@ -107,7 +125,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
         );
     }
 
-    const otherShoes = SHOES.filter((s) => s.id !== shoe.id);
+    const otherShoes = recommended
+        ? recommended.filter((s) => s.id !== shoe.id).slice(0, 4)
+        : SHOES.filter((s) => s.id !== shoe.id).slice(0, 4);
 
     const handleAddToCart = () => {
         if (!selectedSize) return;
@@ -130,18 +150,20 @@ export default function ProductPage({ params }: { params: { id: string } }) {
     return (
         <main className="min-h-screen bg-[#F5F5F5] pt-24 pb-12">
             {/* Product Detail Section */}
-            <section className="mx-auto max-w-7xl px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24">
+            <section className="mx-auto max-w-7xl px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 relative items-start">
 
                 {/* Left Column: Image Gallery */}
-                <div className="flex flex-col gap-4">
-                    <div className="aspect-[4/3] w-full bg-black/5 flex items-center justify-center overflow-hidden sticky top-24">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                            src={shoe.image}
-                            alt={shoe.name}
-                            className="w-full h-full object-cover"
-                        />
-                    </div>
+                <div className="flex flex-col gap-4 sticky top-24 max-h-[calc(100vh-100px)] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+                    {shoe.images.map((img, idx) => (
+                        <div key={idx} className="aspect-[4/3] w-full bg-black/5 flex items-center justify-center overflow-hidden shrink-0">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                                src={img}
+                                alt={`${shoe.name} - View ${idx + 1}`}
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+                    ))}
                 </div>
 
                 {/* Right Column: Details & Actions */}
