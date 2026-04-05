@@ -1,7 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CTAFooter from "@/components/CTAFooter";
-import { getCollections } from "@/lib/shopify";
+import { getCollections, getProducts } from "@/lib/shopify";
 import Link from "next/link";
 import Image from "next/image";
 import { SHOES } from "@/lib/data";
@@ -10,7 +10,25 @@ export const revalidate = 60; // ISR - revalidate every 60s
 
 export default async function ShopPage() {
     const collections = await getCollections(10);
+    const allProducts = await getProducts(50);
+
     const hasShopifyCollections = collections && collections.length > 0;
+
+    // Track products already included in collections
+    const collectionProductIds = new Set<string>();
+    if (hasShopifyCollections) {
+        collections.forEach((col) => {
+            col.products.edges.forEach((edge) => collectionProductIds.add(edge.node.id));
+        });
+    }
+
+    // Separate products not part of any collection
+    const standaloneProducts = allProducts
+        ? allProducts.filter((p) => !collectionProductIds.has(p.id))
+        : [];
+
+    const hasStandaloneProducts = standaloneProducts.length > 0;
+    const hasShopifyData = hasShopifyCollections || hasStandaloneProducts;
 
     return (
         <main className="min-h-screen bg-[#F5F5F5]">
@@ -28,7 +46,7 @@ export default async function ShopPage() {
             </div>
 
             <section className="px-6 md:px-12 lg:px-24 pb-24 mx-auto max-w-6xl">
-                {!hasShopifyCollections ? (
+                {!hasShopifyData ? (
                     /* Fallback Mock Data if Shopify is empty or unconfigured */
                     <div className="mt-12">
                         <h2 className="mb-8 font-bebas text-3xl tracking-wide text-black/90 uppercase border-b border-black/10 pb-4">
@@ -43,7 +61,7 @@ export default async function ShopPage() {
                 ) : (
                     /* Render Live Shopify Collections */
                     <div className="mt-12 space-y-24">
-                        {collections.map((collection) => {
+                        {hasShopifyCollections && collections.map((collection) => {
                             const products = collection.products.edges.map((edge) => edge.node);
                             if (products.length === 0) return null;
 
@@ -78,6 +96,32 @@ export default async function ShopPage() {
                                 </div>
                             );
                         })}
+
+                        {hasStandaloneProducts && (
+                            <div>
+                                <h2 className="mb-8 font-bebas text-3xl tracking-wide text-black/90 uppercase border-b border-black/10 pb-4">
+                                    {hasShopifyCollections ? "ALL PRODUCTS" : "LATEST ARRIVALS"}
+                                </h2>
+                                <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                                    {standaloneProducts.map((shopifyProduct) => {
+                                        const firstImage = shopifyProduct.images.edges[0]?.node;
+                                        const price = shopifyProduct.priceRange.minVariantPrice;
+
+                                        const formattedProduct = {
+                                            id: shopifyProduct.handle,
+                                            name: shopifyProduct.title,
+                                            description: shopifyProduct.description || "",
+                                            price: `$${parseFloat(price.amount).toFixed(2)}`,
+                                            image: firstImage?.url ?? "/images/shoes/bluewhite.jpg",
+                                        };
+
+                                        return (
+                                            <ProductCard key={shopifyProduct.id} product={formattedProduct} />
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
             </section>
