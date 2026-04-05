@@ -29,7 +29,7 @@ export default function AboutSection() {
               and giving you more control over what you wear.
             </p>
             <Link
-              href="#"
+              href="/about"
               className="mt-8 inline-block font-inter text-sm font-medium text-[#CC0000] transition-opacity duration-200 hover:opacity-80"
             >
               Read the full story →

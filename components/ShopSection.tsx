@@ -180,6 +180,15 @@ export default function ShopSection() {
           </div>
         )}
 
+        <div className="mt-12 flex justify-center">
+          <Link
+            href="/shop"
+            className="inline-block border border-black px-8 py-3 font-inter text-sm font-medium tracking-widest uppercase transition-all duration-300 hover:bg-black hover:text-white"
+          >
+            View Full Collection
+          </Link>
+        </div>
+
         <h3 className="mt-16 mb-8 font-bebas text-3xl tracking-wide text-black/90">
           SOLES
         </h3>
