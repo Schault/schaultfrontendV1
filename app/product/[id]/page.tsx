@@ -152,18 +152,27 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             {/* Product Detail Section */}
             <section className="mx-auto max-w-7xl px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 relative items-start">
 
-                {/* Left Column: Image Gallery */}
-                <div className="flex flex-col gap-4 sticky top-24 max-h-[calc(100vh-100px)] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
-                    {shoe.images.map((img, idx) => (
-                        <div key={idx} className="aspect-[4/3] w-full bg-black/5 flex items-center justify-center overflow-hidden shrink-0">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                                src={img}
-                                alt={`${shoe.name} - View ${idx + 1}`}
-                                className="w-full h-full object-cover"
-                            />
+                {/* Left Column: Image Carousel */}
+                <div className="relative sticky top-24">
+                    <div className="flex w-full overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+                        {shoe.images.map((img, idx) => (
+                            <div key={idx} className="w-full shrink-0 snap-center bg-[#F1F1F1] aspect-[4/3] lg:aspect-[4/5] flex items-center justify-center p-8">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src={img}
+                                    alt={`${shoe.name} - View ${idx + 1}`}
+                                    className="w-full h-full object-contain drop-shadow-2xl"
+                                />
+                            </div>
+                        ))}
+                    </div>
+                    {shoe.images.length > 1 && (
+                        <div className="flex justify-center gap-3 mt-6">
+                            {shoe.images.map((_, idx) => (
+                                <div key={idx} className="w-1.5 h-1.5 rounded-full bg-black/20" />
+                            ))}
                         </div>
-                    ))}
+                    )}
                 </div>
 
                 {/* Right Column: Details & Actions */}

@@ -85,7 +85,7 @@ query Products($first: Int!) {
         description
         descriptionHtml
         tags
-        images(first: 5) {
+        images(first: 25) {
           edges {
             node {
               url
@@ -127,7 +127,7 @@ query ProductByHandle($handle: String!) {
     description
     descriptionHtml
     tags
-    images(first: 10) {
+              images(first: 25) {
       edges {
         node {
           url
@@ -192,7 +192,7 @@ query Collections($first: Int!) {
               description
               descriptionHtml
               tags
-              images(first: 5) {
+              images(first: 25) {
                 edges {
                   node {
                     url
