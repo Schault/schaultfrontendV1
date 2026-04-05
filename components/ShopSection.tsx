@@ -66,6 +66,8 @@ function shopifyToProduct(p: ShopifyProduct): ProductType {
   };
 }
 
+import { useCart } from "./providers";
+
 // ── Product Card ────────────────────────────────────────────────────────────
 
 function ProductCard({
@@ -75,6 +77,25 @@ function ProductCard({
   index: number;
 }) {
   const [imgError, setImgError] = useState(false);
+  const { addItem } = useCart();
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Parse numeric price from string like "₹899" or "$89.00"
+    const numericPrice = parseFloat(product.price.replace(/[^0-9.]/g, "")) || 0;
+    
+    addItem({
+      id: `${product.id}-default`,
+      shoeId: product.id,
+      name: product.name,
+      image: product.image,
+      price: numericPrice,
+      size: 9, // Default size for mockup
+      quantity: 1,
+    });
+  };
 
   return (
     <motion.article
@@ -84,8 +105,8 @@ function ProductCard({
       transition={{ duration: 0.35, ease: "easeOut" }}
       className="group flex flex-col bg-white transition-all duration-[250ms] ease-out hover:-translate-y-1 hover:shadow-sm"
     >
-      <Link href={`/product/${product.id}`} className="flex flex-col flex-1 h-full w-full outline-none">
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-black/5">
+      <div className="flex flex-col flex-1 h-full w-full outline-none">
+        <Link href={`/product/${product.id}`} className="relative aspect-[4/3] w-full overflow-hidden bg-black/5">
           {!imgError ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -102,24 +123,27 @@ function ProductCard({
               Placeholder
             </div>
           )}
-        </div>
+        </Link>
         <div className="flex flex-1 flex-col p-5">
-          <h3 className="font-bebas text-xl tracking-wide text-black/90">
-            {product.name}
-          </h3>
+          <Link href={`/product/${product.id}`} className="hover:text-[#CC0000] transition-colors">
+            <h3 className="font-bebas text-xl tracking-wide text-black/90">
+              {product.name}
+            </h3>
+          </Link>
           <p className="mt-1 font-inter text-xs text-black/50 line-clamp-2">
             {product.description}
           </p>
           <p className="mt-3 font-inter text-sm font-semibold text-black">
             {product.price}
           </p>
-          <span
-            className="mt-auto w-full border border-black py-2.5 text-center font-inter text-xs uppercase tracking-wide transition-all duration-250 ease-out hover:border-[#CC0000] hover:bg-[#CC0000] hover:text-white"
+          <button
+            onClick={handleAddToCart}
+            className="mt-auto w-full border border-black py-2.5 text-center font-inter text-[10px] uppercase tracking-widest transition-all duration-250 ease-out hover:border-[#CC0000] hover:bg-[#CC0000] hover:text-white"
           >
-            View Details
-          </span>
+            Add to Cart
+          </button>
         </div>
-      </Link>
+      </div>
     </motion.article>
   );
 }

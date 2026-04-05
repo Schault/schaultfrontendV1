@@ -9,7 +9,7 @@ const StatsSection: React.FC = () => {
             <p className="font-bebas text-5xl tracking-wide text-[#CC0000] md:text-6xl lg:text-7xl">
               22B
             </p>
-            <p className="mt-2 font-inter text-sm text-black/60">
+            <p className="mt-2 font-inter text-sm text-black/60 whitespace-nowrap">
               Pairs discarded annually worldwide
             </p>
           </div>
@@ -17,7 +17,7 @@ const StatsSection: React.FC = () => {
             <p className="font-bebas text-5xl tracking-wide text-[#CC0000] md:text-6xl lg:text-7xl">
               90–95%
             </p>
-            <p className="mt-2 font-inter text-sm text-black/60">
+            <p className="mt-2 font-inter text-sm text-black/60 whitespace-nowrap">
               End up in landfills
             </p>
           </div>
@@ -25,7 +25,7 @@ const StatsSection: React.FC = () => {
             <p className="font-bebas text-5xl tracking-wide text-[#CC0000] md:text-6xl lg:text-7xl">
               1 Patent
             </p>
-            <p className="mt-2 font-inter text-sm text-black/60">
+            <p className="mt-2 font-inter text-sm text-black/60 whitespace-nowrap">
               Published, Intellectual Property India
             </p>
           </div>

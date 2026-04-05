@@ -176,14 +176,18 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             <Link
               href="/auth"
-              className="text-black/80 transition-colors hover:text-[#CC0000]"
+              className={`transition-colors hover:text-[#CC0000] ${
+                pathname.startsWith("/auth") ? "text-[#CC0000]" : "text-black/80"
+              }`}
             >
               <User size={22} className="stroke-[1.5]" />
             </Link>
 
-            <button
-              onClick={() => setIsCartOpen(true)}
-              className="relative text-black/80 transition-colors hover:text-[#CC0000] mr-2"
+            <Link
+              href="/cart"
+              className={`relative transition-colors hover:text-[#CC0000] mr-2 ${
+                pathname === "/cart" ? "text-[#CC0000]" : "text-black/80"
+              }`}
             >
               <ShoppingCart size={22} className="stroke-[1.5]" />
               {cartItemCount > 0 && (
@@ -191,7 +195,7 @@ export default function Navbar() {
                   {cartItemCount}
                 </span>
               )}
-            </button>
+            </Link>
             <Link
               href="/shop"
               className="hidden rounded-full border border-black/90 px-5 py-2 font-inter text-sm font-medium text-black/90 transition-all duration-300 hover:border-[#CC0000] hover:bg-[#CC0000] hover:text-white md:inline-block"

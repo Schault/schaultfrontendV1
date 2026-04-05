@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -10,6 +11,15 @@ export default function AuthPage() {
 
   return (
     <div className="relative flex min-h-screen w-full items-center justify-center p-4 md:p-8">
+      {/* Back Arrow to Home */}
+      <Link 
+        href="/" 
+        className="fixed left-6 top-6 z-50 rounded-full bg-white/80 p-2 shadow-sm backdrop-blur-md transition-all hover:scale-110 hover:bg-white active:scale-95 md:left-12 md:top-12"
+        aria-label="Back to Home"
+      >
+        <ArrowLeft size={24} className="text-[#CC0000]" />
+      </Link>
+
       {/* Full Page White Background */}
       <div className="absolute inset-0 z-0 bg-white" />
 
