@@ -11,7 +11,7 @@ export default function Footer() {
 
   const handleSubscribe = () => {
     if (email) {
-      console.log("Subscribed:", email);
+      // TODO: Integrate with newsletter service (e.g., Mailchimp)
       setEmail("");
     }
   };

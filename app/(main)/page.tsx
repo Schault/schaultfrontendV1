@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar";
 import ShoeScroll from "@/components/ShoeScroll";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 import ScrollOverlays from "@/components/ScrollOverlays";
@@ -13,7 +12,6 @@ import CTAFooter from "@/components/CTAFooter";
 export default function Home() {
   return (
     <main className="bg-[#FFFFFF]">
-      <Navbar />
 
       <ShoeScroll>
         <ScrollProgressBar />

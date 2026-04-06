@@ -24,6 +24,7 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const [activeLink, setActiveLink] = useState("Home");
   const { items, setIsCartOpen } = useCart();
@@ -34,6 +35,7 @@ export default function Navbar() {
   const isAuthPage = pathname.startsWith("/auth");
 
   useEffect(() => {
+    setMounted(true);
     const handleResize = () => {
       // The ShoeScroll container is 500vh tall. The animation hits the last frame 
       // exactly when the user has scrolled 400vh down (500vh - 100vh viewport).
@@ -115,11 +117,12 @@ export default function Navbar() {
   );
   const backdropFilter = useMotionTemplate`blur(${blurRaw}px)`;
 
-  if (isAuthPage) return null;
+  if (isAuthPage || !mounted) return null;
 
   return (
     <>
       <motion.header
+        data-lenis-prevent
         style={{
           width,
           top,
@@ -131,7 +134,7 @@ export default function Navbar() {
           WebkitBackdropFilter: backdropFilter,
           maxWidth,
         }}
-        className="fixed left-1/2 -translate-x-1/2 z-50 border border-black/10 px-8"
+        className="fixed left-1/2 -translate-x-1/2 z-[1000] border border-black/10 px-8"
       >
         <nav className="mx-auto flex h-full w-full items-center justify-between">
           {/* LEFT: Logo Section */}
@@ -144,7 +147,7 @@ export default function Navbar() {
               className="h-10 w-auto"
               priority
             />
-            <span className="font-serif text-lg font-medium tracking-widest text-black/90">
+            <span className="font-bebas text-lg font-medium tracking-widest text-black/90">
               SCHAULT
             </span>
           </Link>
@@ -223,7 +226,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed inset-0 z-[60] flex flex-col bg-white"
+            className="fixed inset-0 z-[1100] flex flex-col bg-white"
           >
             <div className="flex items-center justify-between border-b border-black/10 px-8 py-5">
               <Link
@@ -238,7 +241,7 @@ export default function Navbar() {
                   height={40}
                   className="h-10 w-auto"
                 />
-                <span className="font-serif text-lg font-medium tracking-widest text-black/90">
+                <span className="font-bebas text-lg font-medium tracking-widest text-black/90">
                   SCHAULT
                 </span>
               </Link>

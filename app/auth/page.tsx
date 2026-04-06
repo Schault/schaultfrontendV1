@@ -60,7 +60,7 @@ export default function AuthPage() {
                   transition={{ duration: 0.2 }}
                   className="flex w-full flex-col"
                 >
-                  <h1 className="font-serif text-4xl text-black/90 sm:text-[2.75rem] sm:leading-tight">
+                  <h1 className="font-bebas text-4xl text-black/90 sm:text-[2.75rem] sm:leading-tight">
                     Welcome !
                   </h1>
                   <p className="mt-1 font-inter text-[20px] text-black/80">
@@ -174,7 +174,7 @@ export default function AuthPage() {
                   transition={{ duration: 0.2 }}
                   className="flex w-full flex-col"
                 >
-                  <h1 className="font-serif text-4xl text-black/90 sm:text-[2.75rem] sm:leading-tight">
+                  <h1 className="font-bebas text-4xl text-black/90 sm:text-[2.75rem] sm:leading-tight">
                     Welcome !
                   </h1>
                   <p className="mt-1 font-inter text-[20px] text-black/80">

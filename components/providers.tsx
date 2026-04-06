@@ -1,44 +1,20 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { CartProvider, useCart, CartItem } from "@/context/CartContext";
 
-// --- Cart Context ---
-export type CartItem = {
-    id: string; // usually shoe.id + size
-    shoeId: string;
-    name: string;
-    image: string;
-    price: number;
-    size: number;
-    quantity: number;
-    variantId?: string; // Shopify variant GID for checkout
-};
-
-type CartContextType = {
-    items: CartItem[];
-    addItem: (item: CartItem) => void;
-    removeItem: (id: string) => void;
-    updateQuantity: (id: string, quantity: number) => void;
-    isCartOpen: boolean;
-    setIsCartOpen: (v: boolean) => void;
-    totalPrice: number;
-};
-
-const CartContext = createContext<CartContextType | null>(null);
-
-export const useCart = () => {
-    const ctx = useContext(CartContext);
-    if (!ctx) throw new Error("useCart must be used inside Providers");
-    return ctx;
-};
+// Re-export for convenience
+export { useCart };
+export type { CartItem };
 
 // --- Auth Context ---
+
 export type Order = {
     id: string;
     date: string;
     total: number;
     status: "Processing" | "Shipped" | "Delivered";
-    items: CartItem[];
+    items: any[]; // Use any or refer to CartItem from context
 };
 
 export type User = {
@@ -62,22 +38,13 @@ export const useAuth = () => {
 };
 
 export function Providers({ children }: { children: React.ReactNode }) {
-    const [items, setItems] = useState<CartItem[]>([]);
-    const [isCartOpen, setIsCartOpen] = useState(false);
     const [user, setUser] = useState<User | null>(null);
 
     // Persistence (mock)
     useEffect(() => {
-        const savedCart = localStorage.getItem("schault_cart");
-        if (savedCart) setItems(JSON.parse(savedCart));
-
         const savedUser = localStorage.getItem("schault_user");
         if (savedUser) setUser(JSON.parse(savedUser));
     }, []);
-
-    useEffect(() => {
-        localStorage.setItem("schault_cart", JSON.stringify(items));
-    }, [items]);
 
     useEffect(() => {
         if (user) {
@@ -86,33 +53,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
             localStorage.removeItem("schault_user");
         }
     }, [user]);
-
-    // Cart actions
-    const addItem = (item: CartItem) => {
-        setItems((prev) => {
-            const existing = prev.find((i) => i.id === item.id);
-            if (existing) {
-                return prev.map((i) =>
-                    i.id === item.id ? { ...i, quantity: i.quantity + item.quantity } : i
-                );
-            }
-            return [...prev, item];
-        });
-        setIsCartOpen(true);
-    };
-
-    const removeItem = (id: string) => {
-        setItems((prev) => prev.filter((i) => i.id !== id));
-    };
-
-    const updateQuantity = (id: string, quantity: number) => {
-        if (quantity < 1) return removeItem(id);
-        setItems((prev) =>
-            prev.map((i) => (i.id === id ? { ...i, quantity } : i))
-        );
-    };
-
-    const totalPrice = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
     // Auth actions
     const login = (email: string) => {
@@ -131,7 +71,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
                             id: "arctic-dawn-9",
                             shoeId: "arctic-dawn",
                             name: 'Schault "Arctic Dawn"',
-                            image: "/images/shoes/bluewhite.jpg",
+                            image: "/assets/shop/products/product1.png",
                             price: 199,
                             size: 9,
                             quantity: 1,
@@ -148,19 +88,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
     return (
         <AuthContext.Provider value={{ user, login, logout }}>
-            <CartContext.Provider
-                value={{
-                    items,
-                    addItem,
-                    removeItem,
-                    updateQuantity,
-                    isCartOpen,
-                    setIsCartOpen,
-                    totalPrice,
-                }}
-            >
+            <CartProvider>
                 {children}
-            </CartContext.Provider>
+            </CartProvider>
         </AuthContext.Provider>
     );
 }
