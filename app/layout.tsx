@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "SCHAULT — Replace parts. Not the entire shoe.",
   description:
     "Modular footwear with a patented snap-fit system. Upper, midsole, and outsole can be individually replaced, cleaned, or swapped.",
+  icons: {
+    icon: "/assets/Schault_icon.webp",
+  },
 };
 
 import { Providers } from "@/components/providers";

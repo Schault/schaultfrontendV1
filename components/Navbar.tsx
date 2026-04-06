@@ -144,12 +144,9 @@ export default function Navbar() {
               alt="Schault Logo"
               width={40}
               height={40}
-              className="h-10 w-auto"
+              className="h-12 w-auto"
               priority
             />
-            <span className="font-bebas text-lg font-medium tracking-widest text-black/90">
-              SCHAULT
-            </span>
           </Link>
 
           {/* CENTER: Navigation Links (Desktop) */}
@@ -241,9 +238,6 @@ export default function Navbar() {
                   height={40}
                   className="h-10 w-auto"
                 />
-                <span className="font-bebas text-lg font-medium tracking-widest text-black/90">
-                  SCHAULT
-                </span>
               </Link>
               <button
                 type="button"

@@ -66,7 +66,6 @@ export default function ShoeScroll({
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const [ready, setReady] = useState(false);
-  const [devLoadedCount, setDevLoadedCount] = useState(0);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -243,14 +242,7 @@ export default function ShoeScroll({
     };
   }, [loadBatch, resizeCanvas, drawFrame, startIdleLoading]);
 
-  // Handle Dev Mode indicator
-  useEffect(() => {
-    if (process.env.NODE_ENV !== "development") return;
-    const interval = setInterval(() => {
-      setDevLoadedCount(loadedFramesRef.current.size);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+
 
   useEffect(() => {
     if (!ready) return;
@@ -336,12 +328,7 @@ export default function ShoeScroll({
           />
           {children}
           
-          {/* Dev Mode Load Indicator */}
-          {process.env.NODE_ENV === "development" && (
-            <div className="fixed bottom-4 right-4 z-[9999] rounded bg-black/80 px-3 py-1 font-inter text-xs text-white shadow-lg">
-              Frames: {devLoadedCount} / {TOTAL_FRAMES}
-            </div>
-          )}
+
         </div>
       </div>
     </ScrollContext.Provider>
