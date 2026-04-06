@@ -2,33 +2,42 @@ import React from "react";
 
 const FeatureGrid: React.FC = () => {
   return (
-    <section className="border-t border-black/10 bg-[#FFFFFF] px-6 py-24 md:px-12 lg:px-24">
+    <section className="bg-[#FFFFFF] px-6 pt-24 pb-12 md:px-12 lg:px-24">
       <div className="mx-auto max-w-6xl">
-        <div className="grid gap-16 text-center md:grid-cols-3">
-          <div className="flex flex-col items-center">
-            <div className="h-0.5 w-12 bg-[#CC0000]" aria-hidden />
-            <h3 className="mt-4 font-bebas text-2xl tracking-wide text-black/90">
+        {/* Subtle Section Title */}
+        <div className="mb-12 flex items-center justify-center gap-4">
+          <div className="h-px w-8 bg-black/20" />
+          <span className="font-inter text-xs font-semibold uppercase tracking-[0.2em] text-black/40">
+            The System
+          </span>
+          <div className="h-px w-8 bg-black/20" />
+        </div>
+
+        <div className="grid gap-8 md:grid-cols-3">
+          <div className="group relative flex flex-col items-center rounded-2xl border border-black/5 bg-[#FAFAFA] p-10 text-center transition-all duration-500 hover:-translate-y-2 hover:border-black/10 hover:bg-white hover:shadow-xl hover:shadow-black/5">
+            <div className="mb-6 h-1 w-12 bg-[#CC0000] transition-all duration-500 group-hover:w-20 group-hover:bg-black" aria-hidden />
+            <h3 className="font-bebas text-2xl tracking-widest text-black/90">
               Hygiene & Comfort
             </h3>
-            <p className="mt-3 font-inter text-sm leading-relaxed text-black/60 whitespace-nowrap">
+            <p className="mt-4 font-inter text-sm leading-relaxed text-black/60">
               Upper and sole separate for individual cleaning.
             </p>
           </div>
-          <div className="flex flex-col items-center">
-            <div className="h-0.5 w-12 bg-[#CC0000]" aria-hidden />
-            <h3 className="mt-4 font-bebas text-2xl tracking-wide text-black/90">
+          <div className="group relative flex flex-col items-center rounded-2xl border border-black/5 bg-[#FAFAFA] p-10 text-center transition-all duration-500 hover:-translate-y-2 hover:border-black/10 hover:bg-white hover:shadow-xl hover:shadow-black/5">
+            <div className="mb-6 h-1 w-12 bg-[#CC0000] transition-all duration-500 group-hover:w-20 group-hover:bg-black" aria-hidden />
+            <h3 className="font-bebas text-2xl tracking-widest text-black/90">
               Cost Efficiency
             </h3>
-            <p className="mt-3 font-inter text-sm leading-relaxed text-black/60 whitespace-nowrap">
+            <p className="mt-4 font-inter text-sm leading-relaxed text-black/60">
               Replace only the worn part, not the whole shoe.
             </p>
           </div>
-          <div className="flex flex-col items-center">
-            <div className="h-0.5 w-12 bg-[#CC0000]" aria-hidden />
-            <h3 className="mt-4 font-bebas text-2xl tracking-wide text-black/90">
+          <div className="group relative flex flex-col items-center rounded-2xl border border-black/5 bg-[#FAFAFA] p-10 text-center transition-all duration-500 hover:-translate-y-2 hover:border-black/10 hover:bg-white hover:shadow-xl hover:shadow-black/5">
+            <div className="mb-6 h-1 w-12 bg-[#CC0000] transition-all duration-500 group-hover:w-20 group-hover:bg-black" aria-hidden />
+            <h3 className="font-bebas text-2xl tracking-widest text-black/90">
               Sustainability
             </h3>
-            <p className="mt-3 font-inter text-sm leading-relaxed text-black/60 whitespace-nowrap">
+            <p className="mt-4 font-inter text-sm leading-relaxed text-black/60">
               30–50% reduction in material waste per lifecycle.
             </p>
           </div>
