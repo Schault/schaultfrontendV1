@@ -134,7 +134,7 @@ export default function Navbar() {
           WebkitBackdropFilter: backdropFilter,
           maxWidth,
         }}
-        className="fixed left-1/2 -translate-x-1/2 z-[1000] border border-black/10 px-8"
+        className="fixed left-1/2 -translate-x-1/2 z-[10000] border border-black/10 px-8"
       >
         <nav className="mx-auto flex h-full w-full items-center justify-between">
           {/* LEFT: Logo Section */}
@@ -226,7 +226,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed inset-0 z-[1100] flex flex-col bg-white"
+            className="fixed inset-0 z-[11000] flex flex-col bg-white"
           >
             <div className="flex items-center justify-between border-b border-black/10 px-8 py-5">
               <Link

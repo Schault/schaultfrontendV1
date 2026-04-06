@@ -42,11 +42,6 @@ const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({ min, max, onChange 
     }
   }, [maxVal, getPercent]);
 
-  // Get min and max values when their state changes
-  useEffect(() => {
-    onChange(minVal, maxVal);
-  }, [minVal, maxVal, onChange]);
-
   return (
     <div className="flex flex-col space-y-6">
       <div className="relative h-10 flex items-center">
@@ -59,6 +54,7 @@ const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({ min, max, onChange 
             const value = Math.min(Number(event.target.value), maxVal - 1);
             setMinVal(value);
             minValRef.current = value;
+            onChange(value, maxVal);
           }}
           className="thumb thumb--left"
           style={{ zIndex: minVal > max - 100 ? 5 : undefined }}
@@ -72,6 +68,7 @@ const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({ min, max, onChange 
             const value = Math.max(Number(event.target.value), minVal + 1);
             setMaxVal(value);
             maxValRef.current = value;
+            onChange(minVal, value);
           }}
           className="thumb thumb--right"
         />
@@ -90,7 +87,11 @@ const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({ min, max, onChange 
             <input
               type="number"
               value={minVal}
-              onChange={(e) => setMinVal(Number(e.target.value))}
+              onChange={(e) => {
+                const value = Number(e.target.value);
+                setMinVal(value);
+                onChange(value, maxVal);
+              }}
               className="w-full bg-transparent outline-none border-none p-0"
             />
           </div>
@@ -102,7 +103,11 @@ const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({ min, max, onChange 
             <input
               type="number"
               value={maxVal}
-              onChange={(e) => setMaxVal(Number(e.target.value))}
+              onChange={(e) => {
+                const value = Number(e.target.value);
+                setMaxVal(value);
+                onChange(minVal, value);
+              }}
               className="w-full bg-transparent outline-none border-none p-0"
             />
           </div>
