@@ -1,16 +1,51 @@
 "use client";
 
 import Link from "next/link";
+import React, { useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function AboutSection() {
+  const container = useRef<HTMLElement>(null);
+
+  useGSAP(() => {
+    gsap.from(".about-text > *", {
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: container.current,
+        start: "top 80%",
+      },
+    });
+
+    gsap.from(".about-badge", {
+      scale: 0.9,
+      opacity: 0,
+      duration: 0.8,
+      delay: 0.3,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: container.current,
+        start: "top 80%",
+      },
+    });
+  }, { scope: container });
+
   return (
     <section
       id="about"
+      ref={container}
       className="border-t border-black/10 bg-[#FFFFFF] px-6 py-24 md:px-12 lg:px-24"
     >
       <div className="mx-auto max-w-6xl">
         <div className="grid gap-16 lg:grid-cols-2 lg:gap-24">
-          <div>
+          <div className="about-text">
             <p className="font-inter text-xs uppercase tracking-widest text-[#CC0000]">
               OUR STORY
             </p>
@@ -36,7 +71,7 @@ export default function AboutSection() {
             </Link>
           </div>
           <div className="flex items-center justify-center lg:justify-end">
-            <div className="w-full max-w-sm border border-black/10 bg-white p-8">
+            <div className="about-badge w-full max-w-sm border border-black/10 bg-white p-8">
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 shrink-0 rounded-full bg-[#CC0000]" />
                 <span className="font-inter text-xs font-medium uppercase tracking-widest text-black/70">

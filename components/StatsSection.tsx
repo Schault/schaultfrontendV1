@@ -1,11 +1,35 @@
-import React from "react";
+"use client";
+
+import React, { useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const StatsSection: React.FC = () => {
+  const container = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    gsap.from(".stat-box", {
+      y: 40,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: "power3.out",
+      clearProps: "all",
+      scrollTrigger: {
+        trigger: container.current,
+        start: "top 85%",
+      },
+    });
+  }, { scope: container });
+
   return (
-    <section className="bg-[#FFFFFF] px-6 pt-4 pb-24 md:px-12 lg:px-24">
+    <section ref={container} className="bg-[#FFFFFF] px-6 pt-4 pb-24 md:px-12 lg:px-24">
       <div className="mx-auto max-w-6xl">
         <div className="grid overflow-hidden rounded-2xl border border-black/10 bg-[#FAFAFA] md:grid-cols-3">
-          <div className="group flex flex-col items-center p-12 text-center transition-colors duration-500 hover:bg-white">
+          <div className="stat-box group flex flex-col items-center p-12 text-center transition-colors duration-500 hover:bg-white">
             <p className="font-bebas text-6xl tracking-wide text-[#CC0000] transition-colors duration-500 group-hover:text-black md:text-7xl lg:text-8xl">
               22B
             </p>
@@ -13,7 +37,7 @@ const StatsSection: React.FC = () => {
               Pairs discarded annually worldwide
             </p>
           </div>
-          <div className="group flex flex-col items-center border-t border-black/10 p-12 text-center transition-colors duration-500 hover:bg-white md:border-t-0 md:border-l">
+          <div className="stat-box group flex flex-col items-center border-t border-black/10 p-12 text-center transition-colors duration-500 hover:bg-white md:border-t-0 md:border-l">
             <p className="whitespace-nowrap font-bebas text-6xl tracking-wide text-[#CC0000] transition-colors duration-500 group-hover:text-black md:text-7xl lg:text-8xl">
               90–95%
             </p>
@@ -21,7 +45,7 @@ const StatsSection: React.FC = () => {
               End up in landfills
             </p>
           </div>
-          <div className="group flex flex-col items-center border-t border-black/10 p-12 text-center transition-colors duration-500 hover:bg-white md:border-t-0 md:border-l">
+          <div className="stat-box group flex flex-col items-center border-t border-black/10 p-12 text-center transition-colors duration-500 hover:bg-white md:border-t-0 md:border-l">
             <p className="font-bebas text-6xl tracking-wide text-[#CC0000] transition-colors duration-500 group-hover:text-black md:text-7xl lg:text-8xl">
               1
             </p>

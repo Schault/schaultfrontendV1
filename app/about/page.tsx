@@ -1,11 +1,96 @@
+"use client";
+
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import Link from "next/link";
+import React, { useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function AboutPage() {
+  const container = useRef<HTMLElement>(null);
+
+  useGSAP(() => {
+    // Hero Section animation
+    gsap.from(".about-hero > *", {
+      y: 40,
+      opacity: 0,
+      duration: 1,
+      stagger: 0.2,
+      ease: "power3.out",
+    });
+
+    // Image Placeholder 1
+    gsap.from(".about-hero-img", {
+      scale: 0.95,
+      opacity: 0,
+      duration: 1,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".about-hero-img",
+        start: "top 85%",
+      },
+    });
+
+    // The Story & Origin grid
+    gsap.from(".about-story-col", {
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".about-story-col",
+        start: "top 80%",
+      },
+    });
+
+    // Image Placeholder 2 & Mission Statement
+    gsap.from(".about-mission-grid > *", {
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".about-mission-grid",
+        start: "top 80%",
+      },
+    });
+
+    // Mission Stats
+    gsap.from(".about-stats > *", {
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".about-stats",
+        start: "top 85%",
+      },
+    });
+
+    // Join Us CTA
+    gsap.from(".about-cta > *", {
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".about-cta",
+        start: "top 85%",
+      },
+    });
+  }, { scope: container });
+
   return (
     <>
-      <main className="bg-white min-h-screen pt-32 pb-20">
+      <main ref={container} className="bg-white min-h-screen pt-32 pb-20">
         <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-24">
           
           {/* Breadcrumb */}
@@ -16,7 +101,7 @@ export default function AboutPage() {
           </div>
 
           {/* Hero Section */}
-          <div className="border-b border-black/10 pb-16 mb-16">
+          <div className="about-hero border-b border-black/10 pb-16 mb-16">
             <h1 className="font-bebas text-[64px] md:text-[96px] text-black/90 leading-[0.9] tracking-wide mb-6 uppercase">
               RETHINKING<br />
               FOOTWEAR.
@@ -27,7 +112,7 @@ export default function AboutPage() {
           </div>
 
           {/* Image Placeholder 1 (Hero Wide) */}
-          <div className="w-full aspect-video md:aspect-[21/9] bg-black/5 border border-black/10 mb-20 relative flex items-center justify-center group overflow-hidden">
+          <div className="about-hero-img w-full aspect-video md:aspect-[21/9] bg-black/5 border border-black/10 mb-20 relative flex items-center justify-center group overflow-hidden">
              <div className="absolute inset-0 bg-[#F5F5F5] transition-transform duration-700 group-hover:scale-105" />
              <div className="relative z-10 flex flex-col items-center">
                 <span className="h-12 w-12 border border-black/20 rounded-full flex items-center justify-center mb-4 text-black/30 bg-white">
@@ -41,7 +126,7 @@ export default function AboutPage() {
 
           {/* The Story & Origin grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 mb-32">
-            <div>
+            <div className="about-story-col">
               <p className="font-inter text-xs uppercase tracking-widest text-[#CC0000] mb-4">The Origin</p>
               <h2 className="font-bebas text-[40px] leading-none mb-6 text-black/90 tracking-wide">
                 BORN FROM FRUSTRATION.
@@ -55,7 +140,7 @@ export default function AboutPage() {
                 </p>
               </div>
             </div>
-            <div>
+            <div className="about-story-col">
               <p className="font-inter text-xs uppercase tracking-widest text-[#CC0000] mb-4">The Innovation</p>
               <h2 className="font-bebas text-[40px] leading-none mb-6 text-black/90 tracking-wide">
                 PATENTED SNAP-FIT SYSTEM.
@@ -88,7 +173,7 @@ export default function AboutPage() {
           </div>
 
           {/* Image Placeholder 2 & Mission Statement */}
-          <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-12 md:gap-20 mb-32">
+          <div className="about-mission-grid grid grid-cols-1 md:grid-cols-2 items-center gap-12 md:gap-20 mb-32">
             <div className="w-full aspect-[4/5] md:aspect-square bg-black/5 border border-black/10 relative flex items-center justify-center overflow-hidden">
                <div className="absolute inset-0 bg-[#F5F5F5]" />
                <div className="relative z-10 flex flex-col items-center">
@@ -119,7 +204,7 @@ export default function AboutPage() {
           </div>
 
           {/* Mission Stats */}
-          <div className="border-y border-black/10 py-16 mb-24 hidden md:block">
+          <div className="about-stats border-y border-black/10 py-16 mb-24 hidden md:block">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 divide-y sm:divide-y-0 sm:divide-x divide-black/10 text-center">
               <div className="pt-8 sm:pt-0">
                 <h3 className="font-bebas text-6xl text-[#CC0000] mb-2 tracking-wide">0%</h3>
@@ -137,7 +222,7 @@ export default function AboutPage() {
           </div>
 
           {/* Join Us CTA */}
-          <div className="text-center bg-black text-white p-16 md:p-24 relative overflow-hidden group">
+          <div className="about-cta text-center bg-black text-white p-16 md:p-24 relative overflow-hidden group">
              {/* Background glow effect for brutalist modern touch */}
              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#CC0000] rounded-full blur-[120px] opacity-20 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none" />
              
