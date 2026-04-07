@@ -4,7 +4,6 @@ import CTAFooter from "@/components/CTAFooter";
 import { getCollections, getProducts } from "@/lib/shopify";
 import Link from "next/link";
 import Image from "next/image";
-import { SHOES } from "@/lib/data";
 
 export const revalidate = 60; // ISR - revalidate every 60s
 
@@ -47,16 +46,11 @@ export default async function ShopPage() {
 
             <section className="px-6 md:px-12 lg:px-24 pb-24 mx-auto max-w-6xl">
                 {!hasShopifyData ? (
-                    /* Fallback Mock Data if Shopify is empty or unconfigured */
-                    <div className="mt-12">
-                        <h2 className="mb-8 font-bebas text-3xl tracking-wide text-black/90 uppercase border-b border-black/10 pb-4">
-                            SNEAKERS
-                        </h2>
-                        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                            {SHOES.map((shoe) => (
-                                <ProductCard key={shoe.id} product={shoe} />
-                            ))}
-                        </div>
+                    /* Empty State */
+                    <div className="mt-12 flex items-center justify-center p-12 border border-dashed border-black/20 bg-black/5">
+                        <p className="font-inter text-sm text-black/50 uppercase tracking-wide">
+                            No products available at the moment.
+                        </p>
                     </div>
                 ) : (
                     /* Render Live Shopify Collections */

@@ -16,39 +16,6 @@ type ProductType = {
   variantId?: string; // Shopify variant GID (for checkout)
 };
 
-// ── Mock / Fallback Data ────────────────────────────────────────────────────
-
-const MOCK_SHOES: ProductType[] = [
-  {
-    id: "upper",
-    name: "SCHAULT Upper",
-    description: "Canvas breathable upper, snap-fit connector",
-    price: "₹899",
-    image: "/images/upper.webp",
-  },
-  {
-    id: "midsole",
-    name: "SCHAULT Midsole",
-    description: "PU-casted cushioning layer",
-    price: "₹599",
-    image: "/images/midsole.webp",
-  },
-  {
-    id: "outsole",
-    name: "SCHAULT Outsole",
-    description: "Grip-textured rubber sole",
-    price: "₹499",
-    image: "/images/outsole.webp",
-  },
-  {
-    id: "complete",
-    name: "SCHAULT Complete",
-    description: "Full modular set, all 3 parts",
-    price: "₹1,799",
-    image: "/images/fullshoe.webp",
-  },
-];
-
 // ── Helpers ─────────────────────────────────────────────────────────────────
 
 function shopifyToProduct(p: ShopifyProduct): ProductType {
@@ -131,7 +98,7 @@ export default function ShopSection({ collections }: { collections: ShopifyColle
   const shoesCollection = collections?.find(c => c.title.toLowerCase().includes("carpe diem") || c.title.toLowerCase().includes("shoe"));
   const solesCollection = collections?.find(c => c.title.toLowerCase().includes("sole"));
 
-  const shoesProducts = shoesCollection ? shoesCollection.products.edges.map(e => shopifyToProduct(e.node)) : MOCK_SHOES;
+  const shoesProducts = shoesCollection ? shoesCollection.products.edges.map(e => shopifyToProduct(e.node)) : [];
   const solesProducts = solesCollection ? solesCollection.products.edges.map(e => shopifyToProduct(e.node)) : [];
 
   return (

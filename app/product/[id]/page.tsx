@@ -67,20 +67,9 @@ function shopifyToResolved(p: ShopifyProduct): ResolvedProduct {
 // ── Component ───────────────────────────────────────────────────────────────
 
 export default function ProductPage({ params }: { params: { id: string } }) {
-    const mockShoe = SHOES.find((s) => s.id === params.id);
     const { addItem } = useCart();
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
-    const [shoe, setShoe] = useState<ResolvedProduct | null>(
-        mockShoe
-            ? {
-                ...mockShoe,
-                images: [mockShoe.image],
-                variantId: undefined,
-                availableSizes: mockShoe.availableSizes.map(String),
-                allSizes: mockShoe.allSizes.map(String)
-            }
-            : null,
-    );
+    const [shoe, setShoe] = useState<ResolvedProduct | null>(null);
     const [loading, setLoading] = useState(true);
 
     const [recommended, setRecommended] = useState<ResolvedProduct[] | null>(null);
@@ -129,7 +118,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
     const otherShoes = recommended
         ? recommended.filter((s) => s.id !== shoe.id).slice(0, 4)
-        : SHOES.filter((s) => s.id !== shoe.id).slice(0, 4);
+        : [];
 
     const handleAddToCart = () => {
         if (!selectedSize) return;
