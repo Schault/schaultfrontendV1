@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import type { ShopifyProduct } from "@/lib/shopify";
+import type { ShopifyProduct, ShopifyCollection } from "@/lib/shopify";
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -126,28 +126,13 @@ function ProductCard({
 
 // ── Main Section ────────────────────────────────────────────────────────────
 
-export default function ShopSection() {
-  const [shoes, setShoes] = useState<ProductType[]>(MOCK_SHOES);
-  const [loading, setLoading] = useState(true);
+export default function ShopSection({ collections }: { collections: ShopifyCollection[] | null }) {
+  // Try to find the user's uploaded collections
+  const shoesCollection = collections?.find(c => c.title.toLowerCase().includes("carpe diem") || c.title.toLowerCase().includes("shoe"));
+  const solesCollection = collections?.find(c => c.title.toLowerCase().includes("sole"));
 
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const res = await fetch("/api/products");
-        if (res.ok) {
-          const data: ShopifyProduct[] = await res.json();
-          if (data && data.length > 0) {
-            setShoes(data.map(shopifyToProduct));
-          }
-        }
-      } catch {
-        // Shopify not configured – silently use mock data
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchProducts();
-  }, []);
+  const shoesProducts = shoesCollection ? shoesCollection.products.edges.map(e => shopifyToProduct(e.node)) : MOCK_SHOES;
+  const solesProducts = solesCollection ? solesCollection.products.edges.map(e => shopifyToProduct(e.node)) : [];
 
   return (
     <section
@@ -166,19 +151,11 @@ export default function ShopSection() {
           SHOES
         </h3>
 
-        {loading ? (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="aspect-[3/4] animate-pulse bg-black/5" />
-            ))}
-          </div>
-        ) : (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {shoes.map((product, index) => (
-              <ProductCard key={product.id} product={product} index={index} />
-            ))}
-          </div>
-        )}
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {shoesProducts.map((product, index) => (
+            <ProductCard key={product.id} product={product} index={index} />
+          ))}
+        </div>
 
         <div className="mt-12 flex justify-center">
           <Link
@@ -192,11 +169,20 @@ export default function ShopSection() {
         <h3 className="mt-16 mb-8 font-bebas text-3xl tracking-wide text-black/90">
           SOLES
         </h3>
-        <div className="flex items-center justify-center p-12 border border-dashed border-black/20 bg-black/5">
-          <p className="font-inter text-sm text-black/50 uppercase tracking-wide">
-            Coming Soon
-          </p>
-        </div>
+
+        {solesProducts.length > 0 ? (
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {solesProducts.map((product, index) => (
+              <ProductCard key={product.id} product={product} index={index} />
+            ))}
+          </div>
+        ) : (
+          <div className="flex items-center justify-center p-12 border border-dashed border-black/20 bg-black/5">
+            <p className="font-inter text-sm text-black/50 uppercase tracking-wide">
+              Coming Soon
+            </p>
+          </div>
+        )}
       </div>
     </section>
   );
