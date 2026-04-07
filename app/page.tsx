@@ -9,11 +9,8 @@ import Footer from "@/components/Footer";
 import FeatureGrid from "@/components/FeatureGrid";
 import StatsSection from "@/components/StatsSection";
 import CTAFooter from "@/components/CTAFooter";
-import { getCollections } from "@/lib/shopify";
 
-export default async function Home() {
-  const collections = await getCollections(10);
-
+export default function Home() {
   return (
     <main className="bg-[#FFFFFF]">
       <Navbar />
@@ -29,7 +26,7 @@ export default async function Home() {
       {/* Section B — THE NUMBERS */}
       <StatsSection />
 
-      <ShopSection collections={collections} />
+      <ShopSection />
       <AboutSection />
       <FAQ />
 

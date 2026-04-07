@@ -9,7 +9,7 @@ export type CartItem = {
     name: string;
     image: string;
     price: number;
-    size: number | string;
+    size: number;
     quantity: number;
     variantId?: string; // Shopify variant GID for checkout
 };
@@ -133,7 +133,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
                             name: 'Schault "Arctic Dawn"',
                             image: "/images/shoes/bluewhite.jpg",
                             price: 199,
-                            size: "9",
+                            size: 9,
                             quantity: 1,
                         }
                     ]
