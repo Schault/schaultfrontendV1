@@ -114,6 +114,13 @@ export default function ShopSection({ collections }: { collections: ShopifyColle
         <p className="mt-3 font-inter text-base text-black/60">
           Mix. Match. Replace. Only pay for what you need.
         </p>
+
+        {collections === null && (
+          <div className="mt-8 mb-8 p-6 bg-red-50 border border-red-200 text-red-800 font-inter text-sm rounded">
+            <strong>Shopify Connection Failed:</strong> No products were found. If you are viewing this on Vercel, please ensure you have added <code>NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN</code> and <code>NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN</code> to your Vercel Project Environment Variables.
+          </div>
+        )}
+
         <h3 className="mt-16 mb-8 font-bebas text-3xl tracking-wide text-black/90">
           SHOES
         </h3>

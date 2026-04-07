@@ -46,10 +46,11 @@ export default async function ShopPage() {
 
             <section className="px-6 md:px-12 lg:px-24 pb-24 mx-auto max-w-6xl">
                 {!hasShopifyData ? (
-                    /* Empty State */
-                    <div className="mt-12 flex items-center justify-center p-12 border border-dashed border-black/20 bg-black/5">
-                        <p className="font-inter text-sm text-black/50 uppercase tracking-wide">
-                            No products available at the moment.
+                    /* Error State for Missing Env Variables */
+                    <div className="mt-12 flex flex-col items-center justify-center p-12 border border-dashed border-red-200 bg-red-50 text-red-800 rounded text-center">
+                        <strong className="text-lg">Shopify Connection Failed</strong>
+                        <p className="mt-2 font-inter text-sm max-w-lg">
+                            No products were found. If you are viewing this on Vercel, please ensure you have added <code>NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN</code> and <code>NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN</code> to your Vercel Project Environment Variables and redeployed.
                         </p>
                     </div>
                 ) : (
