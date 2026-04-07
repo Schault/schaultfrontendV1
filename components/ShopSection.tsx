@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import type { ShopifyProduct } from "@/lib/shopify";
+import type { ShopifyProduct, ShopifyCollection } from "@/lib/shopify";
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -126,28 +126,8 @@ function ProductCard({
 
 // ── Main Section ────────────────────────────────────────────────────────────
 
-export default function ShopSection() {
-  const [shoes, setShoes] = useState<ProductType[]>(MOCK_SHOES);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const res = await fetch("/api/products");
-        if (res.ok) {
-          const data: ShopifyProduct[] = await res.json();
-          if (data && data.length > 0) {
-            setShoes(data.map(shopifyToProduct));
-          }
-        }
-      } catch {
-        // Shopify not configured – silently use mock data
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchProducts();
-  }, []);
+export default function ShopSection({ collections }: { collections: ShopifyCollection[] | null }) {
+  const hasLiveCollections = collections && collections.length > 0;
 
   return (
     <section
@@ -162,40 +142,57 @@ export default function ShopSection() {
         <p className="mt-3 font-inter text-base text-black/60">
           Mix. Match. Replace. Only pay for what you need.
         </p>
-        <h3 className="mt-16 mb-8 font-bebas text-3xl tracking-wide text-black/90">
-          SHOES
-        </h3>
 
-        {loading ? (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="aspect-[3/4] animate-pulse bg-black/5" />
-            ))}
-          </div>
+        {hasLiveCollections ? (
+          collections.map((collection) => {
+            const products = collection.products.edges.map((e) => shopifyToProduct(e.node));
+            if (products.length === 0) return null;
+
+            return (
+              <div key={collection.id}>
+                <h3 className="mt-16 mb-8 font-bebas text-3xl tracking-wide text-black/90 uppercase">
+                  {collection.title}
+                </h3>
+                {collection.description && (
+                  <p className="mb-8 font-inter text-black/60 -mt-4">{collection.description}</p>
+                )}
+                <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                  {products.map((product, index) => (
+                    <ProductCard key={product.id} product={product} index={index} />
+                  ))}
+                </div>
+              </div>
+            );
+          })
         ) : (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {shoes.map((product, index) => (
-              <ProductCard key={product.id} product={product} index={index} />
-            ))}
-          </div>
+          <>
+            <h3 className="mt-16 mb-8 font-bebas text-3xl tracking-wide text-black/90">
+              SHOES
+            </h3>
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {MOCK_SHOES.map((product, index) => (
+                <ProductCard key={product.id} product={product} index={index} />
+              ))}
+            </div>
+
+            <h3 className="mt-16 mb-8 font-bebas text-3xl tracking-wide text-black/90">
+              SOLES
+            </h3>
+            <div className="flex items-center justify-center p-12 border border-dashed border-black/20 bg-black/5">
+              <p className="font-inter text-sm text-black/50 uppercase tracking-wide">
+                Coming Soon
+              </p>
+            </div>
+          </>
         )}
 
-        <div className="mt-12 flex justify-center">
+        <div className="mt-16 flex justify-center">
           <Link
             href="/shop"
             className="inline-block border border-black px-8 py-3 font-inter text-sm font-medium tracking-widest uppercase transition-all duration-300 hover:bg-black hover:text-white"
           >
             View Full Collection
           </Link>
-        </div>
-
-        <h3 className="mt-16 mb-8 font-bebas text-3xl tracking-wide text-black/90">
-          SOLES
-        </h3>
-        <div className="flex items-center justify-center p-12 border border-dashed border-black/20 bg-black/5">
-          <p className="font-inter text-sm text-black/50 uppercase tracking-wide">
-            Coming Soon
-          </p>
         </div>
       </div>
     </section>

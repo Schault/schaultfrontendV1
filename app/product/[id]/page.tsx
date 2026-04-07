@@ -20,30 +20,30 @@ type ResolvedProduct = {
     priceValue: number;
     image: string;
     images: string[];
-    availableSizes: number[];
-    allSizes: number[];
+    availableSizes: string[];
+    allSizes: string[];
     variantId?: string; // real Shopify GID
 };
 
-const SIZES = [7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12];
-
 function shopifyToResolved(p: ShopifyProduct): ResolvedProduct {
-    const firstImage = p.images.edges[0]?.node;
     const price = p.priceRange.minVariantPrice;
 
-    // Map variants to available sizes
-    const availableSizes: number[] = [];
+    // Map variants to available sizes strings (support shoes, soles, apparel)
+    const allSizes: string[] = [];
+    const availableSizes: string[] = [];
+
     p.variants.edges.forEach(({ node: v }) => {
-        if (v.availableForSale) {
-            const sizeNum = parseFloat(v.title);
-            if (!isNaN(sizeNum) && SIZES.includes(sizeNum)) {
-                availableSizes.push(sizeNum);
+        if (v.title && v.title.toLowerCase() !== "default title") {
+            allSizes.push(v.title);
+            if (v.availableForSale) {
+                availableSizes.push(v.title);
             }
         }
     });
 
-    // If no parseable sizes, default to all sizes available
-    const finalAvailableSizes = availableSizes.length > 0 ? availableSizes : SIZES;
+    // If Shopify returns no variants, default to none
+    const finalAllSizes = allSizes.length > 0 ? allSizes : [];
+    const finalAvailableSizes = availableSizes.length > 0 ? availableSizes : finalAllSizes;
 
     const images = p.images.edges.map(e => e.node.url);
     if (images.length === 0) images.push("/images/shoes/bluewhite.jpg");
@@ -59,7 +59,7 @@ function shopifyToResolved(p: ShopifyProduct): ResolvedProduct {
         image: images[0],
         images: images,
         availableSizes: finalAvailableSizes,
-        allSizes: SIZES,
+        allSizes: finalAllSizes,
         variantId: p.variants.edges[0]?.node.id,
     };
 }
@@ -69,13 +69,15 @@ function shopifyToResolved(p: ShopifyProduct): ResolvedProduct {
 export default function ProductPage({ params }: { params: { id: string } }) {
     const mockShoe = SHOES.find((s) => s.id === params.id);
     const { addItem } = useCart();
-    const [selectedSize, setSelectedSize] = useState<number | null>(9);
+    const [selectedSize, setSelectedSize] = useState<string | null>(null);
     const [shoe, setShoe] = useState<ResolvedProduct | null>(
         mockShoe
             ? {
                 ...mockShoe,
                 images: [mockShoe.image],
                 variantId: undefined,
+                availableSizes: mockShoe.availableSizes.map(String),
+                allSizes: mockShoe.allSizes.map(String)
             }
             : null,
     );
@@ -190,43 +192,47 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                         {shoe.price}
                     </p>
 
-                    <div className="mt-8 mb-4">
-                        <h3 className="font-inter font-medium text-sm text-black/80">Select Size</h3>
-                    </div>
+                    {shoe.allSizes.length > 0 && (
+                        <>
+                            <div className="mt-8 mb-4">
+                                <h3 className="font-inter font-medium text-sm text-black/80">Select Size</h3>
+                            </div>
 
-                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
-                        {shoe.allSizes.map((size) => {
-                            const isAvailable = shoe.availableSizes.includes(size);
-                            const isSelected = selectedSize === size;
-                            return (
-                                <button
-                                    key={size}
-                                    disabled={!isAvailable}
-                                    onClick={() => setSelectedSize(size)}
-                                    className={`
-                    py-3 font-inter text-sm border transition-all duration-200 ease-out
-                    ${isAvailable
-                                            ? isSelected
-                                                ? "border-black bg-black text-white"
-                                                : "border-black/20 bg-white text-black hover:border-black/60"
-                                            : "border-black/10 bg-black/5 text-black/30 cursor-not-allowed"}`}
-                                >
-                                    US M {size}
-                                </button>
-                            );
-                        })}
-                    </div>
+                            <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                                {shoe.allSizes.map((size) => {
+                                    const isAvailable = shoe.availableSizes.includes(size);
+                                    const isSelected = selectedSize === size;
+                                    return (
+                                        <button
+                                            key={size}
+                                            disabled={!isAvailable}
+                                            onClick={() => setSelectedSize(size)}
+                                            className={`
+                            py-3 px-2 font-inter text-sm border transition-all duration-200 ease-out truncate
+                            ${isAvailable
+                                                    ? isSelected
+                                                        ? "border-black bg-black text-white"
+                                                        : "border-black/20 bg-white text-black hover:border-black/60"
+                                                    : "border-black/10 bg-black/5 text-black/30 cursor-not-allowed"}`}
+                                        >
+                                            {size}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </>
+                    )}
 
                     <button
                         onClick={handleAddToCart}
-                        disabled={!selectedSize}
+                        disabled={shoe.allSizes.length > 0 && !selectedSize}
                         className={`mt-10 py-5 w-full font-inter text-sm uppercase tracking-widest font-semibold transition-all duration-200
-              ${selectedSize
+              ${(shoe.allSizes.length === 0 || selectedSize)
                                 ? "bg-black text-white hover:bg-[#CC0000]"
                                 : "bg-black/20 text-black/50 cursor-not-allowed"
                             }`}
                     >
-                        {selectedSize ? "Add to Bag" : "Select a Size"}
+                        {shoe.allSizes.length === 0 || selectedSize ? "Add to Bag" : "Select a Size"}
                     </button>
 
                     <div className="mt-16 space-y-6 border-t border-black/10 pt-8">
