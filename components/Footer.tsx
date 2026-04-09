@@ -32,16 +32,16 @@ export default function Footer() {
         { label: "About Us", href: "/about" },
         { label: "Careers", href: "/#careers" },
         { label: "Press", href: "/#press" },
-        { label: "Contact", href: "/#contact" },
+        { label: "Contact", href: "/contact" },
       ],
     },
     {
       title: "LEGAL",
       links: [
-        { label: "Privacy Policy", href: "/#privacy" },
-        { label: "Terms of Service", href: "/#terms" },
-        { label: "Refund Policy", href: "/#refund" },
-        { label: "Shipping Policy", href: "/#shipping" },
+        { label: "Privacy Policy", href: "/privacy-policy" },
+        { label: "Terms of Service", href: "/terms-of-service" },
+        { label: "Refund Policy", href: "/refund-policy" },
+        { label: "Shipping Policy", href: "/shipping-policy" },
       ],
     },
   ];
