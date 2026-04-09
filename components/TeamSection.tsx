@@ -36,7 +36,7 @@ const teamData = {
   },
 };
 
-function TeamMemberCard({ 
+function TeamMemberCard({  
   member, 
   teamType,
   index
