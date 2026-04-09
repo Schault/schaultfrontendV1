@@ -19,30 +19,34 @@ type ResolvedProduct = {
     price: string;
     priceValue: number;
     image: string;
-    availableSizes: number[];
-    allSizes: number[];
+    images: string[];
+    availableSizes: string[];
+    allSizes: string[];
     variantId?: string; // real Shopify GID
 };
 
-const SIZES = [7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12];
-
 function shopifyToResolved(p: ShopifyProduct): ResolvedProduct {
-    const firstImage = p.images.edges[0]?.node;
     const price = p.priceRange.minVariantPrice;
 
-    // Map variants to available sizes
-    const availableSizes: number[] = [];
+    // Map variants to available sizes strings (support shoes, soles, apparel)
+    const allSizes: string[] = [];
+    const availableSizes: string[] = [];
+
     p.variants.edges.forEach(({ node: v }) => {
-        if (v.availableForSale) {
-            const sizeNum = parseFloat(v.title);
-            if (!isNaN(sizeNum) && SIZES.includes(sizeNum)) {
-                availableSizes.push(sizeNum);
+        if (v.title && v.title.toLowerCase() !== "default title") {
+            allSizes.push(v.title);
+            if (v.availableForSale) {
+                availableSizes.push(v.title);
             }
         }
     });
 
-    // If no parseable sizes, default to all sizes available
-    const finalAvailableSizes = availableSizes.length > 0 ? availableSizes : SIZES;
+    // If Shopify returns no variants, default to none
+    const finalAllSizes = allSizes.length > 0 ? allSizes : [];
+    const finalAvailableSizes = availableSizes.length > 0 ? availableSizes : finalAllSizes;
+
+    const images = p.images.edges.map(e => e.node.url);
+    if (images.length === 0) images.push("/images/shoes/bluewhite.jpg");
 
     return {
         id: p.handle,
@@ -52,9 +56,10 @@ function shopifyToResolved(p: ShopifyProduct): ResolvedProduct {
         specs: [],
         price: `$${parseFloat(price.amount).toFixed(2)}`,
         priceValue: parseFloat(price.amount),
-        image: firstImage?.url ?? "/images/shoes/bluewhite.jpg",
+        image: images[0],
+        images: images,
         availableSizes: finalAvailableSizes,
-        allSizes: SIZES,
+        allSizes: finalAllSizes,
         variantId: p.variants.edges[0]?.node.id,
     };
 }
@@ -62,28 +67,32 @@ function shopifyToResolved(p: ShopifyProduct): ResolvedProduct {
 // ── Component ───────────────────────────────────────────────────────────────
 
 export default function ProductPage({ params }: { params: { id: string } }) {
-    const mockShoe = SHOES.find((s) => s.id === params.id);
     const { addItem } = useCart();
-    const [selectedSize, setSelectedSize] = useState<number | null>(9);
-    const [shoe, setShoe] = useState<ResolvedProduct | null>(
-        mockShoe
-            ? {
-                ...mockShoe,
-                variantId: undefined,
-            }
-            : null,
-    );
+    const [selectedSize, setSelectedSize] = useState<string | null>(null);
+    const [shoe, setShoe] = useState<ResolvedProduct | null>(null);
     const [loading, setLoading] = useState(true);
 
-    // Try to fetch the Shopify version of the product
+    const [recommended, setRecommended] = useState<ResolvedProduct[] | null>(null);
+
+    // Try to fetch the Shopify version of the product and recommendations
     useEffect(() => {
         async function fetchShopify() {
             try {
+                // Fetch current product
                 const res = await fetch(`/api/products/${params.id}`);
                 if (res.ok) {
                     const data: ShopifyProduct | null = await res.json();
                     if (data) {
                         setShoe(shopifyToResolved(data));
+                    }
+                }
+
+                // Fetch recommended products
+                const recRes = await fetch(`/api/products`);
+                if (recRes.ok) {
+                    const allData: ShopifyProduct[] | null = await recRes.json();
+                    if (allData) {
+                        setRecommended(allData.map(shopifyToResolved));
                     }
                 }
             } catch {
@@ -107,7 +116,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
         );
     }
 
-    const otherShoes = SHOES.filter((s) => s.id !== shoe.id);
+    const otherShoes = recommended
+        ? recommended.filter((s) => s.id !== shoe.id).slice(0, 4)
+        : [];
 
     const handleAddToCart = () => {
         if (!selectedSize) return;
@@ -130,22 +141,36 @@ export default function ProductPage({ params }: { params: { id: string } }) {
     return (
         <main className="min-h-screen bg-[#F5F5F5] pt-24 pb-12">
             {/* Product Detail Section */}
-            <section className="mx-auto max-w-7xl px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24">
+            <section className="mx-auto max-w-7xl px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 relative items-start">
 
-                {/* Left Column: Image Gallery */}
-                <div className="flex flex-col gap-4">
-                    <div className="aspect-[4/3] w-full bg-black/5 flex items-center justify-center overflow-hidden sticky top-24">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                            src={shoe.image}
-                            alt={shoe.name}
-                            className="w-full h-full object-cover"
-                        />
+                {/* Left Column: Image Carousel */}
+                <div className="relative sticky top-24">
+                    <div className="flex w-full overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+                        {shoe.images.map((img, idx) => (
+                            <div key={idx} className="w-full shrink-0 snap-center bg-[#F1F1F1] aspect-[4/3] lg:aspect-[4/5] flex items-center justify-center p-8">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src={img}
+                                    alt={`${shoe.name} - View ${idx + 1}`}
+                                    className="w-full h-full object-contain drop-shadow-2xl"
+                                />
+                            </div>
+                        ))}
                     </div>
+                    {shoe.images.length > 1 && (
+                        <div className="flex justify-center gap-3 mt-6">
+                            {shoe.images.map((_, idx) => (
+                                <div key={idx} className="w-1.5 h-1.5 rounded-full bg-black/20" />
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 {/* Right Column: Details & Actions */}
                 <div className="flex flex-col pt-8">
+                    <Link href="/shop" className="mb-6 inline-flex items-center gap-2 font-inter text-sm text-black/50 hover:text-[#CC0000] transition-colors w-fit">
+                        <span>&larr;</span> Back to Shop
+                    </Link>
                     <h1 className="font-bebas text-4xl md:text-5xl tracking-wide text-black/95">
                         {shoe.name}
                     </h1>
@@ -156,43 +181,47 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                         {shoe.price}
                     </p>
 
-                    <div className="mt-8 mb-4">
-                        <h3 className="font-inter font-medium text-sm text-black/80">Select Size</h3>
-                    </div>
+                    {shoe.allSizes.length > 0 && (
+                        <>
+                            <div className="mt-8 mb-4">
+                                <h3 className="font-inter font-medium text-sm text-black/80">Select Size</h3>
+                            </div>
 
-                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
-                        {shoe.allSizes.map((size) => {
-                            const isAvailable = shoe.availableSizes.includes(size);
-                            const isSelected = selectedSize === size;
-                            return (
-                                <button
-                                    key={size}
-                                    disabled={!isAvailable}
-                                    onClick={() => setSelectedSize(size)}
-                                    className={`
-                    py-3 font-inter text-sm border transition-all duration-200 ease-out
-                    ${isAvailable
-                                            ? isSelected
-                                                ? "border-black bg-black text-white"
-                                                : "border-black/20 bg-white text-black hover:border-black/60"
-                                            : "border-black/10 bg-black/5 text-black/30 cursor-not-allowed"}`}
-                                >
-                                    US M {size}
-                                </button>
-                            );
-                        })}
-                    </div>
+                            <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                                {shoe.allSizes.map((size) => {
+                                    const isAvailable = shoe.availableSizes.includes(size);
+                                    const isSelected = selectedSize === size;
+                                    return (
+                                        <button
+                                            key={size}
+                                            disabled={!isAvailable}
+                                            onClick={() => setSelectedSize(size)}
+                                            className={`
+                            py-3 px-2 font-inter text-sm border transition-all duration-200 ease-out truncate
+                            ${isAvailable
+                                                    ? isSelected
+                                                        ? "border-black bg-black text-white"
+                                                        : "border-black/20 bg-white text-black hover:border-black/60"
+                                                    : "border-black/10 bg-black/5 text-black/30 cursor-not-allowed"}`}
+                                        >
+                                            {size}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </>
+                    )}
 
                     <button
                         onClick={handleAddToCart}
-                        disabled={!selectedSize}
+                        disabled={shoe.allSizes.length > 0 && !selectedSize}
                         className={`mt-10 py-5 w-full font-inter text-sm uppercase tracking-widest font-semibold transition-all duration-200
-              ${selectedSize
+              ${(shoe.allSizes.length === 0 || selectedSize)
                                 ? "bg-black text-white hover:bg-[#CC0000]"
                                 : "bg-black/20 text-black/50 cursor-not-allowed"
                             }`}
                     >
-                        {selectedSize ? "Add to Bag" : "Select a Size"}
+                        {shoe.allSizes.length === 0 || selectedSize ? "Add to Bag" : "Select a Size"}
                     </button>
 
                     <div className="mt-16 space-y-6 border-t border-black/10 pt-8">

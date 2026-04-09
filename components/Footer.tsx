@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { FaInstagram, FaTwitter, FaLinkedin, FaYoutube } from "react-icons/fa6";
+import { FaInstagram, FaEnvelope } from "react-icons/fa6";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -19,19 +19,27 @@ export default function Footer() {
   const navColumns = [
     {
       title: "EXPLORE",
-      links: ["Home", "Products", "About", "Blog"],
+      links: [
+        { label: "Home", href: "/" },
+        { label: "Products", href: "/shop" },
+        { label: "About", href: "/about" },
+        { label: "Blog", href: "/#blog" },
+      ],
     },
     {
       title: "COMPANY",
-      links: ["About Us", "Careers", "Press", "Contact"],
+      links: [
+        { label: "About Us", href: "/about" },
+        { label: "Contact", href: "/contact" },
+      ],
     },
     {
       title: "LEGAL",
       links: [
-        "Privacy Policy",
-        "Terms of Service",
-        "Refund Policy",
-        "Shipping Policy",
+        { label: "Privacy Policy", href: "/privacy-policy" },
+        { label: "Terms of Service", href: "/terms-of-service" },
+        { label: "Refund Policy", href: "/refund-policy" },
+        { label: "Shipping Policy", href: "/shipping-policy" },
       ],
     },
   ];
@@ -40,10 +48,10 @@ export default function Footer() {
     <footer className="border-t border-black/10 bg-[#FFFFFF] px-6 pb-8 pt-16 md:px-12 lg:px-24">
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 gap-12 text-left md:grid-cols-2 lg:grid-cols-5 lg:gap-8">
-          
+
           {/* Brand + Newsletter Block (Spans 2 columns on Desktop) */}
           <div className="flex flex-col gap-12 lg:col-span-2 lg:pr-12">
-            
+
             {/* BRAND */}
             <div className="flex flex-col items-start">
               <Image
@@ -60,32 +68,20 @@ export default function Footer() {
 
               <div className="mt-6 flex gap-3">
                 <Link
-                  href="#"
+                  href="https://www.instagram.com/wearschault/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="rounded-full border border-black/10 p-2 text-black/70 transition-all duration-200 hover:scale-110 hover:border-[#CC0000] hover:text-[#CC0000]"
                   aria-label="Instagram"
                 >
                   <FaInstagram size={18} />
                 </Link>
                 <Link
-                  href="#"
+                  href="mailto:wearschault@gmail.com"
                   className="rounded-full border border-black/10 p-2 text-black/70 transition-all duration-200 hover:scale-110 hover:border-[#CC0000] hover:text-[#CC0000]"
-                  aria-label="Twitter"
+                  aria-label="Email"
                 >
-                  <FaTwitter size={18} />
-                </Link>
-                <Link
-                  href="#"
-                  className="rounded-full border border-black/10 p-2 text-black/70 transition-all duration-200 hover:scale-110 hover:border-[#CC0000] hover:text-[#CC0000]"
-                  aria-label="LinkedIn"
-                >
-                  <FaLinkedin size={18} />
-                </Link>
-                <Link
-                  href="#"
-                  className="rounded-full border border-black/10 p-2 text-black/70 transition-all duration-200 hover:scale-110 hover:border-[#CC0000] hover:text-[#CC0000]"
-                  aria-label="YouTube"
-                >
-                  <FaYoutube size={18} />
+                  <FaEnvelope size={18} />
                 </Link>
               </div>
             </div>
@@ -115,7 +111,7 @@ export default function Footer() {
                 </button>
               </div>
             </div>
-            
+
           </div>
 
           {/* Navigation Columns */}
@@ -126,15 +122,15 @@ export default function Footer() {
               </h3>
               <ul className="flex flex-col gap-3">
                 {col.links.map((link) => (
-                  <li key={link}>
+                  <li key={link.label}>
                     <Link
-                      href="#"
+                      href={link.href}
                       className="group relative flex items-center font-inter text-sm text-black/70 transition-all duration-200 hover:pl-5 hover:text-[#CC0000]"
                     >
                       <span className="absolute left-0 -translate-x-2 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100">
                         &rarr;
                       </span>
-                      {link}
+                      {link.label}
                     </Link>
                   </li>
                 ))}

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import type { ShopifyProduct } from "@/lib/shopify";
+import type { ShopifyProduct, ShopifyCollection } from "@/lib/shopify";
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -15,39 +15,6 @@ type ProductType = {
   image: string;
   variantId?: string; // Shopify variant GID (for checkout)
 };
-
-// ── Mock / Fallback Data ────────────────────────────────────────────────────
-
-const MOCK_SHOES: ProductType[] = [
-  {
-    id: "upper",
-    name: "SCHAULT Upper",
-    description: "Canvas breathable upper, snap-fit connector",
-    price: "₹899",
-    image: "/images/upper.webp",
-  },
-  {
-    id: "midsole",
-    name: "SCHAULT Midsole",
-    description: "PU-casted cushioning layer",
-    price: "₹599",
-    image: "/images/midsole.webp",
-  },
-  {
-    id: "outsole",
-    name: "SCHAULT Outsole",
-    description: "Grip-textured rubber sole",
-    price: "₹499",
-    image: "/images/outsole.webp",
-  },
-  {
-    id: "complete",
-    name: "SCHAULT Complete",
-    description: "Full modular set, all 3 parts",
-    price: "₹1,799",
-    image: "/images/fullshoe.webp",
-  },
-];
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -150,28 +117,13 @@ function ProductCard({
 
 // ── Main Section ────────────────────────────────────────────────────────────
 
-export default function ShopSection() {
-  const [shoes, setShoes] = useState<ProductType[]>(MOCK_SHOES);
-  const [loading, setLoading] = useState(true);
+export default function ShopSection({ collections }: { collections: ShopifyCollection[] | null }) {
+  // Try to find the user's uploaded collections
+  const shoesCollection = collections?.find(c => c.title.toLowerCase().includes("carpe diem") || c.title.toLowerCase().includes("shoe"));
+  const solesCollection = collections?.find(c => c.title.toLowerCase().includes("sole"));
 
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const res = await fetch("/api/products");
-        if (res.ok) {
-          const data: ShopifyProduct[] = await res.json();
-          if (data && data.length > 0) {
-            setShoes(data.map(shopifyToProduct));
-          }
-        }
-      } catch {
-        // Shopify not configured – silently use mock data
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchProducts();
-  }, []);
+  const shoesProducts = shoesCollection ? shoesCollection.products.edges.map(e => shopifyToProduct(e.node)) : [];
+  const solesProducts = solesCollection ? solesCollection.products.edges.map(e => shopifyToProduct(e.node)) : [];
 
   return (
     <section
@@ -186,32 +138,49 @@ export default function ShopSection() {
         <p className="mt-3 font-inter text-base text-black/60">
           Mix. Match. Replace. Only pay for what you need.
         </p>
-        <h3 className="mt-16 mb-8 font-bebas text-3xl tracking-wide text-black/90">
-          SHOES
-        </h3>
 
-        {loading ? (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="aspect-[3/4] animate-pulse bg-black/5" />
-            ))}
-          </div>
-        ) : (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {shoes.map((product, index) => (
-              <ProductCard key={product.id} product={product} index={index} />
-            ))}
+        {collections === null && (
+          <div className="mt-8 mb-8 p-6 bg-red-50 border border-red-200 text-red-800 font-inter text-sm rounded">
+            <strong>Shopify Connection Failed:</strong> No products were found. If you are viewing this on Vercel, please ensure you have added <code>NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN</code> and <code>NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN</code> to your Vercel Project Environment Variables.
           </div>
         )}
 
         <h3 className="mt-16 mb-8 font-bebas text-3xl tracking-wide text-black/90">
+          SHOES
+        </h3>
+
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {shoesProducts.map((product, index) => (
+            <ProductCard key={product.id} product={product} index={index} />
+          ))}
+        </div>
+
+        <div className="mt-12 flex justify-center">
+          <Link
+            href="/shop"
+            className="inline-block border border-black px-8 py-3 font-inter text-sm font-medium tracking-widest uppercase transition-all duration-300 hover:bg-black hover:text-white"
+          >
+            View Full Collection
+          </Link>
+        </div>
+
+        <h3 className="mt-16 mb-8 font-bebas text-3xl tracking-wide text-black/90">
           SOLES
         </h3>
-        <div className="flex items-center justify-center p-12 border border-dashed border-black/20 bg-black/5">
-          <p className="font-inter text-sm text-black/50 uppercase tracking-wide">
-            Coming Soon
-          </p>
-        </div>
+
+        {solesProducts.length > 0 ? (
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {solesProducts.map((product, index) => (
+              <ProductCard key={product.id} product={product} index={index} />
+            ))}
+          </div>
+        ) : (
+          <div className="flex items-center justify-center p-12 border border-dashed border-black/20 bg-black/5">
+            <p className="font-inter text-sm text-black/50 uppercase tracking-wide">
+              Coming Soon
+            </p>
+          </div>
+        )}
       </div>
     </section>
   );

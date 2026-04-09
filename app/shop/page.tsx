@@ -162,7 +162,7 @@ export default function ShopPage() {
     color: "",
     size: ""
   });
-  
+
   const [sortBy, setSortBy] = useState("popularity");
 
   const filteredProducts = useMemo(() => {
@@ -171,7 +171,7 @@ export default function ShopPage() {
       const matchPrice = product.price >= filters.price.min && product.price <= filters.price.max;
       const matchColor = !filters.color || product.colors.some(c => c.name === filters.color);
       const matchSize = !filters.size || product.sizes.includes(filters.size) || filters.size === "All";
-      
+
       return matchCategory && matchPrice && matchColor && matchSize;
     });
 
@@ -219,10 +219,10 @@ export default function ShopPage() {
             </button>
           </div>
           <div className="flex-1 h-full relative">
-            <Image 
-              src="/assets/shop/hero/banner.png" 
-              alt="Hero Model" 
-              fill 
+            <Image
+              src="/assets/shop/hero/banner.png"
+              alt="Hero Model"
+              fill
               className="object-cover object-right"
               priority
             />
@@ -232,14 +232,14 @@ export default function ShopPage() {
         {/* Main Content Layout */}
         <div className="flex flex-col md:flex-row gap-12 relative">
           {/* Sidebar */}
-          <FilterSidebar 
+          <FilterSidebar
             activeFilters={filters}
             onFilterChange={setFilters}
             categories={[]}
           />
 
           {/* Product Area */}
-          <ProductGrid 
+          <ProductGrid
             products={filteredProducts}
             totalCount={MOCK_PRODUCTS.length}
             activeFilters={filters}

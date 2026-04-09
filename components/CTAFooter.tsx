@@ -12,7 +12,7 @@ const CTAFooter: React.FC = () => {
           Built different. Worn responsibly.
         </p>
         <Link
-          href="#"
+          href="/shop"
           className="mt-10 inline-block border-2 border-[#CC0000] bg-transparent px-10 py-4 font-inter text-sm font-medium text-[#CC0000] transition-colors duration-300 ease-in-out hover:bg-[#CC0000] hover:text-white"
         >
           Get Early Access

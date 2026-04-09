@@ -92,7 +92,7 @@ export default function AboutPage() {
     <>
       <main ref={container} className="bg-white min-h-screen pt-32 pb-20">
         <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-24">
-          
+
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 font-inter text-[10px] text-black/50 mb-12 uppercase tracking-widest">
             <Link href="/" className="hover:text-black/90 transition-colors">Home</Link>
@@ -113,15 +113,15 @@ export default function AboutPage() {
 
           {/* Image Placeholder 1 (Hero Wide) */}
           <div className="about-hero-img w-full aspect-video md:aspect-[21/9] bg-black/5 border border-black/10 mb-20 relative flex items-center justify-center group overflow-hidden">
-             <div className="absolute inset-0 bg-[#F5F5F5] transition-transform duration-700 group-hover:scale-105" />
-             <div className="relative z-10 flex flex-col items-center">
-                <span className="h-12 w-12 border border-black/20 rounded-full flex items-center justify-center mb-4 text-black/30 bg-white">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 16L8.586 11.414C8.96106 11.0391 9.46967 10.8284 10 10.8284C10.5303 10.8284 11.0389 11.0391 11.414 11.414L16 16M14 14L15.586 12.414C15.9611 12.0391 16.4697 11.8284 17 11.8284C17.5303 11.8284 18.0389 12.0391 18.414 12.414L20 14M14 8H14.01M6 20H18C19.1046 20 20 19.1046 20 18V6C20 4.89543 19.1046 4 18 4H6C4.89543 4 4 4.89543 4 6V18C4 19.1046 4.89543 20 6 20Z" stroke="currentColor" strokeOpacity="0.8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </span>
-                <p className="font-inter text-xs text-black/50 uppercase tracking-widest font-medium">Hero Image Placeholder</p>
-             </div>
+            <div className="absolute inset-0 bg-[#F5F5F5] transition-transform duration-700 group-hover:scale-105" />
+            <div className="relative z-10 flex flex-col items-center">
+              <span className="h-12 w-12 border border-black/20 rounded-full flex items-center justify-center mb-4 text-black/30 bg-white">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4 16L8.586 11.414C8.96106 11.0391 9.46967 10.8284 10 10.8284C10.5303 10.8284 11.0389 11.0391 11.414 11.414L16 16M14 14L15.586 12.414C15.9611 12.0391 16.4697 11.8284 17 11.8284C17.5303 11.8284 18.0389 12.0391 18.414 12.414L20 14M14 8H14.01M6 20H18C19.1046 20 20 19.1046 20 18V6C20 4.89543 19.1046 4 18 4H6C4.89543 4 4 4.89543 4 6V18C4 19.1046 4.89543 20 6 20Z" stroke="currentColor" strokeOpacity="0.8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
+              <p className="font-inter text-xs text-black/50 uppercase tracking-widest font-medium">Hero Image Placeholder</p>
+            </div>
           </div>
 
           {/* The Story & Origin grid */}
@@ -136,7 +136,7 @@ export default function AboutPage() {
                   SCHAULT was born from a simple frustration — why throw away an entire shoe when only one part is worn out? Founder Harsh Maheshwari, a Materials Science & Engineering student at IIT Kanpur, spent over a year prototyping a solution.
                 </p>
                 <p>
-                  We saw that the footwear industry was fundamentally flawed. Shoes were built with toxic glues, making them impossible to repair, recycle, or upgrade. If the sole wore out, the perfectly fine upper went to a landfill. 
+                  We saw that the footwear industry was fundamentally flawed. Shoes were built with toxic glues, making them impossible to repair, recycle, or upgrade. If the sole wore out, the perfectly fine upper went to a landfill.
                 </p>
               </div>
             </div>
@@ -153,7 +153,7 @@ export default function AboutPage() {
                   Our unique snapping nodes and receiver cavities are meticulously engineered using advanced polymers. They guarantee a secure fit during high-impact movement while allowing simple detachment when the time comes to swap.
                 </p>
               </div>
-              
+
               {/* Patent Callout */}
               <div className="mt-10 border border-black/10 bg-black/5 p-6 md:p-8 flex items-start gap-6 hover:border-[#CC0000] transition-colors group">
                 <div className="h-12 w-12 shrink-0 border border-black/20 rounded-full flex items-center justify-center bg-white group-hover:bg-[#CC0000] group-hover:border-transparent group-hover:text-white transition-colors font-bebas text-lg">
@@ -175,17 +175,17 @@ export default function AboutPage() {
           {/* Image Placeholder 2 & Mission Statement */}
           <div className="about-mission-grid grid grid-cols-1 md:grid-cols-2 items-center gap-12 md:gap-20 mb-32">
             <div className="w-full aspect-[4/5] md:aspect-square bg-black/5 border border-black/10 relative flex items-center justify-center overflow-hidden">
-               <div className="absolute inset-0 bg-[#F5F5F5]" />
-               <div className="relative z-10 flex flex-col items-center">
-                  <span className="h-12 w-12 border border-black/20 rounded-full flex items-center justify-center mb-4 text-black/30 bg-white">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M4 16L8.586 11.414C8.96106 11.0391 9.46967 10.8284 10 10.8284C10.5303 10.8284 11.0389 11.0391 11.414 11.414L16 16M14 14L15.586 12.414C15.9611 12.0391 16.4697 11.8284 17 11.8284C17.5303 11.8284 18.0389 12.0391 18.414 12.414L20 14M14 8H14.01M6 20H18C19.1046 20 20 19.1046 20 18V6C20 4.89543 19.1046 4 18 4H6C4.89543 4 4 4.89543 4 6V18C4 19.1046 4.89543 20 6 20Z" stroke="currentColor" strokeOpacity="0.8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </span>
-                  <p className="font-inter text-xs text-black/50 uppercase tracking-widest font-medium text-center px-4">
-                    Product / Process <br/> Image Placeholder
-                  </p>
-               </div>
+              <div className="absolute inset-0 bg-[#F5F5F5]" />
+              <div className="relative z-10 flex flex-col items-center">
+                <span className="h-12 w-12 border border-black/20 rounded-full flex items-center justify-center mb-4 text-black/30 bg-white">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 16L8.586 11.414C8.96106 11.0391 9.46967 10.8284 10 10.8284C10.5303 10.8284 11.0389 11.0391 11.414 11.414L16 16M14 14L15.586 12.414C15.9611 12.0391 16.4697 11.8284 17 11.8284C17.5303 11.8284 18.0389 12.0391 18.414 12.414L20 14M14 8H14.01M6 20H18C19.1046 20 20 19.1046 20 18V6C20 4.89543 19.1046 4 18 4H6C4.89543 4 4 4.89543 4 6V18C4 19.1046 4.89543 20 6 20Z" stroke="currentColor" strokeOpacity="0.8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </span>
+                <p className="font-inter text-xs text-black/50 uppercase tracking-widest font-medium text-center px-4">
+                  Product / Process <br /> Image Placeholder
+                </p>
+              </div>
             </div>
             <div>
               <h2 className="font-bebas text-[48px] leading-none mb-8 text-black/90 tracking-wide">
@@ -197,7 +197,7 @@ export default function AboutPage() {
                   Traditional footwear forces you to compromise. You buy a style, wear out the tread, and trash it. We envisioned an ecosystem where your shoe styles evolve with your wardrobe, and worn-out components slide out for fresh replacements.
                 </p>
                 <p>
-                  No cobblers. No toxic adhesives holding your life together. Just raw, mechanical efficiency. 
+                  No cobblers. No toxic adhesives holding your life together. Just raw, mechanical efficiency.
                 </p>
               </div>
             </div>
@@ -223,19 +223,19 @@ export default function AboutPage() {
 
           {/* Join Us CTA */}
           <div className="about-cta text-center bg-black text-white p-16 md:p-24 relative overflow-hidden group">
-             {/* Background glow effect for brutalist modern touch */}
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#CC0000] rounded-full blur-[120px] opacity-20 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none" />
-             
-             <div className="relative z-10">
-               <h2 className="font-bebas text-[48px] md:text-[64px] tracking-wide mb-6">READY TO REBUILD?</h2>
-               <p className="font-inter text-white/60 text-sm md:text-base max-w-xl mx-auto mb-10">
-                 Join the movement to fundamentally shift how we consume and wear fashion. 
-                 Interchangeable parts, endless possibilities.
-               </p>
-               <Link href="/shop" className="inline-block border border-white text-white font-bebas text-lg px-10 py-4 hover:bg-white hover:text-black transition-colors tracking-widest">
-                 EXPLORE THE SHOP
-               </Link>
-             </div>
+            {/* Background glow effect for brutalist modern touch */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#CC0000] rounded-full blur-[120px] opacity-20 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none" />
+
+            <div className="relative z-10">
+              <h2 className="font-bebas text-[48px] md:text-[64px] tracking-wide mb-6">READY TO REBUILD?</h2>
+              <p className="font-inter text-white/60 text-sm md:text-base max-w-xl mx-auto mb-10">
+                Join the movement to fundamentally shift how we consume and wear fashion.
+                Interchangeable parts, endless possibilities.
+              </p>
+              <Link href="/shop" className="inline-block border border-white text-white font-bebas text-lg px-10 py-4 hover:bg-white hover:text-black transition-colors tracking-widest">
+                EXPLORE THE SHOP
+              </Link>
+            </div>
           </div>
 
         </div>

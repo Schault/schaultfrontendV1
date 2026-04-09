@@ -73,7 +73,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
                             name: 'Schault "Arctic Dawn"',
                             image: "/assets/shop/products/product1.png",
                             price: 199,
-                            size: 9,
+                            size: "9",
                             quantity: 1,
                         }
                     ]
