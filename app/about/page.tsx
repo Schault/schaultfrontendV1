@@ -1,6 +1,7 @@
 "use client";
 
 import Footer from "@/components/Footer";
+import TeamSection from "@/components/TeamSection";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useRef } from "react";
@@ -70,6 +71,45 @@ export default function AboutPage() {
       ease: "power2.out",
       scrollTrigger: {
         trigger: ".about-stats",
+        start: "top 85%",
+      },
+    });
+
+    // Team Founder
+    gsap.from(".team-founder > *", {
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".team-founder",
+        start: "top 85%",
+      },
+    });
+
+    // Team Mentors
+    gsap.from(".team-mentors > *", {
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".team-mentors",
+        start: "top 85%",
+      },
+    });
+
+    // Team Grid
+    gsap.from(".team-grid > *", {
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".team-grid",
         start: "top 85%",
       },
     });
@@ -220,6 +260,9 @@ export default function AboutPage() {
               </div>
             </div>
           </div>
+
+          {/* Team Section */}
+          <TeamSection />
 
           {/* Join Us CTA */}
           <div className="about-cta text-center bg-black text-white p-16 md:p-24 relative overflow-hidden group">
