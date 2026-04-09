@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { FaInstagram, FaTwitter, FaLinkedin, FaYoutube } from "react-icons/fa6";
+import { FaInstagram, FaEnvelope } from "react-icons/fa6";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -30,8 +30,6 @@ export default function Footer() {
       title: "COMPANY",
       links: [
         { label: "About Us", href: "/about" },
-        { label: "Careers", href: "/#careers" },
-        { label: "Press", href: "/#press" },
         { label: "Contact", href: "/contact" },
       ],
     },
@@ -70,32 +68,20 @@ export default function Footer() {
 
               <div className="mt-6 flex gap-3">
                 <Link
-                  href="#"
+                  href="https://www.instagram.com/wearschault/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="rounded-full border border-black/10 p-2 text-black/70 transition-all duration-200 hover:scale-110 hover:border-[#CC0000] hover:text-[#CC0000]"
                   aria-label="Instagram"
                 >
                   <FaInstagram size={18} />
                 </Link>
                 <Link
-                  href="#"
+                  href="mailto:wearschault@gmail.com"
                   className="rounded-full border border-black/10 p-2 text-black/70 transition-all duration-200 hover:scale-110 hover:border-[#CC0000] hover:text-[#CC0000]"
-                  aria-label="Twitter"
+                  aria-label="Email"
                 >
-                  <FaTwitter size={18} />
-                </Link>
-                <Link
-                  href="#"
-                  className="rounded-full border border-black/10 p-2 text-black/70 transition-all duration-200 hover:scale-110 hover:border-[#CC0000] hover:text-[#CC0000]"
-                  aria-label="LinkedIn"
-                >
-                  <FaLinkedin size={18} />
-                </Link>
-                <Link
-                  href="#"
-                  className="rounded-full border border-black/10 p-2 text-black/70 transition-all duration-200 hover:scale-110 hover:border-[#CC0000] hover:text-[#CC0000]"
-                  aria-label="YouTube"
-                >
-                  <FaYoutube size={18} />
+                  <FaEnvelope size={18} />
                 </Link>
               </div>
             </div>
