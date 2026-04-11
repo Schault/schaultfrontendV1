@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import FeatureGrid from "@/components/FeatureGrid";
 import StatsSection from "@/components/StatsSection";
 import CTAFooter from "@/components/CTAFooter";
+import WaitlistForm from "@/components/WaitlistForm";
 import { getCollections } from "@/lib/shopify";
 
 export default async function Home() {
@@ -30,6 +31,9 @@ export default async function Home() {
       <ShopSection collections={collections} />
       <AboutSection />
       <FAQ />
+
+      {/* Section D — WAITLIST */}
+      <WaitlistForm />
 
       {/* Section C — CTA FOOTER */}
       <CTAFooter />
