@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 import { Providers } from "@/components/providers";
 import Navbar from "@/components/Navbar";
 import { CartDrawer } from "@/components/CartDrawer";
+import { Toaster } from "react-hot-toast";
 
 export default function RootLayout({
   children,
@@ -38,6 +39,7 @@ export default function RootLayout({
             <div className="grain-overlay" aria-hidden />
           </LenisProvider>
         </Providers>
+        <Toaster position="bottom-right" />
       </body>
     </html>
   );

@@ -1,13 +1,102 @@
 "use client";
 
 import { useState } from "react";
-import { Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function AuthPage() {
+  const router = useRouter();
+  const supabase = createClient();
+  
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    setLoading(false);
+
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success("Welcome back!");
+      router.push("/profile");
+      router.refresh();
+    }
+  };
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!fullName) {
+      toast.error("Full Name is required");
+      return;
+    }
+    setLoading(true);
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: fullName,
+        },
+      },
+    });
+    setLoading(false);
+
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success("Account created! You are now logged in.");
+      router.push("/profile");
+      router.refresh();
+    }
+  };
+
+  // const handleOAuth = () => {
+  //   toast.error("Google OAuth is not configured yet.");
+  // };
+
+  const handleOAuth = async() => {
+    const {data, error} = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+    if (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const handlePasswordReset = async () => {
+    if (!email) {
+      toast.error("Please enter your email first to reset password.");
+      return;
+    }
+    setLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/auth/callback?next=/auth/update-password`,
+    });
+    setLoading(false);
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success("Password reset link sent to your email!");
+    }
+  };
 
   return (
     <div className="relative flex min-h-screen w-full items-center justify-center p-4 md:p-8">
@@ -45,7 +134,6 @@ export default function AuthPage() {
         />
 
         {/* Glassmorphism 2-Column Card (The Mask) */}
-        {/* We use rounded-[calc(2rem-3px)] to perfectly match the 3px padding of the wrapper */}
         <div className="relative z-10 flex w-full overflow-hidden rounded-[calc(2rem-3px)] bg-white/70 shadow-2xl backdrop-blur-3xl">
 
           {/* LEFT PANEL: Form Section */}
@@ -67,14 +155,17 @@ export default function AuthPage() {
                     Sign in to
                   </p>
 
-                  <form className="mt-8 flex flex-col gap-4">
+                  <form onSubmit={handleLogin} className="mt-8 flex flex-col gap-4">
                     <div className="flex flex-col gap-2">
                       <label className="font-inter text-[13px] font-medium text-black/80">
                         Email
                       </label>
                       <input
                         type="email"
-                        placeholder="yoglazy@12345.com"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="you@example.com"
                         className="rounded-[0.5rem] border border-black/10 bg-white/60 px-4 py-3.5 font-inter text-sm outline-none transition-all placeholder:text-black/40 focus:border-[#CC0000] focus:bg-white focus:ring-1 focus:ring-[#CC0000]/20 text-black"
                       />
                     </div>
@@ -86,6 +177,9 @@ export default function AuthPage() {
                       <div className="relative">
                         <input
                           type={showPassword ? "text" : "password"}
+                          required
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
                           placeholder="••••••••••"
                           className="w-full rounded-[0.5rem] border border-black/10 bg-white/60 px-4 py-3.5 pr-12 font-inter text-sm outline-none transition-all placeholder:text-black/40 focus:border-[#CC0000] focus:bg-white focus:ring-1 focus:ring-[#CC0000]/20 text-black"
                         />
@@ -111,6 +205,7 @@ export default function AuthPage() {
                       </label>
                       <button
                         type="button"
+                        onClick={handlePasswordReset}
                         className="font-inter text-[13px] text-[#A0A0A0] transition-colors hover:text-[#CC0000]"
                       >
                         Forgot password?
@@ -118,14 +213,16 @@ export default function AuthPage() {
                     </div>
 
                     <button
-                      type="button"
-                      className="mt-3 rounded-[0.5rem] bg-[#CC0000] py-3.5 font-inter text-[15px] font-medium text-white shadow-md transition-all hover:bg-[#A30000] active:scale-[0.98]"
+                      type="submit"
+                      disabled={loading}
+                      className="mt-3 flex items-center justify-center gap-2 rounded-[0.5rem] bg-[#CC0000] py-3.5 font-inter text-[15px] font-medium text-white shadow-md transition-all hover:bg-[#A30000] active:scale-[0.98] disabled:opacity-70 disabled:pointer-events-none"
                     >
-                      Login
+                      {loading ? <Loader2 size={18} className="animate-spin" /> : "Login"}
                     </button>
 
                     <button
                       type="button"
+                      onClick={handleOAuth}
                       className="mt-1 flex w-full items-center justify-center gap-3 rounded-[0.5rem] border border-black/10 bg-white/60 py-3.5 font-inter text-[15px] font-medium text-[#5088E8] shadow-sm transition-all hover:bg-white"
                     >
                       <svg
@@ -157,7 +254,11 @@ export default function AuthPage() {
                       Don't have an Account ?{" "}
                       <button
                         type="button"
-                        onClick={() => setIsLogin(false)}
+                        onClick={() => {
+                          setIsLogin(false);
+                          setEmail("");
+                          setPassword("");
+                        }}
                         className="font-bold text-[#CC0000] drop-shadow-sm transition-colors hover:text-[#FF3333] hover:underline"
                       >
                         Register
@@ -181,13 +282,16 @@ export default function AuthPage() {
                     Register for SCHAULT
                   </p>
 
-                  <form className="mt-8 flex flex-col gap-4">
+                  <form onSubmit={handleSignup} className="mt-8 flex flex-col gap-4">
                     <div className="flex flex-col gap-2">
                       <label className="font-inter text-[13px] font-medium text-black/80">
                         Full Name
                       </label>
                       <input
                         type="text"
+                        required
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
                         placeholder="Jane Doe"
                         className="rounded-[0.5rem] border border-black/10 bg-white/60 px-4 py-3.5 font-inter text-sm outline-none transition-all placeholder:text-black/40 focus:border-[#CC0000] focus:bg-white focus:ring-1 focus:ring-[#CC0000]/20 text-black"
                       />
@@ -199,6 +303,9 @@ export default function AuthPage() {
                       </label>
                       <input
                         type="email"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         placeholder="you@example.com"
                         className="rounded-[0.5rem] border border-white/50 bg-white/60 px-4 py-3.5 font-inter text-sm outline-none transition-all placeholder:text-black/40 focus:border-[#CC0000] focus:bg-white focus:ring-1 focus:ring-[#CC0000]/20 text-black"
                       />
@@ -211,6 +318,9 @@ export default function AuthPage() {
                       <div className="relative">
                         <input
                           type={showPassword ? "text" : "password"}
+                          required
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
                           placeholder="••••••••••"
                           className="w-full rounded-[0.5rem] border border-white/50 bg-white/60 px-4 py-3.5 pr-12 font-inter text-sm outline-none transition-all placeholder:text-black/40 focus:border-[#CC0000] focus:bg-white focus:ring-1 focus:ring-[#CC0000]/20 text-black"
                         />
@@ -225,17 +335,23 @@ export default function AuthPage() {
                     </div>
 
                     <button
-                      type="button"
-                      className="mt-6 rounded-[0.5rem] bg-[#CC0000] py-3.5 font-inter text-[15px] font-medium text-white shadow-md transition-all hover:bg-[#A30000] active:scale-[0.98]"
+                      type="submit"
+                      disabled={loading}
+                      className="mt-6 flex items-center justify-center gap-2 rounded-[0.5rem] bg-[#CC0000] py-3.5 font-inter text-[15px] font-medium text-white shadow-md transition-all hover:bg-[#A30000] active:scale-[0.98] disabled:opacity-70 disabled:pointer-events-none"
                     >
-                      Register
+                      {loading ? <Loader2 size={18} className="animate-spin" /> : "Register"}
                     </button>
 
                     <p className="mt-4 text-center font-inter text-[13px] text-black/50">
                       Already have an Account ?{" "}
                       <button
                         type="button"
-                        onClick={() => setIsLogin(true)}
+                        onClick={() => {
+                          setIsLogin(true);
+                          setEmail("");
+                          setPassword("");
+                          setFullName("");
+                        }}
                         className="font-bold text-[#CC0000] drop-shadow-sm transition-colors hover:text-[#FF3333] hover:underline"
                       >
                         Login

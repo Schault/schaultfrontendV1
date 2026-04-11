@@ -4,19 +4,29 @@ import { useCart } from "./providers";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { usePathname } from "next/navigation";
-import { createCheckout } from "@/lib/shopify";
+import { usePathname, useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { createCheckout, isShopifyConfigured } from "@/lib/shopify";
 
 export function CartDrawer() {
     const { isCartOpen, setIsCartOpen, items, updateQuantity, removeItem, totalPrice } = useCart();
     const [isCheckingOut, setIsCheckingOut] = useState(false);
     const pathname = usePathname();
+    const router = useRouter();
 
     const isAuthPage = pathname.startsWith("/auth");
 
     if (isAuthPage) return null;
 
     const handleCheckout = async () => {
+        // Supabase checkout lives on /cart (OrderSummary). Shopify checkout needs a Storefront API token.
+        if (!isShopifyConfigured()) {
+            setIsCartOpen(false);
+            router.push("/cart");
+            toast("Continue to checkout on the cart page.", { icon: "🛒" });
+            return;
+        }
+
         setIsCheckingOut(true);
 
         const checkoutLineItems = items.map((item) => ({
@@ -29,11 +39,13 @@ export function CartDrawer() {
             if (checkout && checkout.webUrl) {
                 window.location.href = checkout.webUrl;
             } else {
-                alert("Checkout requires a valid Shopify Storefront Access Token. Please configure your .env.local file.");
+                toast.error(
+                    "Checkout could not be started. Confirm your Storefront token in .env.local and that cart items match your Shopify catalog.",
+                );
             }
         } catch (error) {
             console.error(error);
-            alert("Error initiating checkout. Please ensure Shopify credentials are configured.");
+            toast.error("Error starting Shopify checkout. Check your Storefront API settings.");
         } finally {
             setIsCheckingOut(false);
         }
