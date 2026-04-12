@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { createCheckout } from "@/lib/shopify";
+import toast from "react-hot-toast";
+import { createCheckout, isShopifyConfigured } from "@/lib/shopify";
 
 export function CartDrawer() {
     const { isCartOpen, setIsCartOpen, items, updateQuantity, removeItem, totalPrice } = useCart();
@@ -17,9 +18,37 @@ export function CartDrawer() {
 
     if (isAuthPage) return null;
 
-    const handleCheckout = () => {
-        setIsCartOpen(false);
-        router.push("/checkout");
+    const handleCheckout = async () => {
+        // Supabase checkout lives on /cart (OrderSummary). Shopify checkout needs a Storefront API token.
+        if (!isShopifyConfigured()) {
+            setIsCartOpen(false);
+            router.push("/cart");
+            toast("Continue to checkout on the cart page.", { icon: "🛒" });
+            return;
+        }
+
+        setIsCheckingOut(true);
+
+        const checkoutLineItems = items.map((item) => ({
+            variantId: item.variantId || `gid://shopify/ProductVariant/${item.id}`,
+            quantity: item.quantity,
+        }));
+
+        try {
+            const checkout = await createCheckout(checkoutLineItems);
+            if (checkout && checkout.webUrl) {
+                window.location.href = checkout.webUrl;
+            } else {
+                toast.error(
+                    "Checkout could not be started. Confirm your Storefront token in .env.local and that cart items match your Shopify catalog.",
+                );
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("Error starting Shopify checkout. Check your Storefront API settings.");
+        } finally {
+            setIsCheckingOut(false);
+        }
     };
 
     return (
