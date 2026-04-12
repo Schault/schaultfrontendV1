@@ -120,22 +120,36 @@ export default function Navbar() {
 
   if (isAuthPage || !mounted) return null;
 
+  const isHomePage = pathname === "/";
+
+  const dynamicStyles = isHomePage ? {
+    width,
+    top,
+    paddingTop: paddingY,
+    paddingBottom: paddingY,
+    borderRadius,
+    backgroundColor,
+    backdropFilter,
+    WebkitBackdropFilter: backdropFilter,
+    maxWidth,
+  } : {
+    width: "100%",
+    top: 0,
+    paddingTop: 16,
+    paddingBottom: 16,
+    borderRadius: 0,
+    backgroundColor: "rgba(255, 255, 255, 1)",
+    backdropFilter: "blur(0px)",
+    WebkitBackdropFilter: "blur(0px)",
+    maxWidth: "100%",
+  };
+
   return (
     <>
       <motion.header
         data-lenis-prevent
-        style={{
-          width,
-          top,
-          paddingTop: paddingY,
-          paddingBottom: paddingY,
-          borderRadius,
-          backgroundColor,
-          backdropFilter,
-          WebkitBackdropFilter: backdropFilter,
-          maxWidth,
-        }}
-        className="fixed left-1/2 -translate-x-1/2 z-[10000] border border-black/10 px-8"
+        style={dynamicStyles}
+        className="fixed left-1/2 -translate-x-1/2 z-[10000] border border-black/10 px-4 md:px-8"
       >
         <nav className="mx-auto flex h-full w-full items-center justify-between">
           {/* LEFT: Logo Section */}
@@ -177,7 +191,7 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             <Link
               href="/auth"
-              className={`transition-colors hover:text-[#CC0000] ${
+              className={`p-2 transition-colors hover:text-[#CC0000] ${
                 pathname.startsWith("/auth") ? "text-[#CC0000]" : "text-black/80"
               }`}
             >
@@ -186,13 +200,13 @@ export default function Navbar() {
 
             <Link
               href="/cart"
-              className={`relative transition-colors hover:text-[#CC0000] mr-2 ${
+              className={`relative p-2 transition-colors hover:text-[#CC0000] mr-2 ${
                 pathname === "/cart" ? "text-[#CC0000]" : "text-black/80"
               }`}
             >
               <ShoppingCart size={22} className="stroke-[1.5]" />
               {cartItemCount > 0 && (
-                <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#CC0000] text-[10px] font-bold text-white">
+                <span className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-[#CC0000] text-[10px] font-bold text-white">
                   {cartItemCount}
                 </span>
               )}
@@ -206,7 +220,7 @@ export default function Navbar() {
 
             <button
               type="button"
-              className="p-1 md:hidden"
+              className="p-2 md:hidden"
               onClick={() => setMobileOpen(true)}
               aria-label="Open menu"
             >

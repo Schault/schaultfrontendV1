@@ -2,12 +2,15 @@
 
 import React from "react";
 import Image from "next/image";
+import { Heart, Star } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
 export interface Product {
   id: string;
   name: string;
   price: number;
+  originalPrice?: number;
+  rating?: number;
   image: string;
   category: string;
   colors: { name: string; hex: string }[];
@@ -20,57 +23,85 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { addItem } = useCart();
+  const discount = product.originalPrice 
+    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) 
+    : 0;
 
   return (
-    <div className="group flex flex-col space-y-4">
+    <div className="group flex flex-col bg-white border border-black/[0.03] hover:shadow-lg transition-shadow duration-300 h-full">
       {/* Image Container */}
-      <div className="relative aspect-[4/5] bg-[#F7F7F7] overflow-hidden">
-        <Image
-          src={product.image}
-          alt={product.name}
-          fill
-          className="object-cover transition-transform duration-700 group-hover:scale-105"
-        />
+      <div className="relative aspect-[3/4] bg-white overflow-hidden">
+        <div className="absolute inset-4">
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            className="object-contain transition-transform duration-700 group-hover:scale-105"
+          />
+        </div>
         
-        {/* Hover CTA */}
-        <button
-          onClick={() => addItem({
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            image: product.image,
-            quantity: 1,
-            color: product.colors[0]?.name,
-            size: product.sizes[0]
-          })}
-          className="absolute bottom-0 left-0 w-full bg-[#CC0000] text-white font-bebas text-lg py-4 transform translate-y-full transition-transform duration-300 ease-out group-hover:translate-y-0 tracking-widest"
-        >
-          ADD TO CART
+        {/* Wishlist Heart */}
+        <button className="absolute top-2.5 right-2.5 p-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-black/5 text-black/30 hover:text-[#CC0000] hover:bg-white transition-all shadow-sm z-10">
+          <Heart size={16} />
         </button>
+
+        {/* Rating Badge */}
+        {product.rating && (
+          <div className="absolute bottom-2.5 left-2.5 flex items-center gap-0.5 bg-green-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm z-10">
+            {product.rating} <Star size={8} fill="currentColor" stroke="none" />
+          </div>
+        )}
       </div>
 
       {/* Product Info */}
-      <div className="flex flex-col space-y-1">
-        <div className="flex justify-between items-start pt-2">
-          <h3 className="font-inter text-[12px] text-black/90 uppercase tracking-widest flex-1 font-medium">
+      <div className="flex flex-col p-3 space-y-2">
+        <div>
+          <h3 className="font-inter text-[13px] text-black/90 font-medium line-clamp-1">
             {product.name}
           </h3>
-          <span className="font-inter text-[12px] text-black/70 font-medium">
+          <p className="font-inter text-[11px] text-black/40 uppercase tracking-wider mt-0.5">
+            {product.category}
+          </p>
+        </div>
+
+        {/* Price Section */}
+        <div className="flex flex-wrap items-baseline gap-1.5 pt-1">
+          <span className="font-inter text-[15px] font-bold text-black/90">
             ₹{product.price.toLocaleString("en-IN")}
           </span>
+          {product.originalPrice && (
+            <>
+              <span className="font-inter text-[12px] text-black/40 line-through">
+                ₹{product.originalPrice.toLocaleString("en-IN")}
+              </span>
+              <span className="font-inter text-[12px] font-bold text-green-600">
+                {discount}% off
+              </span>
+            </>
+          )}
         </div>
         
-        {/* Color Swatches */}
-        <div className="flex gap-1.5 pt-1">
-          {product.colors.map((color, i) => (
-            <div 
-              key={i}
-              className="w-2.5 h-2.5 rounded-full border border-black/10"
-              style={{ backgroundColor: color.hex }}
-              title={color.name}
-            />
-          ))}
-        </div>
+        {/* Schault Aesthetic Branding - Subtle bar */}
+        <div className="h-0.5 w-6 bg-[#CC0000] opacity-0 group-hover:opacity-100 group-hover:w-12 transition-all duration-300" />
+
+        {/* Add to Cart - Flipkart often has this on hover or in footer. We'll keep it as a sleek button */}
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            addItem({
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              image: product.image,
+              quantity: 1,
+              color: product.colors[0]?.name,
+              size: product.sizes[0]
+            });
+          }}
+          className="w-full bg-black text-white py-2 text-[10px] font-bebas tracking-[0.2em] transition-all hover:bg-[#CC0000] mt-auto uppercase"
+        >
+          QUICK ADD
+        </button>
       </div>
     </div>
   );

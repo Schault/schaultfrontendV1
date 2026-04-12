@@ -20,61 +20,60 @@ const ProductGrid: React.FC<ProductGridProps> = ({
 }) => {
   return (
     <div className="flex-1">
-      {/* Results Bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between py-6 gap-4">
-        <div className="flex flex-col space-y-2">
-          <p className="font-inter text-sm text-black/50">
-            Showing {products.length} results from {totalCount} for: <span className="text-black/90 font-medium">All Products</span>
-          </p>
-          
-          {/* Active Filter Chips */}
-          <div className="flex flex-wrap gap-2 pt-2">
-            {Object.entries(activeFilters).map(([key, value]) => {
-              if (!value || (typeof value === "object" && !Object.values(value as any).some(v => v !== 0))) return null;
-              
-              let label = "";
-              if (key === "price") {
-                const { min, max } = value as { min: number, max: number };
-                label = `₹${min} - ₹${max}`;
-              } else {
-                label = value as string;
-              }
-
-              return (
-                <div 
-                  key={key}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-black/5 border border-black/10 font-inter text-[10px] text-black/70 tracking-wider uppercase"
-                >
-                  {label}
-                  <button 
-                    onClick={() => onRemoveFilter(key)}
-                    className="hover:text-[#CC0000] font-bold text-xs"
-                  >
-                    ×
-                  </button>
-                </div>
-              );
-            })}
-          </div>
+      {/* Results Bar - Desktop Tabs Style like Flipkart */}
+      <div className="hidden md:flex flex-col border-b border-black/5 pb-4 mb-2">
+        <div className="flex items-center gap-6 py-2">
+          <span className="font-inter text-sm font-bold text-black/90">Sort By</span>
+          {[
+            { id: "popularity", label: "Relevance" },
+            { id: "popularity", label: "Popularity" },
+            { id: "low-high", label: "Price -- Low to High" },
+            { id: "high-low", label: "Price -- High to Low" },
+            { id: "newest", label: "Newest First" }
+          ].map((sortOption) => (
+            <button
+              key={sortOption.label}
+              onClick={() => onSortChange(sortOption.id)}
+              className="font-inter text-sm text-black/60 hover:text-[#CC0000] border-b-2 border-transparent hover:border-[#CC0000] pb-1 transition-all"
+            >
+              {sortOption.label}
+            </button>
+          ))}
         </div>
+        
+        {/* Active Filter Chips */}
+        <div className="flex flex-wrap gap-2 pt-4">
+          {Object.entries(activeFilters).map(([key, value]) => {
+            if (!value || (typeof value === "object" && !Object.values(value as any).some(v => v !== 0))) return null;
+            
+            let label = "";
+            if (key === "price") {
+              const { min, max } = value as { min: number, max: number };
+              label = `₹${min} - ₹${max}`;
+            } else {
+              label = value as string;
+            }
 
-        <div className="flex items-center gap-3">
-          <span className="font-inter text-xs text-black/50">Sort by</span>
-          <select 
-            onChange={(e) => onSortChange(e.target.value)}
-            className="border border-black/10 p-2 pr-8 font-inter text-xs text-black/70 bg-transparent outline-none appearance-none cursor-pointer"
-            style={{ backgroundImage: 'url(\'data:image/svg+xml;utf8,<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 4L5 6.5L7.5 4" stroke="%23000" stroke-width="1.5"/></svg>\')', backgroundPosition: 'calc(100% - 10px) center', backgroundRepeat: 'no-repeat' }}
-          >
-            <option value="popularity">Popularity</option>
-            <option value="low-high">Price: Low to High</option>
-            <option value="high-low">Price: High to Low</option>
-            <option value="newest">Newest</option>
-          </select>
+            return (
+              <div 
+                key={key}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-black/5 border border-black/10 font-inter text-[10px] text-black/70 tracking-wider uppercase"
+              >
+                {label}
+                <button 
+                  onClick={() => onRemoveFilter(key)}
+                  className="hover:text-[#CC0000] font-bold text-xs"
+                >
+                  ×
+                </button>
+              </div>
+            );
+          })}
         </div>
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-x-2 gap-y-4 md:gap-x-6 md:gap-y-10">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}

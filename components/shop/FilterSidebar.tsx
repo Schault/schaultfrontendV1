@@ -55,7 +55,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const sizes = ["XXS", "XS", "S", "M", "L", "XL", "XXL", "All"];
 
   return (
-    <aside className="w-[220px] flex-shrink-0 sticky top-24 h-fit pb-10">
+    <aside className="w-full md:w-[220px] flex-shrink-0 md:sticky md:top-24 h-fit md:pb-10">
       {/* Category Section */}
       <div className="border-b border-black/10 py-6">
         <button 

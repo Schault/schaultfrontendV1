@@ -23,6 +23,10 @@ interface CartContextType {
   setIsCartOpen: (open: boolean) => void;
   cartCount: number;
   totalPrice: number;
+  clearCart: () => void;
+  showToast: boolean;
+  setShowToast: (show: boolean) => void;
+  toastItem: CartItem | null;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -38,6 +42,9 @@ export const useCart = () => {
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastItem, setToastItem] = useState<CartItem | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   // Load from local storage
   useEffect(() => {
@@ -49,12 +56,15 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.error("Failed to parse cart from localStorage", e);
       }
     }
+    setIsMounted(true);
   }, []);
 
   // Save to local storage
   useEffect(() => {
-    localStorage.setItem("schault_cart", JSON.stringify(items));
-  }, [items]);
+    if (isMounted) {
+      localStorage.setItem("schault_cart", JSON.stringify(items));
+    }
+  }, [items, isMounted]);
 
   const addItem = (item: CartItem) => {
     setItems((prevItems) => {
@@ -66,7 +76,15 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       return [...prevItems, { ...item, quantity: 1 }];
     });
-    setIsCartOpen(true);
+    
+    // Trigger Toast instead of Sidebar
+    setToastItem(item);
+    setShowToast(true);
+    
+    // Auto-hide after 4 seconds
+    setTimeout(() => {
+      setShowToast(false);
+    }, 4000);
   };
 
   const removeItem = (id: string) => {
@@ -83,6 +101,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
   };
 
+  const clearCart = () => {
+    setItems([]);
+  };
+
   const cartCount = items.reduce((total, item) => total + item.quantity, 0);
   const totalPrice = items.reduce((total, item) => total + item.price * item.quantity, 0);
 
@@ -97,6 +119,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setIsCartOpen,
         cartCount,
         totalPrice,
+        clearCart,
+        showToast,
+        setShowToast,
+        toastItem,
       }}
     >
       {children}

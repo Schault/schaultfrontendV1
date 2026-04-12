@@ -7,14 +7,14 @@ const teamData = {
   founder: {
     name: "HARSH MAHESHWARI",
     role: "Founder & CEO",
-    image: "/placeholder.jpg",
+    image: "/images/harsh.jpg",
     note: "I started Schault because I was tired of watching perfectly good shoes end up in landfills over a worn-out sole. As a Materials Science student at IIT Kanpur, I knew there had to be a smarter way — one where engineering meets everyday wear. Schault is that answer: modular, repairable, and built to last.",
   },
   mentors: [
     { 
       name: "DR. AMIT VERMA", 
       title: "Materials Science Advisor", 
-      image: "/placeholder.jpg",
+      image: "/images/mentor.jpeg",
       note: "Schault's approach to glue-less assembly is a case study in mechanical interlocking. By eliminating traditional adhesives, they've created a system that isn't just more sustainable, but also more durable and customizable than anything currently on the market."
     },
   ],

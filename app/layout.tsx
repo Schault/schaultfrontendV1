@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 import { Providers } from "@/components/providers";
 import Navbar from "@/components/Navbar";
-import { CartDrawer } from "@/components/CartDrawer";
+import CartToast from "@/components/CartToast";
 
 export default function RootLayout({
   children,
@@ -32,7 +32,7 @@ export default function RootLayout({
       >
         <Providers>
           <LenisProvider>
-            <CartDrawer />
+            <CartToast />
             <Navbar />
             {children}
             <div className="grain-overlay" aria-hidden />

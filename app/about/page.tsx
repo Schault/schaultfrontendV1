@@ -130,8 +130,8 @@ export default function AboutPage() {
 
   return (
     <>
-      <main ref={container} className="bg-white min-h-screen pt-32 pb-20">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-24">
+      <main ref={container} className="bg-white min-h-screen pt-32 pb-20 px-4 sm:px-6 md:px-12 lg:px-20">
+        <div className="max-w-[1440px] mx-auto">
 
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 font-inter text-[10px] text-black/50 mb-12 uppercase tracking-widest">
@@ -142,7 +142,7 @@ export default function AboutPage() {
 
           {/* Hero Section */}
           <div className="about-hero border-b border-black/10 pb-16 mb-16">
-            <h1 className="font-bebas text-[64px] md:text-[96px] text-black/90 leading-[0.9] tracking-wide mb-6 uppercase">
+            <h1 className="font-bebas text-5xl sm:text-6xl md:text-[80px] lg:text-[96px] text-black/90 leading-[0.9] tracking-wide mb-6 uppercase">
               RETHINKING<br />
               FOOTWEAR.
             </h1>
