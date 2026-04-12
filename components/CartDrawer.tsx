@@ -4,39 +4,22 @@ import { useCart } from "./providers";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { createCheckout } from "@/lib/shopify";
 
 export function CartDrawer() {
     const { isCartOpen, setIsCartOpen, items, updateQuantity, removeItem, totalPrice } = useCart();
     const [isCheckingOut, setIsCheckingOut] = useState(false);
     const pathname = usePathname();
+    const router = useRouter();
 
     const isAuthPage = pathname.startsWith("/auth");
 
     if (isAuthPage) return null;
 
-    const handleCheckout = async () => {
-        setIsCheckingOut(true);
-
-        const checkoutLineItems = items.map((item) => ({
-            variantId: item.variantId || `gid://shopify/ProductVariant/${item.id}`,
-            quantity: item.quantity,
-        }));
-
-        try {
-            const checkout = await createCheckout(checkoutLineItems);
-            if (checkout && checkout.webUrl) {
-                window.location.href = checkout.webUrl;
-            } else {
-                alert("Checkout requires a valid Shopify Storefront Access Token. Please configure your .env.local file.");
-            }
-        } catch (error) {
-            console.error(error);
-            alert("Error initiating checkout. Please ensure Shopify credentials are configured.");
-        } finally {
-            setIsCheckingOut(false);
-        }
+    const handleCheckout = () => {
+        setIsCartOpen(false);
+        router.push("/checkout");
     };
 
     return (
