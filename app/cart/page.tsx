@@ -48,7 +48,7 @@ export default function CartPage() {
                 YOUR CART IS EMPTY
               </h2>
               <Link 
-                href="/collections" 
+                href="/shop" 
                 className="font-bebas text-xl text-[#CC0000] border-b border-[#CC0000] pb-1 hover:text-[#A30000] hover:border-[#A30000] transition-colors"
               >
                 CONTINUE SHOPPING
