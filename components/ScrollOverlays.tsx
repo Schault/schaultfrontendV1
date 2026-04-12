@@ -36,7 +36,7 @@ export default function ScrollOverlays() {
         className="scroll-overlay-text absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center md:px-12"
         style={{ opacity: headline1Opacity }}
       >
-        <h1 className="font-bebas text-5xl tracking-[0.2em] text-black md:text-7xl lg:text-8xl">
+        <h1 className="font-bebas text-[12vw] tracking-[0.15em] text-black leading-none md:text-7xl lg:text-8xl md:tracking-[0.2em]">
           SCHAULT.
         </h1>
         <p className="mt-4 max-w-md font-inter text-base text-black/60 md:text-lg">
@@ -46,7 +46,7 @@ export default function ScrollOverlays() {
 
       {/* ~20% — Upper */}
       <motion.div
-        className="scroll-overlay-text absolute inset-0 z-10 flex items-center px-6 md:left-0 md:max-w-md md:pl-12 lg:pl-24"
+        className="scroll-overlay-text absolute inset-0 z-10 flex items-center px-6 md:left-0 md:max-w-md md:px-12 lg:px-24"
         style={{ opacity: headline2Opacity }}
       >
         <div className="text-left">
@@ -61,7 +61,7 @@ export default function ScrollOverlays() {
 
       {/* ~45% — Midsole */}
       <motion.div
-        className="scroll-overlay-text absolute inset-0 z-10 flex items-center px-6 md:right-0 md:left-auto md:max-w-md md:pr-12 md:text-right lg:pr-24"
+        className="scroll-overlay-text absolute inset-0 z-10 flex items-center px-6 md:right-0 md:left-auto md:max-w-md md:px-12 md:text-right lg:px-24"
         style={{ opacity: headline3Opacity }}
       >
         <div className="ml-auto text-left md:text-right">
@@ -76,7 +76,7 @@ export default function ScrollOverlays() {
 
       {/* ~70% — Outsole */}
       <motion.div
-        className="scroll-overlay-text absolute inset-0 z-10 flex items-center px-6 md:left-0 md:max-w-md md:pl-12 lg:pl-24"
+        className="scroll-overlay-text absolute inset-0 z-10 flex items-center px-6 md:left-0 md:max-w-md md:px-12 lg:px-24"
         style={{ opacity: headline4Opacity }}
       >
         <div className="text-left">
@@ -95,7 +95,7 @@ export default function ScrollOverlays() {
         className="scroll-overlay-text absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center"
         style={{ opacity: headline5Opacity }}
       >
-        <div className="w-full max-w-2xl rounded-none bg-white/95 px-8 py-10 shadow-none md:px-12 md:py-14">
+        <div className="w-full max-w-2xl rounded-none bg-white/95 px-6 py-10 shadow-none md:px-12 md:py-14">
           <h2 className="font-bebas text-3xl tracking-wide text-black md:text-4xl lg:text-5xl">
             Every Layer. Perfected.
           </h2>

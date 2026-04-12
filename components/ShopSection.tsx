@@ -128,7 +128,7 @@ export default function ShopSection({ collections }: { collections: ShopifyColle
   return (
     <section
       id="shop"
-      className="border-t border-black/10 bg-[#FFFFFF] px-6 py-24 md:px-12 lg:px-24"
+      className="border-t border-black/10 bg-[#FFFFFF] px-4 sm:px-6 py-24 md:px-12 lg:px-24"
     >
       <div className="mx-auto max-w-6xl">
         <div className="mb-2 h-0.5 w-12 bg-[#CC0000]" aria-hidden />

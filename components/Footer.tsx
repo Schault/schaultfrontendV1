@@ -116,7 +116,7 @@ export default function Footer() {
 
           {/* Navigation Columns */}
           {navColumns.map((col) => (
-            <div key={col.title} className="flex flex-col items-start md:col-span-1">
+            <div key={col.title} className="flex flex-col items-start md:col-span-1 border-t border-black/5 pt-8 md:border-t-0 md:pt-0">
               <h3 className="mb-4 font-bebas text-xl text-black/90">
                 {col.title}
               </h3>

@@ -2,6 +2,7 @@
 
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import Image from "next/image";
 import React, { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -31,6 +32,18 @@ export default function CollaboratorsPage() {
       ease: "power3.out",
     });
 
+    // MOU section animation
+    gsap.from(".collab-mou", {
+      y: 40,
+      opacity: 0,
+      duration: 1,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".collab-mou",
+        start: "top 80%",
+      },
+    });
+
     // Grid items animation
     gsap.from(".collab-grid-item", {
       y: 30,
@@ -47,8 +60,8 @@ export default function CollaboratorsPage() {
 
   return (
     <>
-      <main ref={container} className="bg-white min-h-screen pt-32 pb-20">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-24">
+      <main ref={container} className="bg-white min-h-screen pt-32 pb-20 px-4 sm:px-6 md:px-12 lg:px-20">
+        <div className="max-w-[1440px] mx-auto">
           
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 font-inter text-[10px] text-black/50 mb-12 uppercase tracking-widest">
@@ -58,14 +71,58 @@ export default function CollaboratorsPage() {
           </div>
 
           {/* Hero Section */}
-          <div className="collab-hero border-b border-black/10 pb-16 mb-16">
-            <h1 className="font-bebas text-[64px] md:text-[96px] text-black/90 leading-[0.9] tracking-wide mb-6 uppercase">
+          <div className="collab-hero border-b border-black/10 pb-16 mb-20">
+            <h1 className="font-bebas text-5xl sm:text-6xl md:text-[80px] lg:text-[96px] text-black/90 leading-[0.9] tracking-wide mb-6 uppercase">
               OUR<br />
               COLLABORATORS.
             </h1>
             <p className="font-inter text-lg text-black/60 max-w-2xl leading-relaxed">
               We don't build in isolation. SCHAULT is supported by a network of world-class academic institutions, design pioneers, and sustainability leaders who share our vision for a modular future.
             </p>
+          </div>
+
+          {/* MOUs Section */}
+          <div className="collab-mou mb-32">
+            <h2 className="font-bebas text-[40px] sm:text-[48px] md:text-[64px] text-[#CC0000] text-center mb-16 uppercase tracking-wide">
+              OUR MOUS
+            </h2>
+            
+            <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-20 max-w-6xl mx-auto">
+              <div className="w-full md:w-[45%]">
+                <div className="aspect-[4/5] bg-black/5 relative w-full overflow-hidden">
+                   {/* Placeholder, assuming the image is uploaded or will be manually swapped */}
+                   <Image 
+                     src="/images/harsh.jpg" 
+                     alt="Harsh Maheshwari" 
+                     fill 
+                     className="object-cover"
+                   />
+                </div>
+              </div>
+              <div className="w-full md:w-[55%] text-left md:text-right">
+                <h3 className="font-inter text-lg md:text-xl font-bold text-[#CC0000] mb-8">
+                  Kapas Paduka (INDIA) × Harsh Maheshwari (IIT KANPUR)
+                </h3>
+                
+                <div className="space-y-6 font-inter text-black/80 text-sm md:text-base leading-relaxed md:ml-auto md:max-w-xl">
+                  <p>
+                    <strong className="text-black/90 font-semibold">Harsh Maheshwari</strong> is a Materials Science & Engineering undergraduate at IIT Kanpur, Uttar Pradesh, INDIA, working at the intersection of engineering, sustainability, and everyday products.
+                  </p>
+                  <p>
+                    Through academic research and on-ground prototyping, he developed a modular footwear system designed to reduce waste, improve hygiene, and extend product life. This work has been published and protected as a patented technology, ensuring the innovation is credible, original, and built for real-world impact.
+                  </p>
+                  <p>
+                    Together with Kapas Paduka, this collaboration brings responsible design closer to conscious consumers.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-black/10 pt-20 mb-16">
+            <h2 className="font-bebas text-[40px] tracking-wide text-black/90 mb-8 uppercase">
+              NETWORK
+            </h2>
           </div>
 
           {/* Grid Section */}
@@ -95,7 +152,7 @@ export default function CollaboratorsPage() {
 
           {/* Partner with us CTA */}
           <div className="collab-hero border-t border-black/10 pt-24 text-center">
-            <h2 className="font-bebas text-[48px] md:text-[64px] tracking-wide text-black/90 mb-6 uppercase">
+            <h2 className="font-bebas text-[40px] sm:text-[48px] md:text-[64px] tracking-wide text-black/90 mb-6 uppercase">
               WANT TO COLLABORATE?
             </h2>
             <p className="font-inter text-black/60 text-sm md:text-base max-w-xl mx-auto mb-10">

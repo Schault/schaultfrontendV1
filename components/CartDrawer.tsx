@@ -87,7 +87,7 @@ export function CartDrawer() {
                                                         {item.name}
                                                     </h3>
                                                     <p className="font-semibold text-black/90 font-inter text-sm">
-                                                        ${(item.price * item.quantity).toFixed(2)}
+                                                        ₹{(item.price * item.quantity).toLocaleString("en-IN")}
                                                     </p>
                                                 </div>
                                                 <p className="font-inter text-xs text-black/50 mt-1">
@@ -99,7 +99,7 @@ export function CartDrawer() {
                                                     <div className="flex items-center gap-3 border border-black/20 p-1">
                                                         <button
                                                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                                            className="text-black/60 hover:text-black transition-colors px-1"
+                                                            className="text-black/60 hover:text-black transition-colors p-2"
                                                         >
                                                             <Minus size={14} />
                                                         </button>
@@ -108,7 +108,7 @@ export function CartDrawer() {
                                                         </span>
                                                         <button
                                                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                            className="text-black/60 hover:text-black transition-colors px-1"
+                                                            className="text-black/60 hover:text-black transition-colors p-2"
                                                         >
                                                             <Plus size={14} />
                                                         </button>
@@ -133,7 +133,7 @@ export function CartDrawer() {
                             <div className="border-t border-black/10 bg-black/5 px-6 py-6">
                                 <div className="flex justify-between font-inter text-sm">
                                     <span className="text-black/70">Subtotal</span>
-                                    <span className="font-semibold">${totalPrice.toFixed(2)}</span>
+                                    <span className="font-semibold">₹{totalPrice.toLocaleString("en-IN")}</span>
                                 </div>
                                 <div className="flex justify-between font-inter text-sm mt-2">
                                     <span className="text-black/70">Shipping</span>
@@ -144,7 +144,7 @@ export function CartDrawer() {
 
                                 <div className="flex justify-between font-bebas text-xl tracking-wide">
                                     <span>Total</span>
-                                    <span>${totalPrice.toFixed(2)}</span>
+                                    <span>₹{totalPrice.toLocaleString("en-IN")}</span>
                                 </div>
 
                                 <button

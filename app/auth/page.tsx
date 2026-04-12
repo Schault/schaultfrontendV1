@@ -10,7 +10,7 @@ export default function AuthPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="relative flex min-h-screen w-full items-center justify-center p-4 md:p-8">
+    <div className="relative flex min-h-screen w-full items-center justify-center p-6 md:p-8">
       {/* Back Arrow to Home */}
       <Link 
         href="/" 
@@ -49,7 +49,7 @@ export default function AuthPage() {
         <div className="relative z-10 flex w-full overflow-hidden rounded-[calc(2rem-3px)] bg-white/70 shadow-2xl backdrop-blur-3xl">
 
           {/* LEFT PANEL: Form Section */}
-          <div className="flex w-full flex-col justify-center bg-white/80 p-8 md:w-1/2 md:p-14 lg:px-16 lg:py-16 text-black">
+          <div className="flex w-full flex-col justify-center bg-white/80 p-6 sm:p-8 md:w-1/2 md:p-14 lg:px-16 lg:py-16 text-black">
             <AnimatePresence mode="wait">
               {isLogin ? (
                 <motion.div
@@ -58,16 +58,16 @@ export default function AuthPage() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
                   transition={{ duration: 0.2 }}
-                  className="flex w-full flex-col"
+                  className="flex w-full flex-col items-center text-center md:items-start md:text-left"
                 >
-                  <h1 className="font-bebas text-4xl text-black/90 sm:text-[2.75rem] sm:leading-tight">
+                  <h1 className="font-bebas text-3xl text-black/90 sm:text-[2.75rem] sm:leading-tight">
                     Welcome !
                   </h1>
-                  <p className="mt-1 font-inter text-[20px] text-black/80">
-                    Sign in to
+                  <p className="mt-1 font-inter text-[18px] text-black/80 sm:text-[20px]">
+                    Sign in to <span className="font-bebas tracking-wider text-[#CC0000]">SCHAULT</span>
                   </p>
 
-                  <form className="mt-8 flex flex-col gap-4">
+                  <form className="mt-8 flex w-full flex-col gap-4 text-left">
                     <div className="flex flex-col gap-2">
                       <label className="font-inter text-[13px] font-medium text-black/80">
                         Email
@@ -99,7 +99,7 @@ export default function AuthPage() {
                       </div>
                     </div>
 
-                    <div className="mt-1 flex items-center justify-between">
+                    <div className="mt-1 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                       <label className="group flex cursor-pointer items-center gap-2">
                         <input
                           type="checkbox"
@@ -172,16 +172,16 @@ export default function AuthPage() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
                   transition={{ duration: 0.2 }}
-                  className="flex w-full flex-col"
+                  className="flex w-full flex-col items-center text-center md:items-start md:text-left"
                 >
-                  <h1 className="font-bebas text-4xl text-black/90 sm:text-[2.75rem] sm:leading-tight">
+                  <h1 className="font-bebas text-3xl text-black/90 sm:text-[2.75rem] sm:leading-tight">
                     Welcome !
                   </h1>
-                  <p className="mt-1 font-inter text-[20px] text-black/80">
-                    Register for SCHAULT
+                  <p className="mt-1 font-inter text-[18px] text-black/80 sm:text-[20px]">
+                    Register for <span className="font-bebas tracking-wider text-[#CC0000]">SCHAULT</span>
                   </p>
 
-                  <form className="mt-8 flex flex-col gap-4">
+                  <form className="mt-8 flex w-full flex-col gap-4 text-left">
                     <div className="flex flex-col gap-2">
                       <label className="font-inter text-[13px] font-medium text-black/80">
                         Full Name

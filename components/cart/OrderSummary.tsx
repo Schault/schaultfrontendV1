@@ -3,9 +3,18 @@
 import { useCart } from "@/components/providers";
 
 export default function OrderSummary() {
-  const { totalPrice } = useCart();
+  const { totalPrice, clearCart, items } = useCart();
   const shipping = 0; // Free
   const postage = 24; // Fixed value from reference image example
+
+  const handleCheckout = () => {
+    if (items.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+    clearCart();
+    alert("Checkout successful! Your order has been placed.");
+  };
 
   return (
     <div className="sticky top-24 border border-black/10 bg-white p-6">
@@ -35,7 +44,11 @@ export default function OrderSummary() {
         </div>
       </div>
 
-      <button className="w-full bg-[#CC0000] text-white font-bebas text-xl py-4 uppercase tracking-widest mt-6 hover:bg-[#A30000] transition-colors">
+      <button 
+        onClick={handleCheckout}
+        disabled={items.length === 0}
+        className="w-full bg-[#CC0000] text-white font-bebas text-xl py-4 uppercase tracking-widest mt-6 hover:bg-[#A30000] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      >
         Check Out
       </button>
     </div>
