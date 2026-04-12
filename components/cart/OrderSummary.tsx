@@ -1,9 +1,11 @@
 "use client";
 
 import { useCart } from "@/components/providers";
+import { useRouter } from "next/navigation";
 
 export default function OrderSummary() {
-  const { totalPrice, clearCart, items } = useCart();
+  const { totalPrice, items } = useCart();
+  const router = useRouter();
   const shipping = 0; // Free
   const postage = 24; // Fixed value from reference image example
 
@@ -12,8 +14,7 @@ export default function OrderSummary() {
       alert("Your cart is empty!");
       return;
     }
-    clearCart();
-    alert("Checkout successful! Your order has been placed.");
+    router.push("/checkout");
   };
 
   return (

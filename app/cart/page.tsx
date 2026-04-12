@@ -1,6 +1,7 @@
 "use client";
 
 import { useCart } from "@/components/providers";
+import { useRouter } from "next/navigation";
 import CartItem from "@/components/cart/CartItem";
 import OrderSummary from "@/components/cart/OrderSummary";
 import NewArrivals from "@/components/cart/NewArrivals";
@@ -11,6 +12,15 @@ import { useEffect, useState } from "react";
 export default function CartPage() {
   const { items, totalPrice } = useCart();
   const [mounted, setMounted] = useState(false);
+  const router = useRouter();
+
+  const handleCheckout = () => {
+    if (items.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+    router.push("/checkout");
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -88,8 +98,7 @@ export default function CartPage() {
               </div>
               <button 
                 onClick={() => {
-                  alert("Checkout successful! Your order has been placed.");
-                  // items would be cleared here in a real app logic
+                  router.push("/checkout");
                 }}
                 className="bg-[#CC0000] text-white font-bebas text-lg px-8 py-3 uppercase tracking-widest hover:bg-[#A30000] active:scale-95 transition-all"
               >
