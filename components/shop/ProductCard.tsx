@@ -5,9 +5,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { Heart, Star } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import toast from "react-hot-toast";
+import type { ProductVariant } from "@/lib/api/products";
 
 export interface Product {
-  id: string;
+  id: string;          // UUID
+  slug: string;        // slug (for image mapping)
   name: string;
   price: number;
   originalPrice?: number;
@@ -16,6 +19,7 @@ export interface Product {
   category: string;
   colors: { name: string; hex: string }[];
   sizes: string[];
+  variants?: ProductVariant[];  // Supabase variants
 }
 
 interface ProductCardProps {
@@ -27,6 +31,31 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const discount = product.originalPrice 
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) 
     : 0;
+
+  const handleQuickAdd = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Find first in-stock variant
+    const variant = product.variants?.find((v) => v.stock_quantity > 0);
+    if (!variant) {
+      toast.error("This product is currently out of stock.");
+      return;
+    }
+
+    try {
+      await addItem(
+        variant.id,
+        product.slug,    // slug for image mapping
+        product.name,
+        product.price,
+        variant.size,
+        variant.color,
+      );
+    } catch (err: any) {
+      toast.error(err.message || "Failed to add to cart. Please log in.");
+    }
+  };
 
   return (
     <div className="group flex flex-col bg-white border border-black/[0.03] hover:shadow-lg transition-shadow duration-300 h-full relative">
@@ -87,20 +116,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* Schault Aesthetic Branding - Subtle bar */}
         <div className="h-0.5 w-6 bg-[#CC0000] opacity-0 group-hover:opacity-100 group-hover:w-12 transition-all duration-300" />
 
-        {/* Add to Cart - Flipkart often has this on hover or in footer. We'll keep it as a sleek button */}
+        {/* Add to Cart */}
         <button
-          onClick={(e) => {
-            e.preventDefault();
-            addItem({
-              id: product.id,
-              name: product.name,
-              price: product.price,
-              image: product.image,
-              quantity: 1,
-              color: product.colors[0]?.name,
-              size: product.sizes[0]
-            });
-          }}
+          onClick={handleQuickAdd}
           className="w-full bg-black text-white py-2 text-[10px] font-bebas tracking-[0.2em] transition-all hover:bg-[#CC0000] mt-auto uppercase"
         >
           QUICK ADD

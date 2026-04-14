@@ -3,14 +3,11 @@
 import { useCart } from "./providers";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, Plus, Trash2 } from "lucide-react";
-import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { createCheckout, isShopifyConfigured } from "@/lib/shopify";
 
 export function CartDrawer() {
     const { isCartOpen, setIsCartOpen, items, updateQuantity, removeItem, totalPrice } = useCart();
-    const [isCheckingOut, setIsCheckingOut] = useState(false);
     const pathname = usePathname();
     const router = useRouter();
 
@@ -18,37 +15,13 @@ export function CartDrawer() {
 
     if (isAuthPage) return null;
 
-    const handleCheckout = async () => {
-        // Supabase checkout lives on /cart (OrderSummary). Shopify checkout needs a Storefront API token.
-        if (!isShopifyConfigured()) {
-            setIsCartOpen(false);
-            router.push("/cart");
-            toast("Continue to checkout on the cart page.", { icon: "🛒" });
+    const handleCheckout = () => {
+        if (items.length === 0) {
+            toast("Your cart is empty!", { icon: "🛒" });
             return;
         }
-
-        setIsCheckingOut(true);
-
-        const checkoutLineItems = items.map((item) => ({
-            variantId: item.variantId || `gid://shopify/ProductVariant/${item.id}`,
-            quantity: item.quantity,
-        }));
-
-        try {
-            const checkout = await createCheckout(checkoutLineItems);
-            if (checkout && checkout.webUrl) {
-                window.location.href = checkout.webUrl;
-            } else {
-                toast.error(
-                    "Checkout could not be started. Confirm your Storefront token in .env.local and that cart items match your Shopify catalog.",
-                );
-            }
-        } catch (error) {
-            console.error(error);
-            toast.error("Error starting Shopify checkout. Check your Storefront API settings.");
-        } finally {
-            setIsCheckingOut(false);
-        }
+        setIsCartOpen(false);
+        router.push("/checkout");
     };
 
     return (
@@ -120,14 +93,14 @@ export function CartDrawer() {
                                                     </p>
                                                 </div>
                                                 <p className="font-inter text-xs text-black/50 mt-1">
-                                                    Size: US Men&apos;s {item.size}
+                                                    Size: {item.size} {item.color ? `| ${item.color}` : ""}
                                                 </p>
 
                                                 {/* Quantity Controls */}
                                                 <div className="mt-auto flex items-center justify-between">
                                                     <div className="flex items-center gap-3 border border-black/20 p-1">
                                                         <button
-                                                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                                            onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)}
                                                             className="text-black/60 hover:text-black transition-colors p-2"
                                                         >
                                                             <Minus size={14} />
@@ -136,7 +109,7 @@ export function CartDrawer() {
                                                             {item.quantity}
                                                         </span>
                                                         <button
-                                                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                            onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
                                                             className="text-black/60 hover:text-black transition-colors p-2"
                                                         >
                                                             <Plus size={14} />
@@ -144,7 +117,7 @@ export function CartDrawer() {
                                                     </div>
 
                                                     <button
-                                                        onClick={() => removeItem(item.id)}
+                                                        onClick={() => removeItem(item.cartItemId)}
                                                         className="text-black/40 hover:text-[#CC0000] transition-colors"
                                                     >
                                                         <Trash2 size={16} />
@@ -178,10 +151,9 @@ export function CartDrawer() {
 
                                 <button
                                     onClick={handleCheckout}
-                                    disabled={isCheckingOut}
-                                    className="mt-6 w-full flex justify-center items-center bg-black py-4 font-inter text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-black/90 disabled:opacity-70 disabled:cursor-wait"
+                                    className="mt-6 w-full flex justify-center items-center bg-black py-4 font-inter text-sm font-semibold uppercase tracking-widest text-white transition-colors hover:bg-black/90"
                                 >
-                                    {isCheckingOut ? "Processing..." : "Checkout"}
+                                    Checkout
                                 </button>
                             </div>
                         )}

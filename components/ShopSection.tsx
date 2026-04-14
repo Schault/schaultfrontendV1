@@ -3,37 +3,21 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import type { ShopifyProduct, ShopifyCollection } from "@/lib/shopify";
+import { useCart } from "./providers";
+import { getProducts, getProductImage, type SupabaseProduct } from "@/lib/api/products";
+import toast from "react-hot-toast";
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
 type ProductType = {
-  id: string;        // used as URL slug
+  id: string;        // UUID
+  slug: string;
   name: string;
   description: string;
   price: string;
   image: string;
-  variantId?: string; // Shopify variant GID (for checkout)
+  variantId?: string; // first variant ID for quick-add
 };
-
-// ── Helpers ─────────────────────────────────────────────────────────────────
-
-function shopifyToProduct(p: ShopifyProduct): ProductType {
-  const firstImage = p.images.edges[0]?.node;
-  const firstVariant = p.variants.edges[0]?.node;
-  const price = p.priceRange.minVariantPrice;
-
-  return {
-    id: p.handle,
-    name: p.title,
-    description: p.description,
-    price: `$${parseFloat(price.amount).toFixed(2)}`,
-    image: firstImage?.url ?? "/images/shoes/bluewhite.jpg",
-    variantId: firstVariant?.id,
-  };
-}
-
-import { useCart } from "./providers";
 
 // ── Product Card ────────────────────────────────────────────────────────────
 
@@ -46,22 +30,29 @@ function ProductCard({
   const [imgError, setImgError] = useState(false);
   const { addItem } = useCart();
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     
-    // Parse numeric price from string like "₹899" or "$89.00"
     const numericPrice = parseFloat(product.price.replace(/[^0-9.]/g, "")) || 0;
     
-    addItem({
-      id: `${product.id}-default`,
-      shoeId: product.id,
-      name: product.name,
-      image: product.image,
-      price: numericPrice,
-      size: 9, // Default size for mockup
-      quantity: 1,
-    });
+    if (!product.variantId) {
+      toast.error("No variants available.");
+      return;
+    }
+
+    try {
+      await addItem(
+        product.variantId,
+        product.slug,
+        product.name,
+        numericPrice,
+        "9", // Default size
+        null,
+      );
+    } catch (err: any) {
+      toast.error(err.message || "Failed to add to cart. Please log in.");
+    }
   };
 
   return (
@@ -117,13 +108,36 @@ function ProductCard({
 
 // ── Main Section ────────────────────────────────────────────────────────────
 
-export default function ShopSection({ collections }: { collections: ShopifyCollection[] | null }) {
-  // Try to find the user's uploaded collections
-  const shoesCollection = collections?.find(c => c.title.toLowerCase().includes("carpe diem") || c.title.toLowerCase().includes("shoe"));
-  const solesCollection = collections?.find(c => c.title.toLowerCase().includes("sole"));
+export default function ShopSection() {
+  const [products, setProducts] = useState<ProductType[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const shoesProducts = shoesCollection ? shoesCollection.products.edges.map(e => shopifyToProduct(e.node)) : [];
-  const solesProducts = solesCollection ? solesCollection.products.edges.map(e => shopifyToProduct(e.node)) : [];
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const data = await getProducts();
+        if (!cancelled) {
+          setProducts(
+            data.map((p) => ({
+              id: p.id,
+              slug: p.slug,
+              name: p.name,
+              description: p.description || "",
+              price: `₹${p.base_price.toLocaleString("en-IN")}`,
+              image: getProductImage(p.slug),
+              variantId: p.product_variants[0]?.id,
+            }))
+          );
+        }
+      } catch (err) {
+        console.error("Failed to fetch products for ShopSection:", err);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   return (
     <section
@@ -139,21 +153,33 @@ export default function ShopSection({ collections }: { collections: ShopifyColle
           Mix. Match. Replace. Only pay for what you need.
         </p>
 
-        {collections === null && (
-          <div className="mt-8 mb-8 p-6 bg-red-50 border border-red-200 text-red-800 font-inter text-sm rounded">
-            <strong>Shopify Connection Failed:</strong> No products were found. If you are viewing this on Vercel, please ensure you have added <code>NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN</code> and <code>NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN</code> to your Vercel Project Environment Variables.
-          </div>
-        )}
-
         <h3 className="mt-16 mb-8 font-bebas text-3xl tracking-wide text-black/90">
           SHOES
         </h3>
 
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {shoesProducts.map((product, index) => (
-            <ProductCard key={product.id} product={product} index={index} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="animate-pulse">
+                <div className="aspect-[4/3] bg-black/5 mb-4" />
+                <div className="h-4 bg-black/5 mb-2 w-3/4" />
+                <div className="h-3 bg-black/5 w-1/2" />
+              </div>
+            ))}
+          </div>
+        ) : products.length > 0 ? (
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {products.map((product, index) => (
+              <ProductCard key={product.id} product={product} index={index} />
+            ))}
+          </div>
+        ) : (
+          <div className="flex items-center justify-center p-12 border border-dashed border-black/20 bg-black/5">
+            <p className="font-inter text-sm text-black/50 uppercase tracking-wide">
+              No products available
+            </p>
+          </div>
+        )}
 
         <div className="mt-12 flex justify-center">
           <Link
@@ -163,24 +189,6 @@ export default function ShopSection({ collections }: { collections: ShopifyColle
             View Full Collection
           </Link>
         </div>
-
-        <h3 className="mt-16 mb-8 font-bebas text-3xl tracking-wide text-black/90">
-          SOLES
-        </h3>
-
-        {solesProducts.length > 0 ? (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {solesProducts.map((product, index) => (
-              <ProductCard key={product.id} product={product} index={index} />
-            ))}
-          </div>
-        ) : (
-          <div className="flex items-center justify-center p-12 border border-dashed border-black/20 bg-black/5">
-            <p className="font-inter text-sm text-black/50 uppercase tracking-wide">
-              Coming Soon
-            </p>
-          </div>
-        )}
       </div>
     </section>
   );

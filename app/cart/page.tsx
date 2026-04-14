@@ -94,7 +94,7 @@ export default function CartPage() {
             <div className="flex items-center justify-between mx-auto max-w-lg">
               <div className="flex flex-col">
                 <span className="font-inter text-[10px] text-black/40 uppercase tracking-widest">Total Amount</span>
-                <span className="font-bebas text-2xl text-black">₹{(totalPrice + 24).toLocaleString("en-IN")}</span>
+                <span className="font-bebas text-2xl text-black">₹{totalPrice.toLocaleString("en-IN")}</span>
               </div>
               <button 
                 onClick={() => {

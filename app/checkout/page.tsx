@@ -1,32 +1,104 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
+import { performCheckout, type ShippingAddress, type CheckoutError } from "@/lib/api/checkout";
+import toast from "react-hot-toast";
 
 export default function CheckoutPage() {
-  const { items, totalPrice } = useCart();
+  const { items, totalPrice, clearCart, refreshCart } = useCart();
+  const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
-  const [couponInput, setCouponInput] = useState("");
-  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
-  const [couponError, setCouponError] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [retryAfter, setRetryAfter] = useState<number | null>(null);
 
-  const handlePlaceOrder = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsProcessing(true);
-    // Simulate order processing
-    setTimeout(() => {
-      setIsProcessing(false);
-      alert("Order placed successfully!");
-      // In a real app we would clear cart and route to a success page
-    }, 1500);
+  // Shipping address form state
+  const [form, setForm] = useState<ShippingAddress>({
+    full_name: "",
+    line1: "",
+    line2: "",
+    city: "",
+    state: "",
+    postal_code: "",
+    phone: "",
+  });
+
+  // ── Retry countdown ───────────────────────────────────────────────────
+
+  useEffect(() => {
+    if (retryAfter === null || retryAfter <= 0) return;
+
+    const timer = setInterval(() => {
+      setRetryAfter((prev) => {
+        if (prev === null || prev <= 1) {
+          clearInterval(timer);
+          return null;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [retryAfter]);
+
+  // ── Handlers ──────────────────────────────────────────────────────────
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Calculate discount logic: L20-MCMF gives ₹500 discount PER shoe item
-  const itemTotalQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
-  const discountAmount = appliedCoupon === "L20-MCMF" ? (itemTotalQuantity * 500) : 0;
-  const finalPrice = totalPrice - discountAmount;
+  const handlePlaceOrder = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsProcessing(true);
+    setError(null);
+
+    try {
+      const result = await performCheckout(form);
+
+      // Success!
+      toast.success("Order placed successfully!");
+      await clearCart();
+
+      // Navigate to the order detail page
+      router.push(`/orders/${result.order_id}`);
+    } catch (err: any) {
+      const checkoutErr = err as CheckoutError;
+
+      switch (checkoutErr.type) {
+        case "AUTH":
+          toast.error("Please log in to place an order.");
+          router.push("/auth");
+          return;
+
+        case "RATE_LIMITED":
+          setRetryAfter(checkoutErr.retryAfterSeconds || 60);
+          setError(checkoutErr.message);
+          break;
+
+        case "STOCK_CONFLICT":
+          setError(checkoutErr.message);
+          toast.error("Some items are out of stock. Please update your cart.");
+          // Refresh cart to get updated stock info
+          await refreshCart();
+          break;
+
+        case "VALIDATION":
+          setError(checkoutErr.message);
+          break;
+
+        default:
+          setError(checkoutErr.message || "Checkout failed. Please try again.");
+      }
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const isDisabled = isProcessing || items.length === 0 || (retryAfter !== null && retryAfter > 0);
 
   return (
     <main className="min-h-screen bg-white pt-24 pb-24">
@@ -51,51 +123,32 @@ export default function CheckoutPage() {
           <div className="flex-1">
             <form onSubmit={handlePlaceOrder} className="space-y-12">
               
-              {/* Contact Information */}
-              <section>
-                <h2 className="mb-6 font-bebas text-2xl tracking-wide text-black/90">Contact Information</h2>
-                <div className="space-y-4">
-                  <div>
-                    <label className="mb-2 block font-inter text-[10px] uppercase tracking-widest text-black/50">Email</label>
-                    <input 
-                      type="email" 
-                      required 
-                      className="w-full border border-black/20 bg-transparent px-4 py-3 font-inter text-sm text-black/90 outline-none transition-colors focus:border-black/90" 
-                      placeholder="Enter your email"
-                    />
-                  </div>
-                  <div className="flex gap-4">
-                    <div className="flex-1">
-                      <label className="mb-2 block font-inter text-[10px] uppercase tracking-widest text-black/50">First Name</label>
-                      <input 
-                        type="text" 
-                        required 
-                        className="w-full border border-black/20 bg-transparent px-4 py-3 font-inter text-sm text-black/90 outline-none transition-colors focus:border-black/90" 
-                        placeholder="First Name"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <label className="mb-2 block font-inter text-[10px] uppercase tracking-widest text-black/50">Last Name</label>
-                      <input 
-                        type="text" 
-                        required 
-                        className="w-full border border-black/20 bg-transparent px-4 py-3 font-inter text-sm text-black/90 outline-none transition-colors focus:border-black/90" 
-                        placeholder="Last Name"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </section>
-
               {/* Shipping Address */}
               <section>
                 <h2 className="mb-6 font-bebas text-2xl tracking-wide text-black/90">Shipping Address</h2>
                 <div className="space-y-4">
                   <div>
+                    <label className="mb-2 block font-inter text-[10px] uppercase tracking-widest text-black/50">Full Name</label>
+                    <input 
+                      type="text" 
+                      name="full_name"
+                      value={form.full_name}
+                      onChange={handleChange}
+                      required 
+                      maxLength={200}
+                      className="w-full border border-black/20 bg-transparent px-4 py-3 font-inter text-sm text-black/90 outline-none transition-colors focus:border-black/90" 
+                      placeholder="John Doe"
+                    />
+                  </div>
+                  <div>
                     <label className="mb-2 block font-inter text-[10px] uppercase tracking-widest text-black/50">Address Line 1</label>
                     <input 
                       type="text" 
+                      name="line1"
+                      value={form.line1}
+                      onChange={handleChange}
                       required 
+                      maxLength={500}
                       className="w-full border border-black/20 bg-transparent px-4 py-3 font-inter text-sm text-black/90 outline-none transition-colors focus:border-black/90" 
                       placeholder="Street address or P.O. Box"
                     />
@@ -103,7 +156,11 @@ export default function CheckoutPage() {
                   <div>
                     <label className="mb-2 block font-inter text-[10px] uppercase tracking-widest text-black/50">Apartment, suite, etc. (optional)</label>
                     <input 
-                      type="text" 
+                      type="text"
+                      name="line2"
+                      value={form.line2}
+                      onChange={handleChange}
+                      maxLength={500}
                       className="w-full border border-black/20 bg-transparent px-4 py-3 font-inter text-sm text-black/90 outline-none transition-colors focus:border-black/90" 
                       placeholder="Apt, Suite, Unit, etc."
                     />
@@ -113,67 +170,98 @@ export default function CheckoutPage() {
                       <label className="mb-2 block font-inter text-[10px] uppercase tracking-widest text-black/50">City</label>
                       <input 
                         type="text" 
+                        name="city"
+                        value={form.city}
+                        onChange={handleChange}
                         required 
+                        maxLength={100}
                         className="w-full border border-black/20 bg-transparent px-4 py-3 font-inter text-sm text-black/90 outline-none transition-colors focus:border-black/90" 
                         placeholder="City"
                       />
                     </div>
                     <div className="flex-1">
+                      <label className="mb-2 block font-inter text-[10px] uppercase tracking-widest text-black/50">State</label>
+                      <input 
+                        type="text" 
+                        name="state"
+                        value={form.state}
+                        onChange={handleChange}
+                        required 
+                        maxLength={100}
+                        className="w-full border border-black/20 bg-transparent px-4 py-3 font-inter text-sm text-black/90 outline-none transition-colors focus:border-black/90" 
+                        placeholder="State / Province"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="flex-1">
                       <label className="mb-2 block font-inter text-[10px] uppercase tracking-widest text-black/50">Postal Code</label>
                       <input 
                         type="text" 
+                        name="postal_code"
+                        value={form.postal_code}
+                        onChange={handleChange}
                         required 
+                        pattern="\d{5,6}"
                         className="w-full border border-black/20 bg-transparent px-4 py-3 font-inter text-sm text-black/90 outline-none transition-colors focus:border-black/90" 
-                        placeholder="ZIP / Postal Code"
+                        placeholder="PIN Code (5-6 digits)"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <label className="mb-2 block font-inter text-[10px] uppercase tracking-widest text-black/50">Phone (optional)</label>
+                      <input 
+                        type="tel" 
+                        name="phone"
+                        value={form.phone}
+                        onChange={handleChange}
+                        maxLength={20}
+                        className="w-full border border-black/20 bg-transparent px-4 py-3 font-inter text-sm text-black/90 outline-none transition-colors focus:border-black/90" 
+                        placeholder="+91 XXXXX XXXXX"
                       />
                     </div>
                   </div>
                 </div>
               </section>
 
-              {/* Payment Details */}
+              {/* Payment Skeleton */}
               <section>
                 <h2 className="mb-6 font-bebas text-2xl tracking-wide text-black/90">Payment Details</h2>
-                <div className="space-y-4">
-                  <div>
-                    <label className="mb-2 block font-inter text-[10px] uppercase tracking-widest text-black/50">Card Number</label>
-                    <input 
-                      type="text" 
-                      required 
-                      className="w-full border border-black/20 bg-transparent px-4 py-3 font-inter text-sm text-black/90 outline-none transition-colors focus:border-black/90 tracking-widest" 
-                      placeholder="XXXX XXXX XXXX XXXX"
-                    />
+                <div className="border border-dashed border-black/20 bg-black/[0.02] p-8 text-center">
+                  <div className="mb-4">
+                    <svg className="mx-auto h-12 w-12 text-black/20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                    </svg>
                   </div>
-                  <div className="flex gap-4">
-                    <div className="flex-1">
-                      <label className="mb-2 block font-inter text-[10px] uppercase tracking-widest text-black/50">Expiration (MM/YY)</label>
-                      <input 
-                        type="text" 
-                        required 
-                        className="w-full border border-black/20 bg-transparent px-4 py-3 font-inter text-sm text-black/90 outline-none transition-colors focus:border-black/90" 
-                        placeholder="MM / YY"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <label className="mb-2 block font-inter text-[10px] uppercase tracking-widest text-black/50">Security Code</label>
-                      <input 
-                        type="text" 
-                        required 
-                        className="w-full border border-black/20 bg-transparent px-4 py-3 font-inter text-sm text-black/90 outline-none transition-colors focus:border-black/90" 
-                        placeholder="CVC"
-                      />
-                    </div>
-                  </div>
+                  <p className="font-inter text-sm text-black/50 mb-1">
+                    Payment integration coming soon
+                  </p>
+                  <p className="font-inter text-xs text-black/30">
+                    Orders are placed as Cash on Delivery for now
+                  </p>
                 </div>
               </section>
+
+              {/* Error Display */}
+              {error && (
+                <div className="border border-red-200 bg-red-50 px-4 py-3 text-sm font-inter text-red-700">
+                  {error}
+                </div>
+              )}
+
+              {/* Rate Limit Countdown */}
+              {retryAfter !== null && retryAfter > 0 && (
+                <div className="border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm font-inter text-yellow-700">
+                  Too many attempts. You can try again in <strong>{retryAfter}s</strong>.
+                </div>
+              )}
 
               {/* Submit Button */}
               <button 
                 type="submit" 
-                disabled={isProcessing || items.length === 0}
+                disabled={isDisabled}
                 className="w-full bg-[#CC0000] px-10 py-5 font-bebas text-xl tracking-widest text-white transition-all hover:bg-black/90 disabled:cursor-not-allowed disabled:bg-black/20"
               >
-                {isProcessing ? "PROCESSING..." : `PAY ₹${finalPrice.toLocaleString("en-IN")} →`}
+                {isProcessing ? "PROCESSING..." : `PLACE ORDER — ₹${totalPrice.toLocaleString("en-IN")} →`}
               </button>
             </form>
           </div>
@@ -220,11 +308,6 @@ export default function CheckoutPage() {
                             <span className="font-inter text-sm font-semibold text-black/90">
                               ₹{(item.price * item.quantity).toLocaleString("en-IN")}
                             </span>
-                            {appliedCoupon && (
-                                <span className="font-inter text-[11px] font-bold text-[#388e3c]">
-                                  (₹2,000 / each)
-                                </span>
-                            )}
                           </div>
                         </div>
                       </div>
@@ -233,62 +316,10 @@ export default function CheckoutPage() {
 
                   {/* Totals */}
                   <div className="border-t border-black/10 pt-6 space-y-4">
-                    
-                    {/* Coupon Box */}
-                    <div className="flex gap-2 mb-2">
-                      <input 
-                        type="text" 
-                        value={couponInput}
-                        onChange={(e) => {
-                          setCouponInput(e.target.value.toUpperCase());
-                          setCouponError("");
-                        }}
-                        placeholder="Discount code" 
-                        className="flex-1 border border-black/20 bg-white px-3 py-3 font-inter text-sm text-black/90 outline-none uppercase tracking-widest focus:border-black/90"
-                      />
-                      <button 
-                        type="button"
-                        onClick={() => {
-                          if (!couponInput) return;
-                          if (couponInput === "L20-MCMF") {
-                            setAppliedCoupon(couponInput);
-                            setCouponError("");
-                            setCouponInput("");
-                          } else {
-                            setCouponError("Invalid coupon code.");
-                          }
-                        }}
-                        disabled={!couponInput}
-                        className="bg-black text-white px-6 font-bebas tracking-widest text-lg hover:bg-[#CC0000] disabled:bg-black/20 transition-all cursor-pointer"
-                      >
-                        APPLY
-                      </button>
-                    </div>
-                    {couponError && <p className="text-[#CC0000] text-xs font-inter font-medium">{couponError}</p>}
-                    {appliedCoupon && (
-                      <div className="flex items-center justify-between text-xs font-inter bg-green-50 px-3 py-2 border border-[#388e3c]/20">
-                        <span className="font-bold text-[#388e3c] tracking-widest uppercase">COUPON APPLIED: {appliedCoupon}</span>
-                        <button 
-                          type="button"
-                          className="text-black/50 hover:text-[#CC0000] font-bold text-lg leading-none"
-                          onClick={() => setAppliedCoupon(null)}
-                        >
-                          ×
-                        </button>
-                      </div>
-                    )}
-
                     <div className="flex justify-between font-inter text-sm pt-2">
                       <span className="text-black/70">Subtotal</span>
                       <span className="font-medium text-black/90">₹{totalPrice.toLocaleString("en-IN")}</span>
                     </div>
-                    
-                    {appliedCoupon && (
-                      <div className="flex justify-between font-inter text-sm text-[#388e3c]">
-                        <span>Discount ({appliedCoupon})</span>
-                        <span className="font-medium">-₹{discountAmount.toLocaleString("en-IN")}</span>
-                      </div>
-                    )}
 
                     <div className="flex justify-between font-inter text-sm">
                       <span className="text-black/70">Shipping</span>
@@ -297,7 +328,7 @@ export default function CheckoutPage() {
                     
                     <div className="flex justify-between border-t border-black/10 pt-4 font-bebas text-3xl tracking-wide">
                       <span className="text-black/90">Total</span>
-                      <span className="text-[#CC0000]">₹{finalPrice.toLocaleString("en-IN")}</span>
+                      <span className="text-[#CC0000]">₹{totalPrice.toLocaleString("en-IN")}</span>
                     </div>
                   </div>
                 </div>

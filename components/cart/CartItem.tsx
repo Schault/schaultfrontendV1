@@ -35,8 +35,12 @@ export default function CartItem({ item }: CartItemProps) {
           
           <div className="font-inter text-[9px] md:text-[10px] tracking-widest text-black/40 uppercase mb-4 flex flex-wrap items-center gap-x-2 gap-y-1">
             <span>SIZE | {item.size}</span>
-            <span className="hidden sm:inline text-black/10">|</span>
-            <span>COLOR | {item.image.includes('black') ? 'BLACK' : 'WHITE'}</span>
+            {item.color && (
+              <>
+                <span className="hidden sm:inline text-black/10">|</span>
+                <span>COLOR | {item.color}</span>
+              </>
+            )}
           </div>
         </div>
 
@@ -44,14 +48,14 @@ export default function CartItem({ item }: CartItemProps) {
           {/* Quantity Control */}
           <div className="flex items-center gap-4 md:gap-8 font-inter text-black/70">
             <button 
-              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+              onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)}
               className="hover:text-[#CC0000] transition-colors text-lg md:text-xl p-1"
             >
               -
             </button>
             <span className="text-sm md:text-base min-w-[1ch] text-center font-medium">{item.quantity}</span>
             <button 
-              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+              onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
               className="hover:text-[#CC0000] transition-colors text-lg md:text-xl p-1"
             >
               +
@@ -60,7 +64,7 @@ export default function CartItem({ item }: CartItemProps) {
 
           {/* Remove Link */}
           <button 
-            onClick={() => removeItem(item.id)}
+            onClick={() => removeItem(item.cartItemId)}
             className="font-inter text-[9px] md:text-[10px] tracking-widest text-black/40 uppercase hover:text-[#CC0000] transition-colors font-semibold"
           >
             REMOVE

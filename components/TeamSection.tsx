@@ -11,9 +11,9 @@ const teamData = {
     note: "I started Schault because I was tired of watching perfectly good shoes end up in landfills over a worn-out sole. As a Materials Science student at IIT Kanpur, I knew there had to be a smarter way — one where engineering meets everyday wear. Schault is that answer: modular, repairable, and built to last.",
   },
   mentors: [
-    { 
-      name: "DR. AMIT VERMA", 
-      title: "Materials Science Advisor", 
+    {
+      name: "DR. AMIT VERMA",
+      title: "Materials Science Advisor",
       image: "/images/mentor.jpeg",
       note: "Schault's approach to glue-less assembly is a case study in mechanical interlocking. By eliminating traditional adhesives, they've created a system that isn't just more sustainable, but also more durable and customizable than anything currently on the market."
     },
@@ -29,23 +29,23 @@ const teamData = {
     web: [
       { name: "AUGNIK BANERJEE", role: "WEB HEAD", image: "/placeholder.jpg" },
       { name: "MOHIT", role: "FRONTEND - IIT KANPUR", image: "/images/mohit.jpg" },
-      { name: "HARSHIT", role: "FRONTEND - IIT KANPUR", image: "/placeholder.jpg" },
+      { name: "HARSHIT", role: "BACKEND - IIT KANPUR", image: "/images/harshit.jpeg" },
       { name: "DEEVASH", role: "BACKEND", image: "/images/deevash.jpeg" },
     ],
   },
 };
 
-function TeamMemberCard({  
-  member, 
+function TeamMemberCard({
+  member,
   teamType,
   index
-}: { 
+}: {
   member: { name: string; role: string; image: string },
   teamType: 'content' | 'design' | 'web',
   index: number
 }) {
   const Icon = teamType === 'content' ? MessageSquare : teamType === 'design' ? PenTool : Code;
-  
+
   // Subtle halo background colors inspired by iLovePDF
   const halos = [
     'bg-[#F3F4F6]', // Light Gray
@@ -173,7 +173,7 @@ export default function TeamSection() {
         <h2 className="font-bebas text-[48px] md:text-[64px] tracking-wide text-black/90 mb-16 text-center uppercase">
           CORE TEAM
         </h2>
-        
+
         {/* Combined Content & Design Team - 4 members total */}
         <div className="mb-20">
           <h3 className="font-bebas text-2xl tracking-widest text-black/90 text-center pb-4 mb-10 border-b border-black/5">

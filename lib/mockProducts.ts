@@ -3,6 +3,7 @@ import { Product } from "@/components/shop/ProductCard";
 export const MOCK_PRODUCTS: Product[] = [
   {
     id: "1",
+    slug: "blue-white-sneaker",
     name: "BLUE WHITE SNEAKER",
     price: 2500,
     originalPrice: 4000,
@@ -16,6 +17,7 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "2",
+    slug: "brown-black-sneaker",
     name: "BROWN BLACK SNEAKER",
     price: 2500,
     originalPrice: 4000,
@@ -29,6 +31,7 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "3",
+    slug: "dark-blue-sneaker",
     name: "DARK BLUE SNEAKER",
     price: 2500,
     originalPrice: 4000,
@@ -42,6 +45,7 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "4",
+    slug: "triple-white-sneaker",
     name: "TRIPLE WHITE SNEAKER",
     price: 2500,
     originalPrice: 4000,
@@ -55,6 +59,7 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "5",
+    slug: "yellow-accent-sneaker",
     name: "YELLOW ACCENT SNEAKER",
     price: 2500,
     originalPrice: 4000,

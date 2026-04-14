@@ -1,54 +1,138 @@
 "use client";
 
 import { useCart } from "@/context/CartContext";
-import { notFound } from "next/navigation";
-import { useState, useMemo } from "react";
+import { notFound, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { MOCK_PRODUCTS } from "@/lib/mockProducts";
 import Image from "next/image";
+import toast from "react-hot-toast";
+import { getProductById, getProductImage, type SupabaseProduct, type ProductVariant } from "@/lib/api/products";
 
 export default function ProductPage({ params }: { params: { id: string } }) {
   const { addItem } = useCart();
+  const router = useRouter();
+  const [product, setProduct] = useState<SupabaseProduct | null>(null);
+  const [loading, setLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [addingToCart, setAddingToCart] = useState(false);
 
-  // Find product from mocked data
-  const product = useMemo(() => {
-    const p = MOCK_PRODUCTS.find((p) => p.id === params.id);
-    return p || null;
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const data = await getProductById(params.id);
+        if (!cancelled) {
+          setProduct(data);
+          if (data) {
+            // Set default color from first variant
+            const colors = Array.from(new Set(data.product_variants.map((v) => v.color).filter(Boolean)));
+            if (colors.length > 0) {
+              setSelectedColor(colors[0]!);
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch product:", err);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
   }, [params.id]);
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-[#F1F3F6] pt-20 pb-12 font-inter">
+        <div className="max-w-[1440px] mx-auto px-4 md:px-12">
+          <div className="animate-pulse space-y-8 pt-8">
+            <div className="h-4 w-48 bg-black/5" />
+            <div className="flex flex-col lg:flex-row gap-8">
+              <div className="w-full lg:w-[60%]">
+                <div className="grid grid-cols-2 gap-2">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="aspect-square bg-black/5" />
+                  ))}
+                </div>
+              </div>
+              <div className="w-full lg:w-[40%] space-y-4">
+                <div className="h-10 bg-black/5 w-3/4" />
+                <div className="h-6 bg-black/5 w-1/3" />
+                <div className="h-8 bg-black/5 w-1/2" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   if (!product) {
     return notFound();
   }
 
-  // Set default color
-  if (!selectedColor && product.colors.length > 0) {
-    setSelectedColor(product.colors[0].name);
-  }
+  const image = getProductImage(product.slug);
 
-  const discount = product.originalPrice 
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) 
-    : 0;
+  // Get unique colors and sizes from variants
+  const uniqueColors = Array.from(new Set(product.product_variants.map((v) => v.color).filter(Boolean))) as string[];
+  const uniqueSizes = Array.from(new Set(product.product_variants.map((v) => v.size)));
 
-  const handleAddToCart = () => {
-    if (!selectedSize) return;
-
-    addItem({
-      id: `${product.id}-${selectedSize}-${selectedColor}`,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      quantity: 1,
-      color: selectedColor || undefined,
-      size: selectedSize
-    });
+  // Find the selected variant
+  const getSelectedVariant = (): ProductVariant | undefined => {
+    return product.product_variants.find(
+      (v) =>
+        v.size === selectedSize &&
+        (uniqueColors.length === 0 || v.color === selectedColor)
+    );
   };
 
-  const handleBuyNow = () => {
-    handleAddToCart();
-    // In a real app, this would route to checkout immediately
-    alert("Redirecting to checkout...");
+  // Check if a size is available (has stock for the selected color)
+  const isSizeAvailable = (size: string): boolean => {
+    return product.product_variants.some(
+      (v) =>
+        v.size === size &&
+        v.stock_quantity > 0 &&
+        (uniqueColors.length === 0 || v.color === selectedColor)
+    );
+  };
+
+  const handleAddToCart = async () => {
+    if (!selectedSize) {
+      toast.error("Please select a size first.");
+      return;
+    }
+
+    const variant = getSelectedVariant();
+    if (!variant) {
+      toast.error("Selected variant not found.");
+      return;
+    }
+    if (variant.stock_quantity <= 0) {
+      toast.error("This variant is out of stock.");
+      return;
+    }
+
+    setAddingToCart(true);
+    try {
+      await addItem(
+        variant.id,
+        product.slug,
+        product.name,
+        product.base_price,
+        variant.size,
+        variant.color,
+      );
+      toast.success("Added to cart!");
+    } catch (err: any) {
+      toast.error(err.message || "Failed to add to cart. Please log in.");
+    } finally {
+      setAddingToCart(false);
+    }
+  };
+
+  const handleBuyNow = async () => {
+    await handleAddToCart();
+    router.push("/checkout");
   };
 
   return (
@@ -60,8 +144,6 @@ export default function ProductPage({ params }: { params: { id: string } }) {
           <span>/</span> 
           <Link href="/shop" className="hover:text-black transition-colors">Shop</Link>
           <span>/</span> 
-          <span className="hover:text-black transition-colors cursor-pointer">{product.category}</span>
-          <span>/</span>
           <span className="text-black/90 font-medium truncate">{product.name}</span>
         </div>
 
@@ -70,12 +152,12 @@ export default function ProductPage({ params }: { params: { id: string } }) {
           
           {/* LEFT: Image Gallery */}
           <div className="w-full lg:w-[60%] lg:sticky top-24 shrink-0 flex flex-col gap-2">
-            {/* Desktop 2x2 Grid (Mocked) */}
+            {/* Desktop 2x2 Grid */}
             <div className="hidden lg:grid grid-cols-2 gap-2">
               {[1, 2, 3, 4].map((idx) => (
                 <div key={idx} className="relative aspect-square bg-white border border-black/5 flex items-center justify-center p-8 group overflow-hidden">
                   <Image
-                    src={product.image}
+                    src={image}
                     alt={`${product.name} View ${idx}`}
                     fill
                     className={`object-contain transition-transform duration-700 group-hover:scale-105 p-8 ${idx > 1 ? "scale-90 opacity-90" : ""}`}
@@ -84,12 +166,12 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               ))}
             </div>
 
-            {/* Mobile Horizon Swipe */}
+            {/* Mobile Horizontal Swipe */}
             <div className="lg:hidden flex w-full overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] border border-black/5 bg-white">
               {[1, 2, 3, 4].map((idx) => (
                 <div key={idx} className="relative w-full shrink-0 snap-center aspect-square flex items-center justify-center p-8">
                   <Image
-                    src={product.image}
+                    src={image}
                     alt={`${product.name} View ${idx}`}
                     fill
                     className="object-contain p-8"
@@ -98,17 +180,19 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               ))}
             </div>
             
-            {/* Action Buttons (Desktop only - Mobile has fixed bottom bar) */}
+            {/* Action Buttons (Desktop only) */}
             <div className="hidden lg:flex gap-4 mt-4 h-16">
               <button
                 onClick={handleAddToCart}
-                className="flex-1 border-2 border-black/10 hover:border-black bg-white text-black font-bebas text-2xl tracking-wider transition-all duration-300"
+                disabled={addingToCart || !selectedSize}
+                className="flex-1 border-2 border-black/10 hover:border-black bg-white text-black font-bebas text-2xl tracking-wider transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                ADD TO CART
+                {addingToCart ? "ADDING..." : "ADD TO CART"}
               </button>
               <button
                 onClick={handleBuyNow}
-                className="flex-1 bg-[#CC0000] text-white font-bebas text-2xl tracking-wider transition-all hover:bg-black"
+                disabled={addingToCart || !selectedSize}
+                className="flex-1 bg-[#CC0000] text-white font-bebas text-2xl tracking-wider transition-all hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 BUY NOW
               </button>
@@ -121,22 +205,12 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             <h1 className="font-bebas text-3xl sm:text-4xl lg:text-5xl tracking-wide text-black/95 leading-[1.1]">
               {product.name}
             </h1>
-            <p className="mt-2 text-sm text-black/50 tracking-wide uppercase">{product.category}</p>
+            <p className="mt-2 text-sm text-black/50 tracking-wide uppercase">Shoes & Bags</p>
 
             <div className="mt-6 flex flex-wrap items-baseline gap-3 pb-6 border-b border-black/10">
               <span className="font-inter text-3xl font-bold text-black/90">
-                ₹{product.price.toLocaleString("en-IN")}
+                ₹{product.base_price.toLocaleString("en-IN")}
               </span>
-              {product.originalPrice && (
-                <>
-                  <span className="font-inter text-lg text-black/40 line-through">
-                    ₹{product.originalPrice.toLocaleString("en-IN")}
-                  </span>
-                  <span className="font-inter text-base font-bold text-[#388e3c]">
-                    {discount}% off
-                  </span>
-                </>
-              )}
             </div>
 
             {/* Special Offers Block */}
@@ -146,33 +220,34 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                 <div>
                   <h4 className="font-bold text-sm text-black/90">Available offers</h4>
                   <ul className="mt-2 space-y-2 text-xs text-black/70 font-inter">
-                    <li><span className="font-bold text-black/80">Bank Offer</span> 5% Unlimited Cashback on Schault Axis Bank Credit Card</li>
-                    <li><span className="font-bold text-black/80">Special Price</span> Get extra ₹1500 off (price inclusive of cashback/coupon)</li>
-                    <li><span className="font-bold text-black/80">Partner Offer</span> Sign up for Schault Pay Later and get free exclusive patches</li>
+                    <li><span className="font-bold text-black/80">Free Shipping</span> on all orders</li>
+                    <li><span className="font-bold text-black/80">Modular Design</span> Replace individual components when worn out</li>
                   </ul>
                 </div>
               </div>
             </div>
 
             {/* Color Selection */}
-            {product.colors && product.colors.length > 0 && (
+            {uniqueColors.length > 0 && (
               <div className="mt-8">
                 <h3 className="font-inter text-sm text-black/50 uppercase tracking-widest font-semibold mb-3">
                   Color <span className="text-black/80 capitalize font-normal">— {selectedColor}</span>
                 </h3>
                 <div className="flex gap-3">
-                  {product.colors.map((color) => (
+                  {uniqueColors.map((color) => (
                     <button
-                      key={color.name}
-                      onClick={() => setSelectedColor(color.name)}
-                      className={`w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all ${
-                        selectedColor === color.name ? "border-[#CC0000] p-1 scale-110" : "border-black/10 hover:border-black/30"
+                      key={color}
+                      onClick={() => {
+                        setSelectedColor(color);
+                        setSelectedSize(null); // Reset size when color changes
+                      }}
+                      className={`px-4 py-2 border text-sm font-inter transition-all ${
+                        selectedColor === color
+                          ? "border-black bg-black text-white"
+                          : "border-black/20 bg-white text-black/70 hover:border-black/40"
                       }`}
                     >
-                      <span 
-                        className="w-full h-full rounded-full shadow-inner block"
-                        style={{ backgroundColor: color.hex }}
-                      />
+                      {color}
                     </button>
                   ))}
                 </div>
@@ -180,33 +255,32 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             )}
 
             {/* Size Selection */}
-            {product.sizes && product.sizes.length > 0 && (
+            {uniqueSizes.length > 0 && (
               <div className="mt-8">
                 <div className="flex justify-between items-baseline mb-3">
                   <h3 className="font-inter text-sm text-black/50 uppercase tracking-widest font-semibold">
                     Size
                   </h3>
-                  <button className="text-xs text-[#CC0000] font-semibold hover:underline">Size Chart</button>
                 </div>
                 <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
-                  {product.sizes.map((size) => {
-                    const isAvailable = size === "9";
+                  {uniqueSizes.map((size) => {
+                    const available = isSizeAvailable(size);
                     return (
                       <button
                         key={size}
-                        disabled={!isAvailable}
+                        disabled={!available}
                         onClick={() => setSelectedSize(size)}
                         className={`
                           pt-2 pb-1.5 font-bebas text-lg border transition-all duration-200 ease-out flex items-center justify-center relative overflow-hidden
-                          ${!isAvailable 
+                          ${!available 
                               ? "border-black/10 bg-[#F5F5F5] text-black/30 cursor-not-allowed"
                               : selectedSize === size
                                 ? "border-black bg-black text-white"
                                 : "border-black/20 bg-white text-black hover:border-black/60"
                           }`}
                       >
-                        <span className={!isAvailable ? "line-through" : ""}>{size}</span>
-                        {!isAvailable && (
+                        <span className={!available ? "line-through" : ""}>{size}</span>
+                        {!available && (
                            <div className="absolute inset-0 w-full h-[1px] bg-black/10 top-1/2 -rotate-[35deg] origin-center scale-150" />
                         )}
                       </button>
@@ -219,27 +293,12 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               </div>
             )}
 
-            {/* Description / Static Specs */}
+            {/* Description */}
             <div className="mt-12 pt-6 border-t border-black/10">
               <h3 className="font-bebas text-xl tracking-wide text-black/90 mb-4">Product Details</h3>
               <p className="font-inter text-sm leading-relaxed text-black/70">
-                Engineered for maximum modularity, the {product.name} lets you swap components effortlessly, meaning you only replace what's worn out. Features advanced breathability, patented snap-fit connectors, and uncompromising brutalist aesthetics.
+                {product.description || `Engineered for maximum modularity, the ${product.name} lets you swap components effortlessly. Features advanced breathability, patented snap-fit connectors, and uncompromising brutalist aesthetics.`}
               </p>
-              
-              <ul className="mt-6 space-y-3 font-inter text-sm text-black/80">
-                <li className="flex gap-4">
-                  <span className="text-black/50 w-24">Material</span>
-                  <span className="flex-1 font-medium">Durable Synthetic & Recycled Canvas</span>
-                </li>
-                <li className="flex gap-4">
-                  <span className="text-black/50 w-24">Fit</span>
-                  <span className="flex-1 font-medium">Regular, True to Size</span>
-                </li>
-                <li className="flex gap-4">
-                  <span className="text-black/50 w-24">Care</span>
-                  <span className="flex-1 font-medium">Machine washable upper, wipe clean sole.</span>
-                </li>
-              </ul>
             </div>
 
             {/* Buffer space for mobile sticky bar */}
@@ -253,13 +312,15 @@ export default function ProductPage({ params }: { params: { id: string } }) {
       <div className="lg:hidden fixed bottom-0 left-0 w-full h-16 bg-white grid grid-cols-2 border-t border-black/10 z-[100] shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
         <button
           onClick={handleAddToCart}
-          className="flex items-center justify-center font-bebas text-xl text-black tracking-widest border-r border-black/10 bg-white active:bg-black/5 transition-colors"
+          disabled={addingToCart || !selectedSize}
+          className="flex items-center justify-center font-bebas text-xl text-black tracking-widest border-r border-black/10 bg-white active:bg-black/5 transition-colors disabled:opacity-50"
         >
-          ADD TO CART
+          {addingToCart ? "ADDING..." : "ADD TO CART"}
         </button>
         <button
           onClick={handleBuyNow}
-          className="flex items-center justify-center font-bebas text-xl text-white tracking-widest bg-[#CC0000] active:bg-black transition-colors"
+          disabled={addingToCart || !selectedSize}
+          className="flex items-center justify-center font-bebas text-xl text-white tracking-widest bg-[#CC0000] active:bg-black transition-colors disabled:opacity-50"
         >
           BUY NOW
         </button>

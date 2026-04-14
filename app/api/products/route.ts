@@ -1,18 +1,38 @@
 import { NextResponse } from "next/server";
-import { getProducts } from "@/lib/shopify";
+import { createClient } from "@/utils/supabase/server";
 
-export const revalidate = 60; // ISR – revalidate every 60 seconds
+export const dynamic = "force-dynamic";
 
 export async function GET() {
     try {
-        const products = await getProducts(20);
+        const supabase = createClient();
+        const { data, error } = await supabase
+            .from("products")
+            .select(`
+                id,
+                name,
+                slug,
+                description,
+                base_price,
+                is_active,
+                created_at,
+                product_variants (
+                    id,
+                    size,
+                    color,
+                    sku,
+                    stock_quantity
+                )
+            `)
+            .eq("is_active", true)
+            .order("created_at", { ascending: false });
 
-        if (!products) {
-            // Shopify not configured – return empty so the frontend uses mocks
+        if (error) {
+            console.error("[API /products] Supabase error:", error);
             return NextResponse.json([], { status: 200 });
         }
 
-        return NextResponse.json(products, { status: 200 });
+        return NextResponse.json(data || [], { status: 200 });
     } catch (error) {
         console.error("[API /products] Error:", error);
         return NextResponse.json([], { status: 200 });

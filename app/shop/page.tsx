@@ -1,20 +1,56 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import { ChevronRight, SlidersHorizontal, ArrowUpDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import FilterSidebar from "@/components/shop/FilterSidebar";
 import ProductGrid from "@/components/shop/ProductGrid";
-import CategorySection from "@/components/shop/CategorySection";
 import CatalogCTA from "@/components/shop/CatalogCTA";
 import { Product } from "@/components/shop/ProductCard";
-import { MOCK_PRODUCTS } from "@/lib/mockProducts";
+import { getProducts, getProductImage, type SupabaseProduct } from "@/lib/api/products";
+
+/** Map a Supabase product to the existing ProductCard interface. */
+function toShopProduct(p: SupabaseProduct): Product {
+  // Collect unique colors from variants
+  const colorsMap = new Map<string, string>();
+  const sizes: string[] = [];
+  p.product_variants.forEach((v) => {
+    if (v.color && !colorsMap.has(v.color)) {
+      colorsMap.set(v.color, v.color); // hex not available in DB, use name
+    }
+    if (!sizes.includes(v.size)) {
+      sizes.push(v.size);
+    }
+  });
+
+  const colors = Array.from(colorsMap.entries()).map(([name]) => ({
+    name,
+    hex: "#888888", // DB doesn't store hex — neutral fallback
+  }));
+
+  return {
+    id: p.id,       // UUID
+    slug: p.slug,
+    name: p.name.toUpperCase(),
+    price: p.base_price,
+    originalPrice: undefined,
+    rating: undefined,
+    image: getProductImage(p.slug),
+    category: "Shoes & Bags",
+    colors: colors.length > 0 ? colors : [{ name: "Default", hex: "#888888" }],
+    sizes,
+    variants: p.product_variants,
+  };
+}
 
 export default function ShopPage() {
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   const [filters, setFilters] = useState({
     category: "",
-    price: { min: 1000, max: 15000 },
+    price: { min: 0, max: 50000 },
     color: "",
     size: ""
   });
@@ -22,10 +58,28 @@ export default function ShopPage() {
   const [sortBy, setSortBy] = useState("popularity");
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
 
-  const categories = ["All", "Jackets", "Shirts", "Pants", "Hoodies", "Shoes & Bags", "Accessories", "T-Shirts"];
+  const categories = ["All", "Shoes & Bags"];
+
+  // Fetch products from Supabase on mount
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const data = await getProducts();
+        if (!cancelled) {
+          setAllProducts(data.map(toShopProduct));
+        }
+      } catch (err) {
+        console.error("Failed to fetch products:", err);
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   const filteredProducts = useMemo(() => {
-    let result = MOCK_PRODUCTS.filter(product => {
+    let result = allProducts.filter(product => {
       const matchCategory = !filters.category || filters.category === "All" || product.category === filters.category;
       const matchPrice = product.price >= filters.price.min && product.price <= filters.price.max;
       const matchColor = !filters.color || product.colors.some(c => c.name === filters.color);
@@ -40,15 +94,15 @@ export default function ShopPage() {
     } else if (sortBy === "high-low") {
       result.sort((a, b) => b.price - a.price);
     } else if (sortBy === "newest") {
-      result.sort((a, b) => Number(b.id) - Number(a.id));
+      result.reverse();
     }
 
     return result;
-  }, [filters, sortBy]);
+  }, [allProducts, filters, sortBy]);
 
   const removeFilter = (key: string) => {
     if (key === "price") {
-      setFilters(prev => ({ ...prev, price: { min: 1000, max: 15000 } }));
+      setFilters(prev => ({ ...prev, price: { min: 0, max: 50000 } }));
     } else {
       setFilters(prev => ({ ...prev, [key]: "" }));
     }
@@ -123,13 +177,25 @@ export default function ShopPage() {
 
           {/* Product Area */}
           <div className="flex-1 bg-white p-4 md:p-6 rounded-sm shadow-sm min-w-0">
-            <ProductGrid
-              products={filteredProducts}
-              totalCount={MOCK_PRODUCTS.length}
-              activeFilters={filters}
-              onRemoveFilter={removeFilter}
-              onSortChange={setSortBy}
-            />
+            {isLoading ? (
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-x-2 gap-y-4 md:gap-x-6 md:gap-y-10">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div key={i} className="animate-pulse">
+                    <div className="aspect-square bg-black/5 mb-4" />
+                    <div className="h-4 bg-black/5 mb-2 w-3/4" />
+                    <div className="h-3 bg-black/5 w-1/2" />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <ProductGrid
+                products={filteredProducts}
+                totalCount={allProducts.length}
+                activeFilters={filters}
+                onRemoveFilter={removeFilter}
+                onSortChange={setSortBy}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -187,7 +253,7 @@ export default function ShopPage() {
               <div className="p-4 bg-white border-t border-black/10 grid grid-cols-2 gap-4">
                 <button 
                   onClick={() => {
-                    setFilters({ category: "", price: { min: 1000, max: 15000 }, color: "", size: "" });
+                    setFilters({ category: "", price: { min: 0, max: 50000 }, color: "", size: "" });
                     setIsFilterDrawerOpen(false);
                   }}
                   className="py-3 text-xs font-bold border border-black/10 uppercase tracking-widest"
