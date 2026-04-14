@@ -53,14 +53,14 @@ export default function AboutSection() {
               Built from discomfort. Designed for everyone.
             </h2>
             <p className="mt-6 font-inter text-sm leading-relaxed text-black/70">
-              SCHAULT was born from a simple frustration — why throw away an
+              SCHAULT was born from a simple frustration, why throw away an
               entire shoe when only one part is worn out? Founder Harsh
               Maheshwari, a Materials Science & Engineering student at IIT
-              Kanpur, spent over a year prototyping a solution.
+              Kanpur, spent over 2 years prototyping a solution.
             </p>
             <p className="mt-4 font-inter text-sm leading-relaxed text-black/70">
               The result is a patented modular footwear system that lets you
-              replace parts, not the entire shoe — reducing waste, saving money,
+              replace parts, not the entire shoe, reducing waste, saving money,
               and giving you more control over what you wear.
             </p>
             <Link

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { Heart, Star } from "lucide-react";
 import { useCart } from "@/context/CartContext";
@@ -28,9 +29,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     : 0;
 
   return (
-    <div className="group flex flex-col bg-white border border-black/[0.03] hover:shadow-lg transition-shadow duration-300 h-full">
+    <div className="group flex flex-col bg-white border border-black/[0.03] hover:shadow-lg transition-shadow duration-300 h-full relative">
       {/* Image Container */}
-      <div className="relative aspect-[3/4] bg-white overflow-hidden">
+      <Link href={`/product/${product.id}`} className="relative aspect-square bg-white overflow-hidden block">
         <div className="absolute inset-4">
           <Image
             src={product.image}
@@ -40,25 +41,27 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           />
         </div>
         
-        {/* Wishlist Heart */}
-        <button className="absolute top-2.5 right-2.5 p-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-black/5 text-black/30 hover:text-[#CC0000] hover:bg-white transition-all shadow-sm z-10">
-          <Heart size={16} />
-        </button>
-
         {/* Rating Badge */}
         {product.rating && (
           <div className="absolute bottom-2.5 left-2.5 flex items-center gap-0.5 bg-green-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm z-10">
             {product.rating} <Star size={8} fill="currentColor" stroke="none" />
           </div>
         )}
-      </div>
+      </Link>
+
+      {/* Wishlist Heart */}
+      <button className="absolute top-2.5 right-2.5 p-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-black/5 text-black/30 hover:text-[#CC0000] hover:bg-white transition-all shadow-sm z-10">
+        <Heart size={16} />
+      </button>
 
       {/* Product Info */}
-      <div className="flex flex-col p-3 space-y-2">
+      <div className="flex flex-col p-3 space-y-2 flex-grow">
         <div>
-          <h3 className="font-inter text-[13px] text-black/90 font-medium line-clamp-1">
-            {product.name}
-          </h3>
+          <Link href={`/product/${product.id}`}>
+            <h3 className="font-inter text-[13px] text-black/90 font-medium line-clamp-1 hover:text-[#CC0000] transition-colors">
+              {product.name}
+            </h3>
+          </Link>
           <p className="font-inter text-[11px] text-black/40 uppercase tracking-wider mt-0.5">
             {product.category}
           </p>

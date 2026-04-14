@@ -1,278 +1,270 @@
 "use client";
 
-import { SHOES } from "@/lib/data";
-import { useCart } from "@/components/providers";
+import { useCart } from "@/context/CartContext";
 import { notFound } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import type { ShopifyProduct } from "@/lib/shopify";
-
-// ── Types ───────────────────────────────────────────────────────────────────
-
-type ResolvedProduct = {
-    id: string;
-    name: string;
-    tagline: string;
-    description: string;
-    specs: string[];
-    price: string;
-    priceValue: number;
-    image: string;
-    images: string[];
-    availableSizes: string[];
-    allSizes: string[];
-    variantId?: string; // real Shopify GID
-};
-
-function shopifyToResolved(p: ShopifyProduct): ResolvedProduct {
-    const price = p.priceRange.minVariantPrice;
-
-    // Map variants to available sizes strings (support shoes, soles, apparel)
-    const allSizes: string[] = [];
-    const availableSizes: string[] = [];
-
-    p.variants.edges.forEach(({ node: v }) => {
-        if (v.title && v.title.toLowerCase() !== "default title") {
-            allSizes.push(v.title);
-            if (v.availableForSale) {
-                availableSizes.push(v.title);
-            }
-        }
-    });
-
-    // If Shopify returns no variants, default to none
-    const finalAllSizes = allSizes.length > 0 ? allSizes : [];
-    const finalAvailableSizes = availableSizes.length > 0 ? availableSizes : finalAllSizes;
-
-    const images = p.images.edges.map(e => e.node.url);
-    if (images.length === 0) images.push("/images/shoes/bluewhite.jpg");
-
-    return {
-        id: p.handle,
-        name: p.title,
-        tagline: p.tags.join(" · ") || p.title,
-        description: p.description,
-        specs: [],
-        price: `$${parseFloat(price.amount).toFixed(2)}`,
-        priceValue: parseFloat(price.amount),
-        image: images[0],
-        images: images,
-        availableSizes: finalAvailableSizes,
-        allSizes: finalAllSizes,
-        variantId: p.variants.edges[0]?.node.id,
-    };
-}
-
-// ── Component ───────────────────────────────────────────────────────────────
+import { MOCK_PRODUCTS } from "@/lib/mockProducts";
+import Image from "next/image";
 
 export default function ProductPage({ params }: { params: { id: string } }) {
-    const { addItem } = useCart();
-    const [selectedSize, setSelectedSize] = useState<string | null>(null);
-    const [shoe, setShoe] = useState<ResolvedProduct | null>(null);
-    const [loading, setLoading] = useState(true);
+  const { addItem } = useCart();
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
-    const [recommended, setRecommended] = useState<ResolvedProduct[] | null>(null);
+  // Find product from mocked data
+  const product = useMemo(() => {
+    const p = MOCK_PRODUCTS.find((p) => p.id === params.id);
+    return p || null;
+  }, [params.id]);
 
-    // Try to fetch the Shopify version of the product and recommendations
-    useEffect(() => {
-        async function fetchShopify() {
-            try {
-                // Fetch current product
-                const res = await fetch(`/api/products/${params.id}`);
-                if (res.ok) {
-                    const data: ShopifyProduct | null = await res.json();
-                    if (data) {
-                        setShoe(shopifyToResolved(data));
-                    }
-                }
+  if (!product) {
+    return notFound();
+  }
 
-                // Fetch recommended products
-                const recRes = await fetch(`/api/products`);
-                if (recRes.ok) {
-                    const allData: ShopifyProduct[] | null = await recRes.json();
-                    if (allData) {
-                        setRecommended(allData.map(shopifyToResolved));
-                    }
-                }
-            } catch {
-                // Shopify not configured – keep mock
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchShopify();
-    }, [params.id]);
+  // Set default color
+  if (!selectedColor && product.colors.length > 0) {
+    setSelectedColor(product.colors[0].name);
+  }
 
-    if (!shoe && !loading) {
-        return notFound();
-    }
+  const discount = product.originalPrice 
+    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) 
+    : 0;
 
-    if (!shoe) {
-        return (
-            <main className="min-h-screen bg-[#F5F5F5] pt-24 pb-12 flex items-center justify-center">
-                <div className="animate-pulse text-black/40 font-inter text-sm">Loading product…</div>
-            </main>
-        );
-    }
+  const handleAddToCart = () => {
+    if (!selectedSize) return;
 
-    const otherShoes = recommended
-        ? recommended.filter((s) => s.id !== shoe.id).slice(0, 4)
-        : [];
+    addItem({
+      id: `${product.id}-${selectedSize}-${selectedColor}`,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      quantity: 1,
+      color: selectedColor || undefined,
+      size: selectedSize
+    });
+  };
 
-    const handleAddToCart = () => {
-        if (!selectedSize) return;
+  const handleBuyNow = () => {
+    handleAddToCart();
+    // In a real app, this would route to checkout immediately
+    alert("Redirecting to checkout...");
+  };
 
-        // Find variant matching size for Shopify checkout
-        let variantId = shoe.variantId || `${shoe.id}-${selectedSize}`;
+  return (
+    <main className="min-h-screen bg-[#F1F3F6] pt-20 pb-12 font-inter">
+      <div className="max-w-[1440px] mx-auto px-4 md:px-12">
+        {/* Breadcrumbs */}
+        <div className="flex items-center gap-2 text-[10px] text-black/50 py-4 uppercase tracking-widest font-inter">
+          <Link href="/" className="hover:text-black transition-colors">Home</Link> 
+          <span>/</span> 
+          <Link href="/shop" className="hover:text-black transition-colors">Shop</Link>
+          <span>/</span> 
+          <span className="hover:text-black transition-colors cursor-pointer">{product.category}</span>
+          <span>/</span>
+          <span className="text-black/90 font-medium truncate">{product.name}</span>
+        </div>
 
-        addItem({
-            id: `${shoe.id}-${selectedSize}`,
-            shoeId: shoe.id,
-            name: shoe.name,
-            image: shoe.image,
-            price: shoe.priceValue,
-            size: selectedSize,
-            quantity: 1,
-            variantId,
-        });
-    };
-
-    return (
-        <main className="min-h-screen bg-[#F5F5F5] pt-24 pb-12">
-            {/* Product Detail Section */}
-            <section className="mx-auto max-w-7xl px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 relative items-start">
-
-                {/* Left Column: Image Carousel */}
-                <div className="relative sticky top-24">
-                    <div className="flex w-full overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
-                        {shoe.images.map((img, idx) => (
-                            <div key={idx} className="w-full shrink-0 snap-center bg-[#F1F1F1] aspect-[4/3] lg:aspect-[4/5] flex items-center justify-center p-8">
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                    src={img}
-                                    alt={`${shoe.name} - View ${idx + 1}`}
-                                    className="w-full h-full object-contain drop-shadow-2xl"
-                                />
-                            </div>
-                        ))}
-                    </div>
-                    {shoe.images.length > 1 && (
-                        <div className="flex justify-center gap-3 mt-6">
-                            {shoe.images.map((_, idx) => (
-                                <div key={idx} className="w-1.5 h-1.5 rounded-full bg-black/20" />
-                            ))}
-                        </div>
-                    )}
+        {/* Main PDP Grid */}
+        <div className="flex flex-col lg:flex-row gap-8 items-start relative mt-2">
+          
+          {/* LEFT: Image Gallery */}
+          <div className="w-full lg:w-[60%] lg:sticky top-24 shrink-0 flex flex-col gap-2">
+            {/* Desktop 2x2 Grid (Mocked) */}
+            <div className="hidden lg:grid grid-cols-2 gap-2">
+              {[1, 2, 3, 4].map((idx) => (
+                <div key={idx} className="relative aspect-square bg-white border border-black/5 flex items-center justify-center p-8 group overflow-hidden">
+                  <Image
+                    src={product.image}
+                    alt={`${product.name} View ${idx}`}
+                    fill
+                    className={`object-contain transition-transform duration-700 group-hover:scale-105 p-8 ${idx > 1 ? "scale-90 opacity-90" : ""}`}
+                  />
                 </div>
+              ))}
+            </div>
 
-                {/* Right Column: Details & Actions */}
-                <div className="flex flex-col pt-8">
-                    <Link href="/shop" className="mb-6 inline-flex items-center gap-2 font-inter text-sm text-black/50 hover:text-[#CC0000] transition-colors w-fit">
-                        <span>&larr;</span> Back to Shop
-                    </Link>
-                    <h1 className="font-bebas text-4xl md:text-5xl tracking-wide text-black/95">
-                        {shoe.name}
-                    </h1>
-                    <p className="mt-2 font-inter text-lg text-black/60">
-                        {shoe.tagline}
-                    </p>
-                    <p className="mt-4 font-semibold font-inter text-2xl text-black">
-                        {shoe.price}
-                    </p>
+            {/* Mobile Horizon Swipe */}
+            <div className="lg:hidden flex w-full overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] border border-black/5 bg-white">
+              {[1, 2, 3, 4].map((idx) => (
+                <div key={idx} className="relative w-full shrink-0 snap-center aspect-square flex items-center justify-center p-8">
+                  <Image
+                    src={product.image}
+                    alt={`${product.name} View ${idx}`}
+                    fill
+                    className="object-contain p-8"
+                  />
+                </div>
+              ))}
+            </div>
+            
+            {/* Action Buttons (Desktop only - Mobile has fixed bottom bar) */}
+            <div className="hidden lg:flex gap-4 mt-4 h-16">
+              <button
+                onClick={handleAddToCart}
+                className="flex-1 border-2 border-black/10 hover:border-black bg-white text-black font-bebas text-2xl tracking-wider transition-all duration-300"
+              >
+                ADD TO CART
+              </button>
+              <button
+                onClick={handleBuyNow}
+                className="flex-1 bg-[#CC0000] text-white font-bebas text-2xl tracking-wider transition-all hover:bg-black"
+              >
+                BUY NOW
+              </button>
+            </div>
+          </div>
 
-                    {shoe.allSizes.length > 0 && (
-                        <>
-                            <div className="mt-8 mb-4">
-                                <h3 className="font-inter font-medium text-sm text-black/80">Select Size</h3>
-                            </div>
+          {/* RIGHT: Product Info */}
+          <div className="w-full lg:w-[40%] flex flex-col pt-2 md:pt-0 bg-transparent lg:bg-white lg:p-8 lg:border lg:border-black/5 relative">
+            
+            <h1 className="font-bebas text-3xl sm:text-4xl lg:text-5xl tracking-wide text-black/95 leading-[1.1]">
+              {product.name}
+            </h1>
+            <p className="mt-2 text-sm text-black/50 tracking-wide uppercase">{product.category}</p>
 
-                            <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
-                                {shoe.allSizes.map((size) => {
-                                    const isAvailable = shoe.availableSizes.includes(size);
-                                    const isSelected = selectedSize === size;
-                                    return (
-                                        <button
-                                            key={size}
-                                            disabled={!isAvailable}
-                                            onClick={() => setSelectedSize(size)}
-                                            className={`
-                            py-3 px-2 font-inter text-sm border transition-all duration-200 ease-out truncate
-                            ${isAvailable
-                                                    ? isSelected
-                                                        ? "border-black bg-black text-white"
-                                                        : "border-black/20 bg-white text-black hover:border-black/60"
-                                                    : "border-black/10 bg-black/5 text-black/30 cursor-not-allowed"}`}
-                                        >
-                                            {size}
-                                        </button>
-                                    );
-                                })}
-                            </div>
-                        </>
-                    )}
+            <div className="mt-6 flex flex-wrap items-baseline gap-3 pb-6 border-b border-black/10">
+              <span className="font-inter text-3xl font-bold text-black/90">
+                ₹{product.price.toLocaleString("en-IN")}
+              </span>
+              {product.originalPrice && (
+                <>
+                  <span className="font-inter text-lg text-black/40 line-through">
+                    ₹{product.originalPrice.toLocaleString("en-IN")}
+                  </span>
+                  <span className="font-inter text-base font-bold text-[#388e3c]">
+                    {discount}% off
+                  </span>
+                </>
+              )}
+            </div>
 
+            {/* Special Offers Block */}
+            <div className="mt-6 border border-dashed border-black/20 p-4 bg-green-50/30">
+              <div className="flex items-start gap-3">
+                <span className="mt-0.5 text-[#388e3c] text-lg">✦</span>
+                <div>
+                  <h4 className="font-bold text-sm text-black/90">Available offers</h4>
+                  <ul className="mt-2 space-y-2 text-xs text-black/70 font-inter">
+                    <li><span className="font-bold text-black/80">Bank Offer</span> 5% Unlimited Cashback on Schault Axis Bank Credit Card</li>
+                    <li><span className="font-bold text-black/80">Special Price</span> Get extra ₹1500 off (price inclusive of cashback/coupon)</li>
+                    <li><span className="font-bold text-black/80">Partner Offer</span> Sign up for Schault Pay Later and get free exclusive patches</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Color Selection */}
+            {product.colors && product.colors.length > 0 && (
+              <div className="mt-8">
+                <h3 className="font-inter text-sm text-black/50 uppercase tracking-widest font-semibold mb-3">
+                  Color <span className="text-black/80 capitalize font-normal">— {selectedColor}</span>
+                </h3>
+                <div className="flex gap-3">
+                  {product.colors.map((color) => (
                     <button
-                        onClick={handleAddToCart}
-                        disabled={shoe.allSizes.length > 0 && !selectedSize}
-                        className={`mt-10 py-5 w-full font-inter text-sm uppercase tracking-widest font-semibold transition-all duration-200
-              ${(shoe.allSizes.length === 0 || selectedSize)
-                                ? "bg-black text-white hover:bg-[#CC0000]"
-                                : "bg-black/20 text-black/50 cursor-not-allowed"
-                            }`}
+                      key={color.name}
+                      onClick={() => setSelectedColor(color.name)}
+                      className={`w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all ${
+                        selectedColor === color.name ? "border-[#CC0000] p-1 scale-110" : "border-black/10 hover:border-black/30"
+                      }`}
                     >
-                        {shoe.allSizes.length === 0 || selectedSize ? "Add to Bag" : "Select a Size"}
+                      <span 
+                        className="w-full h-full rounded-full shadow-inner block"
+                        style={{ backgroundColor: color.hex }}
+                      />
                     </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
-                    <div className="mt-16 space-y-6 border-t border-black/10 pt-8">
-                        <h3 className="font-bebas text-2xl tracking-wide text-black/90">Description</h3>
-                        <p className="font-inter leading-relaxed text-black/70">
-                            {shoe.description}
-                        </p>
-
-                        {shoe.specs.length > 0 && (
-                            <>
-                                <h4 className="font-bebas text-xl tracking-wide text-black/90 pt-4">Technical Specs</h4>
-                                <ul className="list-disc pl-5 mt-2 space-y-2 font-inter text-black/70 marker:text-black/30">
-                                    {shoe.specs.map((spec, i) => (
-                                        <li key={i}>{spec}</li>
-                                    ))}
-                                </ul>
-                            </>
+            {/* Size Selection */}
+            {product.sizes && product.sizes.length > 0 && (
+              <div className="mt-8">
+                <div className="flex justify-between items-baseline mb-3">
+                  <h3 className="font-inter text-sm text-black/50 uppercase tracking-widest font-semibold">
+                    Size
+                  </h3>
+                  <button className="text-xs text-[#CC0000] font-semibold hover:underline">Size Chart</button>
+                </div>
+                <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
+                  {product.sizes.map((size) => {
+                    const isAvailable = size === "9";
+                    return (
+                      <button
+                        key={size}
+                        disabled={!isAvailable}
+                        onClick={() => setSelectedSize(size)}
+                        className={`
+                          pt-2 pb-1.5 font-bebas text-lg border transition-all duration-200 ease-out flex items-center justify-center relative overflow-hidden
+                          ${!isAvailable 
+                              ? "border-black/10 bg-[#F5F5F5] text-black/30 cursor-not-allowed"
+                              : selectedSize === size
+                                ? "border-black bg-black text-white"
+                                : "border-black/20 bg-white text-black hover:border-black/60"
+                          }`}
+                      >
+                        <span className={!isAvailable ? "line-through" : ""}>{size}</span>
+                        {!isAvailable && (
+                           <div className="absolute inset-0 w-full h-[1px] bg-black/10 top-1/2 -rotate-[35deg] origin-center scale-150" />
                         )}
-                    </div>
+                      </button>
+                    );
+                  })}
                 </div>
-            </section>
+                {!selectedSize && (
+                  <p className="text-red-500 text-xs mt-2 font-inter font-medium">Please select a size to continue</p>
+                )}
+              </div>
+            )}
 
-            {/* Recommended Section */}
-            <section className="mx-auto max-w-7xl px-6 md:px-12 mt-32">
-                <h2 className="font-bebas text-3xl md:text-4xl tracking-wide text-black/90 mb-10">
-                    You Might Also Like
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {otherShoes.map((s, idx) => (
-                        <motion.article
-                            key={s.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: idx * 0.1 }}
-                            className="group cursor-pointer flex flex-col bg-white overflow-hidden transition-shadow hover:shadow-md"
-                        >
-                            <Link href={`/product/${s.id}`} className="block w-full h-full flex flex-col">
-                                <div className="aspect-[4/3] bg-black/5 p-4">
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img src={s.image} alt={s.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" />
-                                </div>
-                                <div className="p-4 flex-1 flex flex-col">
-                                    <h3 className="font-bebas text-xl tracking-wide text-black/90">{s.name}</h3>
-                                    <p className="font-inter text-sm text-black/50 mt-1 flex-1">{s.price}</p>
-                                </div>
-                            </Link>
-                        </motion.article>
-                    ))}
-                </div>
-            </section>
-        </main>
-    );
+            {/* Description / Static Specs */}
+            <div className="mt-12 pt-6 border-t border-black/10">
+              <h3 className="font-bebas text-xl tracking-wide text-black/90 mb-4">Product Details</h3>
+              <p className="font-inter text-sm leading-relaxed text-black/70">
+                Engineered for maximum modularity, the {product.name} lets you swap components effortlessly, meaning you only replace what's worn out. Features advanced breathability, patented snap-fit connectors, and uncompromising brutalist aesthetics.
+              </p>
+              
+              <ul className="mt-6 space-y-3 font-inter text-sm text-black/80">
+                <li className="flex gap-4">
+                  <span className="text-black/50 w-24">Material</span>
+                  <span className="flex-1 font-medium">Durable Synthetic & Recycled Canvas</span>
+                </li>
+                <li className="flex gap-4">
+                  <span className="text-black/50 w-24">Fit</span>
+                  <span className="flex-1 font-medium">Regular, True to Size</span>
+                </li>
+                <li className="flex gap-4">
+                  <span className="text-black/50 w-24">Care</span>
+                  <span className="flex-1 font-medium">Machine washable upper, wipe clean sole.</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Buffer space for mobile sticky bar */}
+            <div className="h-24 lg:hidden"></div>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Mobile Sticky CTA */}
+      <div className="lg:hidden fixed bottom-0 left-0 w-full h-16 bg-white grid grid-cols-2 border-t border-black/10 z-[100] shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+        <button
+          onClick={handleAddToCart}
+          className="flex items-center justify-center font-bebas text-xl text-black tracking-widest border-r border-black/10 bg-white active:bg-black/5 transition-colors"
+        >
+          ADD TO CART
+        </button>
+        <button
+          onClick={handleBuyNow}
+          className="flex items-center justify-center font-bebas text-xl text-white tracking-widest bg-[#CC0000] active:bg-black transition-colors"
+        >
+          BUY NOW
+        </button>
+      </div>
+
+    </main>
+  );
 }

@@ -173,7 +173,7 @@ export default function AboutPage() {
               </h2>
               <div className="space-y-6 font-inter text-sm text-black/70 leading-relaxed">
                 <p>
-                  SCHAULT was born from a simple frustration — why throw away an entire shoe when only one part is worn out? Founder Harsh Maheshwari, a Materials Science & Engineering student at IIT Kanpur, spent over a year prototyping a solution.
+                  SCHAULT was born from a simple frustration,why throw away an entire shoe when only one part is worn out? Founder Harsh Maheshwari, a Materials Science & Engineering student at IIT Kanpur, spent two years prototyping a solution.
                 </p>
                 <p>
                   We saw that the footwear industry was fundamentally flawed. Shoes were built with toxic glues, making them impossible to repair, recycle, or upgrade. If the sole wore out, the perfectly fine upper went to a landfill.

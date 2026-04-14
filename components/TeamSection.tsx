@@ -21,7 +21,6 @@ const teamData = {
   teams: {
     content: [
       { name: "BOYA ANUDEEP", role: "IIT KANPUR", image: "/placeholder.jpg" },
-      { name: "VEERAM SHAH", role: "IIT KANPUR", image: "/placeholder.jpg" },
     ],
     design: [
       { name: "ADITI ARYA", role: "NIFT", image: "/images/aditi.jpeg" },

@@ -2,184 +2,14 @@
 
 import React, { useState, useMemo } from "react";
 import Image from "next/image";
-import { Search, ChevronRight, SlidersHorizontal, ArrowUpDown } from "lucide-react";
+import { ChevronRight, SlidersHorizontal, ArrowUpDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import FilterSidebar from "@/components/shop/FilterSidebar";
 import ProductGrid from "@/components/shop/ProductGrid";
 import CategorySection from "@/components/shop/CategorySection";
 import CatalogCTA from "@/components/shop/CatalogCTA";
 import { Product } from "@/components/shop/ProductCard";
-
-const MOCK_PRODUCTS: Product[] = [
-  {
-    id: "1",
-    name: "CLASSIC BOMBER JACKET",
-    price: 8500,
-    originalPrice: 12500,
-    rating: 4.5,
-    image: "/assets/shop/products/product1.png",
-    category: "Jackets",
-    colors: [
-      { name: "Black", hex: "#000000" },
-      { name: "Navy", hex: "#000080" }
-    ],
-    sizes: ["S", "M", "L", "XL"]
-  },
-  {
-    id: "2",
-    name: "UTILITY OVERSHIRT",
-    price: 4200,
-    originalPrice: 5800,
-    rating: 4.2,
-    image: "/assets/shop/products/product2.png",
-    category: "Shirts",
-    colors: [
-      { name: "Olive", hex: "#808000" },
-      { name: "Beige", hex: "#F5F5DC" }
-    ],
-    sizes: ["M", "L", "XL"]
-  },
-  {
-    id: "3",
-    name: "MODULAR CARGO PANTS",
-    price: 5800,
-    originalPrice: 7900,
-    rating: 4.8,
-    image: "/assets/shop/products/product3.png",
-    category: "Pants",
-    colors: [
-      { name: "Black", hex: "#000000" },
-      { name: "Grey", hex: "#808080" }
-    ],
-    sizes: ["S", "M", "L"]
-  },
-  {
-    id: "4",
-    name: "TECHNICAL HOODIE",
-    price: 3500,
-    originalPrice: 4800,
-    rating: 4.0,
-    image: "/assets/shop/products/product4.png",
-    category: "Hoodies",
-    colors: [
-      { name: "Black", hex: "#000000" },
-      { name: "Red", hex: "#CC0000" }
-    ],
-    sizes: ["XS", "S", "M", "L", "XL"]
-  },
-  {
-    id: "5",
-    name: "REPLACEABLE SOLE SNEAKER",
-    price: 12500,
-    originalPrice: 18500,
-    rating: 4.9,
-    image: "/assets/shop/products/product5.png",
-    category: "Shoes & Bags",
-    colors: [
-      { name: "White", hex: "#FFFFFF" },
-      { name: "Grey", hex: "#808080" }
-    ],
-    sizes: ["7", "8", "9", "10"]
-  },
-  {
-    id: "6",
-    name: "MODULAR TOTEPACK",
-    price: 2900,
-    originalPrice: 3900,
-    rating: 4.3,
-    image: "/assets/shop/products/product6.png",
-    category: "Accessories",
-    colors: [
-      { name: "Black", hex: "#000000" },
-      { name: "Olive", hex: "#808000" }
-    ],
-    sizes: ["One Size"]
-  },
-  {
-    id: "7",
-    name: "GRAPHIC ELEMENTS TEE",
-    price: 1800,
-    originalPrice: 2400,
-    rating: 4.1,
-    image: "/assets/shop/products/product7.png",
-    category: "T-Shirts",
-    colors: [
-      { name: "White", hex: "#FFFFFF" },
-      { name: "Black", hex: "#000000" },
-      { name: "Red", hex: "#CC0000" }
-    ],
-    sizes: ["S", "M", "L", "XL", "XXL"]
-  },
-  {
-    id: "8",
-    name: "WEATHERPROOF PARKA",
-    price: 14500,
-    originalPrice: 19500,
-    rating: 4.7,
-    image: "/assets/shop/products/product8.png",
-    category: "Jackets",
-    colors: [
-      { name: "Black", hex: "#000000" },
-      { name: "Camel", hex: "#C19A6B" }
-    ],
-    sizes: ["M", "L", "XL"]
-  },
-  {
-    id: "9",
-    name: "MODULAR STREET RUNNER",
-    price: 9800,
-    originalPrice: 13500,
-    rating: 4.6,
-    image: "/assets/shop/products/product9.png",
-    category: "Shoes & Bags",
-    colors: [
-      { name: "Navy", hex: "#000080" },
-      { name: "White", hex: "#FFFFFF" }
-    ],
-    sizes: ["8", "9", "10", "11"]
-  },
-  {
-    id: "10",
-    name: "URBAN UTILITY BELT",
-    price: 1200,
-    originalPrice: 1800,
-    rating: 4.4,
-    image: "/assets/shop/products/product6.png",
-    category: "Accessories",
-    colors: [
-      { name: "Black", hex: "#000000" }
-    ],
-    sizes: ["One Size"]
-  },
-  {
-    id: "11",
-    name: "SLIM FIT CHINOS",
-    price: 4500,
-    originalPrice: 5900,
-    rating: 4.2,
-    image: "/assets/shop/products/product3.png",
-    category: "Pants",
-    colors: [
-      { name: "Beige", hex: "#F5F5DC" },
-      { name: "Olive", hex: "#808000" }
-    ],
-    sizes: ["S", "M", "L"]
-  },
-  {
-    id: "12",
-    name: "OVERSIZED FLANNEL",
-    price: 3200,
-    originalPrice: 4200,
-    rating: 4.8,
-    image: "/assets/shop/products/product2.png",
-    category: "Shirts",
-    colors: [
-      { name: "Grey", hex: "#808080" },
-      { name: "Red", hex: "#CC0000" }
-    ],
-    sizes: ["S", "M", "L", "XL"]
-  }
-];
+import { MOCK_PRODUCTS } from "@/lib/mockProducts";
 
 export default function ShopPage() {
   const [filters, setFilters] = useState({
@@ -191,7 +21,6 @@ export default function ShopPage() {
 
   const [sortBy, setSortBy] = useState("popularity");
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
 
   const categories = ["All", "Jackets", "Shirts", "Pants", "Hoodies", "Shoes & Bags", "Accessories", "T-Shirts"];
 
@@ -201,9 +30,8 @@ export default function ShopPage() {
       const matchPrice = product.price >= filters.price.min && product.price <= filters.price.max;
       const matchColor = !filters.color || product.colors.some(c => c.name === filters.color);
       const matchSize = !filters.size || product.sizes.includes(filters.size) || filters.size === "All";
-      const matchSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
 
-      return matchCategory && matchPrice && matchColor && matchSize && matchSearch;
+      return matchCategory && matchPrice && matchColor && matchSize;
     });
 
     // Sorting
@@ -216,7 +44,7 @@ export default function ShopPage() {
     }
 
     return result;
-  }, [filters, sortBy, searchQuery]);
+  }, [filters, sortBy]);
 
   const removeFilter = (key: string) => {
     if (key === "price") {
@@ -234,18 +62,6 @@ export default function ShopPage() {
           {/* Breadcrumb - Hidden on tiny mobile */}
           <div className="hidden md:flex items-center gap-2 text-[10px] text-black/50 mb-6 uppercase tracking-widest">
             <span>Shop</span> <ChevronRight size={10} /> <span className="text-black/90 font-medium">All Products</span>
-          </div>
-
-          {/* Search Bar - Flipkart Style */}
-          <div className="relative group max-w-2xl mx-auto md:mx-0">
-            <input
-              type="text"
-              placeholder="Search for products, brands and more"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white md:bg-black/5 border border-black/10 md:border-transparent focus:border-[#CC0000] focus:ring-0 px-10 py-2.5 md:py-3 text-sm rounded-sm transition-all outline-none"
-            />
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-black/30 group-focus-within:text-[#CC0000]" size={18} />
           </div>
 
           {/* Horizontal Category Scroll */}
@@ -295,9 +111,9 @@ export default function ShopPage() {
 
       <div className="max-w-[1440px] mx-auto px-4 md:px-12 mt-4 md:mt-8">
         {/* Main Content Layout */}
-        <div className="flex flex-col md:flex-row gap-8 relative">
+        <div className="flex flex-col md:flex-row gap-8 relative items-start">
           {/* Sidebar - Hidden on Mobile */}
-          <div className="hidden md:block">
+          <div className="hidden md:block w-[280px] shrink-0 sticky top-[90px] h-[calc(100vh-110px)] overflow-y-auto custom-scrollbar pr-2">
             <FilterSidebar
               activeFilters={filters}
               onFilterChange={setFilters}
@@ -306,7 +122,7 @@ export default function ShopPage() {
           </div>
 
           {/* Product Area */}
-          <div className="flex-1 bg-white p-4 md:p-6 rounded-sm shadow-sm">
+          <div className="flex-1 bg-white p-4 md:p-6 rounded-sm shadow-sm min-w-0">
             <ProductGrid
               products={filteredProducts}
               totalCount={MOCK_PRODUCTS.length}

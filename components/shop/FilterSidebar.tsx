@@ -14,32 +14,14 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   activeFilters 
 }) => {
   const [expandedSections, setExpandedSections] = useState({
-    category: true,
     price: true,
     color: true,
     size: true,
-    brands: false,
   });
 
   const toggleSection = (section: keyof typeof expandedSections) => {
     setExpandedSections(prev => ({ ...prev, [section]: !prev[section] }));
   };
-
-  const categories = [
-    { 
-      name: "Men's", 
-      sub: [
-        { name: "Jackets", count: 24 },
-        { name: "Shirts", count: 18 },
-        { name: "T-Shirts", count: 32 },
-        { name: "Hoodies", count: 12 },
-        { name: "Pants", count: 15 }
-      ]
-    },
-    { name: "Women's", sub: [] },
-    { name: "Shoes & Bags", sub: [] },
-    { name: "Accessories", sub: [] }
-  ];
 
   const colors = [
     { name: "Black", hex: "#000000" },
@@ -56,53 +38,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
   return (
     <aside className="w-full md:w-[220px] flex-shrink-0 md:sticky md:top-24 h-fit md:pb-10">
-      {/* Category Section */}
-      <div className="border-b border-black/10 py-6">
-        <button 
-          onClick={() => toggleSection("category")}
-          className="flex items-center justify-between w-full font-bebas text-lg text-black/90 tracking-wide"
-        >
-          CATEGORY
-          <span className={`transition-transform duration-300 ${expandedSections.category ? "rotate-180" : ""}`}>
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 4L6 8L10 4" stroke="currentColor" strokeWidth="1.5" />
-            </svg>
-          </span>
-        </button>
-        {expandedSections.category && (
-          <div className="mt-4 space-y-4">
-            {categories.map((cat, i) => (
-              <div key={i} className="space-y-2">
-                <div className="flex items-center justify-between group cursor-pointer">
-                  <span className="font-bebas text-sm group-hover:text-schlaut-red transition-colors">{cat.name}</span>
-                  {cat.sub.length > 0 && <span className="text-[10px] text-black/30">▼</span>}
-                </div>
-                {cat.sub.length > 0 && (
-                  <div className="pl-2 space-y-2">
-                    {cat.sub.map((sub, j) => (
-                      <label key={j} className="flex items-center justify-between cursor-pointer group">
-                        <div className="flex items-center gap-2">
-                          <input 
-                            type="checkbox" 
-                            className="w-3 h-3 accent-[#CC0000] border-black/10 rounded-none appearance-none border checked:bg-[#CC0000] transition-all cursor-pointer"
-                            checked={activeFilters.category === sub.name}
-                            onChange={() => onFilterChange({ ...activeFilters, category: sub.name })}
-                          />
-                          <span className={`font-inter text-xs transition-colors ${activeFilters.category === sub.name ? "text-black/90 font-medium" : "text-black/70 group-hover:text-black/90"}`}>
-                            {sub.name}
-                          </span>
-                        </div>
-                        <span className="font-inter text-[10px] text-black/30">{sub.count}</span>
-                      </label>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
       {/* Price Section */}
       <div className="border-b border-black/10 py-6">
         <button 
@@ -192,25 +127,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         )}
       </div>
 
-      {/* Brands Section */}
-      <div className="py-6">
-        <button 
-          onClick={() => toggleSection("brands")}
-          className="flex items-center justify-between w-full font-bebas text-lg text-black/90 tracking-wide"
-        >
-          BRANDS
-          <span className={`transition-transform duration-300 ${expandedSections.brands ? "rotate-180" : "rotate-270"}`}>
-             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 4L6 8L10 4" stroke="currentColor" strokeWidth="1.5" />
-            </svg>
-          </span>
-        </button>
-        {expandedSections.brands && (
-          <div className="mt-4 font-inter text-xs text-black/50">
-            Search for brands...
-          </div>
-        )}
-      </div>
     </aside>
   );
 };

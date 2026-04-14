@@ -51,7 +51,7 @@ export default function ScrollOverlays() {
       >
         <div className="text-left">
           <h2 className="font-bebas text-3xl tracking-wide text-black md:text-4xl">
-            Breathable Canvas Upper.
+            Breathable Upper.
           </h2>
           <p className="mt-3 font-inter text-sm text-black/60 md:text-base">
             Separates in seconds. Wash it, swap it, style it differently.
@@ -69,7 +69,7 @@ export default function ScrollOverlays() {
             Precision Cushioning Midsole.
           </h2>
           <p className="mt-3 font-inter text-sm text-black/70 md:text-base">
-            Engineered for grip and flexibility. Replace only when worn.
+            Engineered for grip and flexibility.
           </p>
         </div>
       </motion.div>

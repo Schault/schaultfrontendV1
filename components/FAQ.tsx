@@ -14,7 +14,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Are the parts sold separately?",
-    a: "Yes. You can buy the upper, midsole, and outsole individually or as a complete set. Mix and match styles as you like.",
+    a: "Yes. You can buy the upper, and outsole individually or as a complete set. Mix and match styles as you like.",
   },
   {
     q: "Is SCHAULT sustainable?",
@@ -27,6 +27,10 @@ const FAQ_ITEMS = [
   {
     q: "Where do you deliver?",
     a: "We currently deliver across India. International shipping is coming soon.",
+  },
+  {
+    q: "What are the terms of the beta launch?",
+    a: "We are launching our beta phase on 16 April! During this time, we are selling our shoes at a significantly discounted price. Because of the limited nature and low pricing of the beta, please note that return policies are not available during this phase.",
   },
 ];
 
