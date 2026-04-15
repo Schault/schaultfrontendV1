@@ -18,6 +18,7 @@ import { useCart } from "./providers";
 const NAV_LINKS = [
   { href: "/", label: "HOME" },
   { href: "/shop", label: "SHOP" },
+  { href: "/create-your-own-shoe", label: "CREATE YOUR OWN SHOE" },
   { href: "/about", label: "ABOUT US" },
   { href: "/collaborators", label: "COLLABORATORS" },
   { href: "/faq", label: "FAQ" },
