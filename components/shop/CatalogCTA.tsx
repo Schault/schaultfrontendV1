@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const CatalogCTA: React.FC = () => {
   return (
@@ -24,9 +25,9 @@ const CatalogCTA: React.FC = () => {
           Discover the complete range of modular footwear and interchangeable components. 
           Built for longevity, designed for expression.
         </p>
-        <button className="border border-white/20 text-white font-bebas text-xl px-12 py-4 hover:bg-white hover:text-black transition-all duration-500 tracking-widest relative overflow-hidden">
+        <Link href="/shop" className="border border-white/20 text-white font-bebas text-xl px-12 py-4 hover:bg-white hover:text-black transition-all duration-500 tracking-widest relative overflow-hidden inline-block mt-4">
           VIEW ALL PRODUCTS →
-        </button>
+        </Link>
       </div>
     </section>
   );

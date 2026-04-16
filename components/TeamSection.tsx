@@ -12,8 +12,8 @@ const teamData = {
   },
   mentors: [
     { 
-      name: "DR. AMIT VERMA", 
-      title: "Materials Science Advisor", 
+      name: "MR. TANMAY YADAV", 
+      title: "Co-founder and CEO at Trential", 
       image: "/images/mentor.jpeg",
       note: "Schault's approach to glue-less assembly is a case study in mechanical interlocking. By eliminating traditional adhesives, they've created a system that isn't just more sustainable, but also more durable and customizable than anything currently on the market."
     },
@@ -29,7 +29,7 @@ const teamData = {
     web: [
       { name: "AUGNIK BANERJEE", role: "WEB HEAD", image: "/placeholder.jpg" },
       { name: "MOHIT", role: "FRONTEND - IIT KANPUR", image: "/images/mohit.jpg" },
-      { name: "HARSHIT", role: "BACKEND - IIT KANPUR", image: "/placeholder.jpg" },
+      { name: "HARSHIT", role: "BACKEND - IIT KANPUR", image: "/images/harshit.jpeg" },
       { name: "DEEVASH", role: "BACKEND", image: "/images/deevash.jpeg" },
     ],
   },
@@ -61,13 +61,17 @@ function TeamMemberCard({
     <div className="group flex flex-col items-center text-center w-full max-w-[260px]">
       <div className="relative mb-6">
         {/* Main circular image with grayscale transition and subtle halo background */}
-        <div className={`w-40 h-40 md:w-52 md:h-52 rounded-full overflow-hidden relative ${haloClass}`}>
-          <Image
-            src={member.image}
-            alt={member.name}
-            fill
-            className="object-cover transition-all duration-300 ease-in-out"
-          />
+        <div className={`w-40 h-40 md:w-52 md:h-52 rounded-full overflow-hidden relative flex items-center justify-center ${haloClass}`}>
+          {member.image !== "/placeholder.jpg" ? (
+            <Image
+              src={member.image}
+              alt={member.name}
+              fill
+              className="object-cover transition-all duration-300 ease-in-out"
+            />
+          ) : (
+            <span className="font-bebas text-[80px] md:text-[100px] text-black/10 font-bold select-none">{member.name.charAt(0)}</span>
+          )}
         </div>
         {/* Floating badge wrapper for perimeter rotation */}
         <div className="absolute inset-0 transition-transform duration-700 ease-in-out group-hover:-rotate-[90deg] pointer-events-none">

@@ -6,6 +6,7 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import { MOCK_PRODUCTS } from "@/lib/mockProducts";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 export default function ProductPage({ params }: { params: { id: string } }) {
   const { addItem } = useCart();
@@ -186,7 +187,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   <h3 className="font-inter text-sm text-black/50 uppercase tracking-widest font-semibold">
                     Size
                   </h3>
-                  <button className="text-xs text-[#CC0000] font-semibold hover:underline">Size Chart</button>
+                  <button onClick={() => toast("Size chart coming soon!", { icon: "📏" })} className="text-xs text-[#CC0000] font-semibold hover:underline">Size Chart</button>
                 </div>
                 <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
                   {product.sizes.map((size) => {

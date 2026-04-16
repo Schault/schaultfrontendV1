@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import toast from "react-hot-toast";
 import { Heart, Star } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
@@ -24,6 +25,7 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { addItem } = useCart();
+  const [isWishlisted, setIsWishlisted] = useState(false);
   const discount = product.originalPrice 
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) 
     : 0;
@@ -50,8 +52,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </Link>
 
       {/* Wishlist Heart */}
-      <button className="absolute top-2.5 right-2.5 p-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-black/5 text-black/30 hover:text-[#CC0000] hover:bg-white transition-all shadow-sm z-10">
-        <Heart size={16} />
+      <button 
+        onClick={(e) => {
+          e.preventDefault();
+          setIsWishlisted(!isWishlisted);
+          if (!isWishlisted) {
+            toast.success("Added to Wishlist!");
+          } else {
+            toast("Removed from Wishlist", { icon: "💔" });
+          }
+        }}
+        className={`absolute top-2.5 right-2.5 p-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-black/5 transition-all shadow-sm z-10 ${
+          isWishlisted ? "text-[#CC0000]" : "text-black/30 hover:text-[#CC0000] hover:bg-white"
+        }`}
+      >
+        <Heart size={16} fill={isWishlisted ? "currentColor" : "none"} />
       </button>
 
       {/* Product Info */}

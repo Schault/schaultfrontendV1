@@ -93,7 +93,10 @@ export default function ShopPage() {
             <p className="font-inter text-[10px] text-black/50 uppercase tracking-widest mb-8">
               Interchangeable components. Endless possibilities.
             </p>
-            <button className="bg-[#CC0000] text-white font-bebas text-lg px-10 py-3 hover:translate-x-1 transition-all tracking-widest">
+            <button 
+              onClick={() => document.getElementById("product-grid")?.scrollIntoView({ behavior: "smooth" })}
+              className="bg-[#CC0000] text-white font-bebas text-lg px-10 py-3 hover:translate-x-1 transition-all tracking-widest"
+            >
               SHOP NOW →
             </button>
           </div>
@@ -122,7 +125,7 @@ export default function ShopPage() {
           </div>
 
           {/* Product Area */}
-          <div className="flex-1 bg-white p-4 md:p-6 rounded-sm shadow-sm min-w-0">
+          <div id="product-grid" className="flex-1 bg-white p-4 md:p-6 rounded-sm shadow-sm min-w-0">
             <ProductGrid
               products={filteredProducts}
               totalCount={MOCK_PRODUCTS.length}

@@ -151,18 +151,6 @@ export default function AboutPage() {
             </p>
           </div>
 
-          {/* Image Placeholder 1 (Hero Wide) */}
-          <div className="about-hero-img w-full aspect-video md:aspect-[21/9] bg-black/5 border border-black/10 mb-20 relative flex items-center justify-center group overflow-hidden">
-            <div className="absolute inset-0 bg-[#F5F5F5] transition-transform duration-700 group-hover:scale-105" />
-            <div className="relative z-10 flex flex-col items-center">
-              <span className="h-12 w-12 border border-black/20 rounded-full flex items-center justify-center mb-4 text-black/30 bg-white">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M4 16L8.586 11.414C8.96106 11.0391 9.46967 10.8284 10 10.8284C10.5303 10.8284 11.0389 11.0391 11.414 11.414L16 16M14 14L15.586 12.414C15.9611 12.0391 16.4697 11.8284 17 11.8284C17.5303 11.8284 18.0389 12.0391 18.414 12.414L20 14M14 8H14.01M6 20H18C19.1046 20 20 19.1046 20 18V6C20 4.89543 19.1046 4 18 4H6C4.89543 4 4 4.89543 4 6V18C4 19.1046 4.89543 20 6 20Z" stroke="currentColor" strokeOpacity="0.8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </span>
-              <p className="font-inter text-xs text-black/50 uppercase tracking-widest font-medium">Hero Image Placeholder</p>
-            </div>
-          </div>
 
           {/* The Story & Origin grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 mb-32">
@@ -212,21 +200,8 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Image Placeholder 2 & Mission Statement */}
-          <div className="about-mission-grid grid grid-cols-1 md:grid-cols-2 items-center gap-12 md:gap-20 mb-32">
-            <div className="w-full aspect-[4/5] md:aspect-square bg-black/5 border border-black/10 relative flex items-center justify-center overflow-hidden">
-              <div className="absolute inset-0 bg-[#F5F5F5]" />
-              <div className="relative z-10 flex flex-col items-center">
-                <span className="h-12 w-12 border border-black/20 rounded-full flex items-center justify-center mb-4 text-black/30 bg-white">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 16L8.586 11.414C8.96106 11.0391 9.46967 10.8284 10 10.8284C10.5303 10.8284 11.0389 11.0391 11.414 11.414L16 16M14 14L15.586 12.414C15.9611 12.0391 16.4697 11.8284 17 11.8284C17.5303 11.8284 18.0389 12.0391 18.414 12.414L20 14M14 8H14.01M6 20H18C19.1046 20 20 19.1046 20 18V6C20 4.89543 19.1046 4 18 4H6C4.89543 4 4 4.89543 4 6V18C4 19.1046 4.89543 20 6 20Z" stroke="currentColor" strokeOpacity="0.8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </span>
-                <p className="font-inter text-xs text-black/50 uppercase tracking-widest font-medium text-center px-4">
-                  Product / Process <br /> Image Placeholder
-                </p>
-              </div>
-            </div>
+          {/* Mission Statement */}
+          <div className="about-mission-grid mb-32 max-w-3xl">
             <div>
               <h2 className="font-bebas text-[48px] leading-none mb-8 text-black/90 tracking-wide">
                 BUILT FOR LONGEVITY. <br />

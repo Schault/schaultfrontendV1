@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { useCart } from "@/context/CartContext";
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -16,11 +18,11 @@ type PlaceholderItem = {
 // ── Data ────────────────────────────────────────────────────────────────────
 
 const SHOES: PlaceholderItem[] = [
-  { id: "shoe-1", name: "Shoe One", price: "₹1,999", image: "/images/shoes/bluewhite.jpg" },
-  { id: "shoe-2", name: "Shoe Two", price: "₹1,999", image: "/images/shoes/brownblack.jpg" },
-  { id: "shoe-3", name: "Shoe Three", price: "₹1,999", image: "/images/shoes/darkblue.jpg" },
-  { id: "shoe-4", name: "Shoe Four", price: "₹1,999", image: "/images/shoes/whitefull.jpg" },
-  { id: "shoe-5", name: "Shoe Five", price: "₹1,999", image: "/images/shoes/yellow.jpg" },
+  { id: "shoe-1", name: "Moment 1", price: "₹1,999", image: "/images/shoes/bluewhite.jpg" },
+  { id: "shoe-2", name: "Moment 2", price: "₹1,999", image: "/images/shoes/brownblack.jpg" },
+  { id: "shoe-3", name: "Moment 3", price: "₹1,999", image: "/images/shoes/darkblue.jpg" },
+  { id: "shoe-4", name: "Moment 4", price: "₹1,999", image: "/images/shoes/whitefull.jpg" },
+  { id: "shoe-5", name: "Moment 5", price: "₹1,999", image: "/images/shoes/yellow.jpg" },
 ];
 
 const SOLES: PlaceholderItem[] = [
@@ -32,6 +34,7 @@ const SOLES: PlaceholderItem[] = [
 
 function PlaceholderCard({ item, index }: { item: PlaceholderItem; index: number }) {
   const [imgError, setImgError] = useState(false);
+  const { addItem } = useCart();
 
   return (
     <motion.article
@@ -67,7 +70,22 @@ function PlaceholderCard({ item, index }: { item: PlaceholderItem; index: number
           <p className="mt-3 font-inter text-sm font-semibold text-black">
             {item.price}
           </p>
-          <button className="mt-auto w-full border border-black py-2.5 text-center font-inter text-[10px] uppercase tracking-widest transition-all duration-250 ease-out hover:border-[#CC0000] hover:bg-[#CC0000] hover:text-white">
+          <button 
+            onClick={(e) => {
+              e.preventDefault();
+              addItem({
+                id: item.id,
+                name: item.name,
+                price: parseInt(item.price.replace(/[^\d]/g, ""), 10) || 1999,
+                image: item.image,
+                quantity: 1,
+                color: "Default",
+                size: "US 9"
+              });
+              toast.success(`${item.name} added to cart!`);
+            }}
+            className="mt-auto w-full border border-black py-2.5 text-center font-inter text-[10px] uppercase tracking-widest transition-all duration-250 ease-out hover:border-[#CC0000] hover:bg-[#CC0000] hover:text-white"
+          >
             Add to Cart
           </button>
         </div>
