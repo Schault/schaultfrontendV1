@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabaseClient";
+import { createClient } from "@/utils/supabase/client";
 
 /**
  * Fetches all active products with their variants.

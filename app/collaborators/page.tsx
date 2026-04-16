@@ -51,9 +51,10 @@ export default function CollaboratorsPage() {
       duration: 0.8,
       stagger: 0.1,
       ease: "power2.out",
+      clearProps: "all",
       scrollTrigger: {
         trigger: ".collab-grid",
-        start: "top 80%",
+        start: "top 85%",
       },
     });
   }, { scope: container });
@@ -119,14 +120,12 @@ export default function CollaboratorsPage() {
             </div>
           </div>
 
-          <div className="border-t border-black/10 pt-20 mb-16">
-            <h2 className="font-bebas text-[40px] tracking-wide text-black/90 mb-8 uppercase">
+          {/* Network Section */}
+          <div className="border-t border-black/10 pt-20 mb-32">
+            <h2 className="font-bebas text-[40px] tracking-wide text-black/90 mb-10 uppercase">
               NETWORK
             </h2>
-          </div>
-
-          {/* Grid Section */}
-          <div className="collab-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-32">
+            <div className="collab-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {COLLABORATORS.map((collab, index) => (
               <div 
                 key={index} 
@@ -148,6 +147,7 @@ export default function CollaboratorsPage() {
                 </p>
               </div>
             ))}
+            </div>
           </div>
 
           {/* Partner with us CTA */}
