@@ -29,7 +29,7 @@ const teamData = {
     web: [
       { name: "AUGNIK BANERJEE", role: "WEB HEAD", image: "/placeholder.jpg" },
       { name: "MOHIT", role: "FRONTEND - IIT KANPUR", image: "/images/mohit.jpg" },
-      { name: "HARSHIT", role: "FRONTEND - IIT KANPUR", image: "/placeholder.jpg" },
+      { name: "HARSHIT", role: "BACKEND - IIT KANPUR", image: "/placeholder.jpg" },
       { name: "DEEVASH", role: "BACKEND", image: "/images/deevash.jpeg" },
     ],
   },
