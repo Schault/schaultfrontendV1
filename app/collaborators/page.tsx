@@ -44,6 +44,18 @@ export default function CollaboratorsPage() {
       },
     });
 
+    // Partner section animation
+    gsap.from(".collab-partner", {
+      y: 40,
+      opacity: 0,
+      duration: 1,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".collab-partner",
+        start: "top 85%",
+      },
+    });
+
     // Grid items animation
     gsap.from(".collab-grid-item", {
       y: 30,
@@ -53,7 +65,7 @@ export default function CollaboratorsPage() {
       ease: "power2.out",
       scrollTrigger: {
         trigger: ".collab-grid",
-        start: "top 80%",
+        start: "top 95%",
       },
     });
   }, { scope: container });
@@ -82,7 +94,7 @@ export default function CollaboratorsPage() {
           </div>
 
           {/* MOUs Section */}
-          <div className="collab-mou mb-32">
+          <div className="collab-mou mb-12">
             <h2 className="font-bebas text-[40px] sm:text-[48px] md:text-[64px] text-[#CC0000] text-center mb-16 uppercase tracking-wide">
               OUR MOUS
             </h2>
@@ -119,14 +131,42 @@ export default function CollaboratorsPage() {
             </div>
           </div>
 
-          <div className="border-t border-black/10 pt-20 mb-16">
+          <div className="border-t border-black/10 pt-12 mb-4">
             <h2 className="font-bebas text-[40px] tracking-wide text-black/90 mb-8 uppercase">
               NETWORK
             </h2>
           </div>
 
+          {/* Liberty Shoes Featured Section */}
+          <div className="collab-partner border border-black/10 bg-[#F9F9F9] p-8 md:p-12 mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+              <div className="order-2 md:order-1">
+                <p className="font-inter text-xs uppercase tracking-[0.2em] text-[#CC0000] mb-4 font-bold">Manufacturing Partner</p>
+                <h3 className="font-bebas text-4xl md:text-5xl lg:text-6xl text-black/90 mb-6 tracking-wide leading-none">
+                  LIBERTY SHOES
+                </h3>
+                <p className="font-inter text-sm md:text-base text-black/70 leading-relaxed">
+                  Supported by Liberty Shoes, Schault is redefining footwear through modular innovation. 
+                  With guidance from an established industry leader, we are building durable, customizable, 
+                  and sustainable solutions that reduce waste and enhance user experience, shaping the 
+                  future of how shoes are designed, used, and replaced.
+                </p>
+              </div>
+              <div className="order-1 md:order-2 flex justify-center items-center h-48 md:h-64 border border-black/5 bg-white p-12">
+                <div className="relative w-full h-full">
+                  <Image 
+                    src="/images/liberty-logo.webp" 
+                    alt="Liberty Shoes Logo" 
+                    fill 
+                    className="object-contain transition-all duration-500"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Grid Section */}
-          <div className="collab-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-32">
+          <div className="collab-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {COLLABORATORS.map((collab, index) => (
               <div 
                 key={index} 
@@ -151,7 +191,7 @@ export default function CollaboratorsPage() {
           </div>
 
           {/* Partner with us CTA */}
-          <div className="collab-hero border-t border-black/10 pt-24 text-center">
+          <div className="collab-hero border-t border-black/10 pt-16 text-center">
             <h2 className="font-bebas text-[40px] sm:text-[48px] md:text-[64px] tracking-wide text-black/90 mb-6 uppercase">
               WANT TO COLLABORATE?
             </h2>

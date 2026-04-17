@@ -6,7 +6,12 @@ export function createClient() {
 
   if (!supabaseUrl || !supabaseAnonKey) {
     console.warn("Supabase URL or Anon Key is missing. Browser client will not be initialized.");
-    return {} as any; // Returning a safe empty object or null based on usage
+    return {
+      auth: {
+        getUser: async () => ({ data: { user: null }, error: new Error('Missing Env') }),
+        getSession: async () => ({ data: { session: null }, error: new Error('Missing Env') })
+      }
+    } as any;
   }
 
   return createBrowserClient(supabaseUrl, supabaseAnonKey);

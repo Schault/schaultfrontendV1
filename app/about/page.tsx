@@ -156,15 +156,18 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 mb-32">
             <div className="about-story-col">
               <p className="font-inter text-xs uppercase tracking-widest text-[#CC0000] mb-4">The Origin</p>
-              <h2 className="font-bebas text-[40px] leading-none mb-6 text-black/90 tracking-wide">
-                BORN FROM FRUSTRATION.
+              <h2 className="font-bebas text-[40px] leading-none mb-6 text-black/90 tracking-wide uppercase">
+                Born From Frustration.
               </h2>
+              <div className="border-l-2 border-[#CC0000] pl-6 mb-8 italic font-inter text-lg text-black/80">
+                "Why do we throw away an entire shoe when only the sole wears out?"
+              </div>
               <div className="space-y-6 font-inter text-sm text-black/70 leading-relaxed">
                 <p>
-                  SCHAULT was born from a simple frustration,why throw away an entire shoe when only one part is worn out? Founder Harsh Maheshwari, a Materials Science & Engineering student at IIT Kanpur, spent two years prototyping a solution.
+                  It started with a worn-out pair of shoes and a question that wouldn't go away. As a Materials Science & Engineering student at IIT Kanpur, Harsh Maheshwari watched perfectly good uppers, the fabric, the stitching, the fit built up over months, get discarded simply because the sole gave out.
                 </p>
                 <p>
-                  We saw that the footwear industry was fundamentally flawed. Shoes were built with toxic glues, making them impossible to repair, recycle, or upgrade. If the sole wore out, the perfectly fine upper went to a landfill.
+                  The traditional fix meant a trip to the cobbler, waiting, hoping. Often, it meant just buying new. The frustration wasn't just personal, it was a systems failure. Billions of shoes enter landfills every year, most of them structurally sound except for one worn-out component. SCHAULT was the answer: a shoe engineered from day one to be taken apart and put back together, effortlessly, by you.
                 </p>
               </div>
             </div>

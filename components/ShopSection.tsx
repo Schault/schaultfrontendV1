@@ -34,6 +34,9 @@ function shopifyToProduct(p: ShopifyProduct): ProductType {
 }
 
 import { useCart } from "./providers";
+import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 // ── Product Card ────────────────────────────────────────────────────────────
 
@@ -45,10 +48,19 @@ function ProductCard({
 }) {
   const [imgError, setImgError] = useState(false);
   const { addItem } = useCart();
+  const supabase = createClient();
+  const router = useRouter();
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast.error("Please login to access this page.", { position: "bottom-center" });
+      router.push("/auth");
+      return;
+    }
     
     // Parse numeric price from string like "₹899" or "$89.00"
     const numericPrice = parseFloat(product.price.replace(/[^0-9.]/g, "")) || 0;
@@ -131,10 +143,18 @@ export default function ShopSection({ collections }: { collections: ShopifyColle
       className="border-t border-black/10 bg-[#FFFFFF] px-4 sm:px-6 py-24 md:px-12 lg:px-24"
     >
       <div className="mx-auto max-w-6xl">
-        <div className="mb-2 h-0.5 w-12 bg-[#CC0000]" aria-hidden />
-        <h2 className="font-bebas text-4xl tracking-wide text-black/90 md:text-5xl">
-          THE SYSTEM
-        </h2>
+        <div className="flex items-end justify-between mb-8 border-b-2 border-black pb-4">
+          <div>
+            <div className="mb-2 h-0.5 w-12 bg-[#CC0000]" aria-hidden />
+            <h2 className="font-bebas text-5xl tracking-wide text-black/90 md:text-7xl">
+              CARPE DIEM
+            </h2>
+          </div>
+          <div className="text-right pb-1">
+            <p className="font-inter text-xs font-bold uppercase tracking-[0.2em] text-[#CC0000]">The Modular System</p>
+            <p className="font-inter text-[10px] text-black/40 uppercase tracking-widest mt-1">Version 1.0 // SS24</p>
+          </div>
+        </div>
         <p className="mt-3 font-inter text-base text-black/60">
           Mix. Match. Replace. Only pay for what you need.
         </p>

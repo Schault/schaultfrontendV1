@@ -49,20 +49,20 @@ export default function AboutSection() {
             <p className="font-inter text-xs uppercase tracking-widest text-[#CC0000]">
               OUR STORY
             </p>
-            <h2 className="mt-4 font-bebas text-4xl tracking-wide text-black/90 md:text-5xl">
-              Built from discomfort. Designed for everyone.
+            <h2 className="mt-4 font-bebas text-4xl tracking-wide text-black/90 md:text-5xl uppercase">
+              Born From Frustration.
             </h2>
-            <p className="mt-6 font-inter text-sm leading-relaxed text-black/70">
-              SCHAULT was born from a simple frustration, why throw away an
-              entire shoe when only one part is worn out? Founder Harsh
-              Maheshwari, a Materials Science & Engineering student at IIT
-              Kanpur, spent over 2 years prototyping a solution.
-            </p>
-            <p className="mt-4 font-inter text-sm leading-relaxed text-black/70">
-              The result is a patented modular footwear system that lets you
-              replace parts, not the entire shoe, reducing waste, saving money,
-              and giving you more control over what you wear.
-            </p>
+            <div className="mt-6 space-y-4 font-inter text-sm leading-relaxed text-black/70">
+              <p className="italic text-black/80 border-l-2 border-[#CC0000] pl-4 py-1">
+                "Why do we throw away an entire shoe when only the sole wears out?"
+              </p>
+              <p>
+                As a Materials Science & Engineering student at IIT Kanpur, Founder Harsh Maheshwari watched perfectly good uppers, the fabric, stitching, and fit built up over months, get discarded simply because the sole gave out.
+              </p>
+              <p>
+                The frustration wasn't just personal, it was a systems failure. Billions of shoes enter landfills every year, most structurally sound except for one worn-out part. SCHAULT is the answer: a shoe engineered from day one to be taken apart and put back together, effortlessly, by you.
+              </p>
+            </div>
             <Link
               href="/about"
               className="mt-8 inline-block font-inter text-sm font-medium text-[#CC0000] transition-opacity duration-200 hover:opacity-80"
