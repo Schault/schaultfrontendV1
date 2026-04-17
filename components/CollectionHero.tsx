@@ -26,8 +26,8 @@ const SHOES: PlaceholderItem[] = [
 ];
 
 const SOLES: PlaceholderItem[] = [
-  { id: "sole-1", name: "Standard Outsole", price: "₹899", image: "/images/outsole.webp" },
-  { id: "sole-2", name: "Comfort Midsole", price: "₹599", image: "/images/midsole.webp" },
+  { id: "sole-1", name: "Standard Outsole", price: "₹899", image: "/images/sole_1.webp" },
+  { id: "sole-2", name: "Comfort Midsole", price: "₹599", image: "/images/sole_2.webp" },
 ];
 
 // ── Placeholder Card ────────────────────────────────────────────────────────
@@ -118,9 +118,13 @@ export default function CollectionHero() {
 
         {/* Shoes Collection */}
         <div className="mb-20">
-          <h2 className="mb-8 font-bebas text-3xl tracking-wide text-black/90 md:text-4xl">
-            Collection Name
-          </h2>
+          <div className="flex items-center gap-4 mb-8">
+            <h2 className="font-bebas text-4xl tracking-[0.05em] text-black/90 md:text-5xl">
+              CARPE DIEM
+            </h2>
+            <div className="h-[1px] flex-1 bg-black/10" />
+            <span className="font-inter text-[10px] uppercase tracking-[0.3em] text-black/40 font-bold">Series 01</span>
+          </div>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {SHOES.map((item, index) => (
               <PlaceholderCard key={item.id} item={item} index={index} />

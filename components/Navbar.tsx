@@ -68,7 +68,7 @@ export default function Navbar() {
   const widthRaw = useTransform(
     scrollY,
     [safeThreshold, safeThreshold + shrinkDistance],
-    [100, 80]
+    [100, 90]
   );
   const width = useMotionTemplate`${widthRaw}%`;
 
@@ -108,7 +108,7 @@ export default function Navbar() {
   const maxWidthRaw = useTransform(
     scrollY,
     [safeThreshold, safeThreshold + shrinkDistance],
-    [safeWindowWidth, 1024] // 1024px is Tailwind's max-w-5xl
+    [safeWindowWidth, safeWindowWidth * 0.85] 
   );
   const maxWidth = useMotionTemplate`${maxWidthRaw}px`;
 

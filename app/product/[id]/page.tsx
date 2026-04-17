@@ -1,15 +1,18 @@
 "use client";
 
 import { useCart } from "@/context/CartContext";
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { MOCK_PRODUCTS } from "@/lib/mockProducts";
 import Image from "next/image";
 import toast from "react-hot-toast";
+import { createClient } from "@/utils/supabase/client";
 
 export default function ProductPage({ params }: { params: { id: string } }) {
   const { addItem } = useCart();
+  const router = useRouter();
+  const supabase = createClient();
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
@@ -32,8 +35,19 @@ export default function ProductPage({ params }: { params: { id: string } }) {
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) 
     : 0;
 
-  const handleAddToCart = () => {
+  const checkAuth = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast.error("Please login to access this page.", { position: "bottom-center" });
+      router.push("/auth");
+      return false;
+    }
+    return true;
+  };
+
+  const handleAddToCart = async () => {
     if (!selectedSize) return;
+    if (!(await checkAuth())) return;
 
     addItem({
       id: `${product.id}-${selectedSize}-${selectedColor}`,
@@ -46,10 +60,20 @@ export default function ProductPage({ params }: { params: { id: string } }) {
     });
   };
 
-  const handleBuyNow = () => {
-    handleAddToCart();
-    // In a real app, this would route to checkout immediately
-    alert("Redirecting to checkout...");
+  const handleBuyNow = async () => {
+    if (!selectedSize) return;
+    if (!(await checkAuth())) return;
+
+    addItem({
+      id: `${product.id}-${selectedSize}-${selectedColor}`,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      quantity: 1,
+      color: selectedColor || undefined,
+      size: selectedSize
+    });
+    router.push("/checkout");
   };
 
   return (
