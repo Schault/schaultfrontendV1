@@ -24,14 +24,15 @@ export default function AboutPage() {
       ease: "power3.out",
     });
 
-    // Image Placeholder 1
-    gsap.from(".about-hero-img", {
-      scale: 0.95,
+    // Stats divider
+    gsap.from(".about-divider > *", {
+      y: 20,
       opacity: 0,
-      duration: 1,
+      duration: 0.8,
+      stagger: 0.15,
       ease: "power2.out",
       scrollTrigger: {
-        trigger: ".about-hero-img",
+        trigger: ".about-divider",
         start: "top 85%",
       },
     });
@@ -49,28 +50,40 @@ export default function AboutPage() {
       },
     });
 
-    // Image Placeholder 2 & Mission Statement
-    gsap.from(".about-mission-grid > *", {
+    // Innovation section
+    gsap.from(".about-innovation > *", {
       y: 30,
       opacity: 0,
       duration: 0.8,
-      stagger: 0.2,
+      stagger: 0.15,
       ease: "power2.out",
       scrollTrigger: {
-        trigger: ".about-mission-grid",
+        trigger: ".about-innovation",
         start: "top 80%",
       },
     });
 
-    // Mission Stats
-    gsap.from(".about-stats > *", {
+    // Longevity section
+    gsap.from(".about-longevity-top > *", {
       y: 30,
       opacity: 0,
       duration: 0.8,
-      stagger: 0.2,
+      stagger: 0.15,
       ease: "power2.out",
       scrollTrigger: {
-        trigger: ".about-stats",
+        trigger: ".about-longevity-top",
+        start: "top 80%",
+      },
+    });
+
+    gsap.from(".longevity-card", {
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".longevity-cards",
         start: "top 85%",
       },
     });
@@ -130,136 +143,252 @@ export default function AboutPage() {
 
   return (
     <>
-      <main ref={container} className="bg-white min-h-screen pt-32 pb-20 px-4 sm:px-6 md:px-12 lg:px-20">
-        <div className="max-w-[1440px] mx-auto">
+      <main ref={container} className="bg-white min-h-screen">
 
-          {/* Breadcrumb */}
-          <div className="flex items-center gap-2 font-inter text-[10px] text-black/50 mb-12 uppercase tracking-widest">
-            <Link href="/" className="hover:text-black/90 transition-colors">Home</Link>
-            <span>&gt;</span>
-            <span className="text-black/90 font-medium">About Us</span>
-          </div>
+        {/* ─── HERO SECTION ─── */}
+        <div className="about-hero pt-32 pb-20 px-4 sm:px-6 md:px-12 lg:px-20">
+          <div className="max-w-[1440px] mx-auto">
 
-          {/* Hero Section */}
-          <div className="about-hero border-b border-black/10 pb-16 mb-16">
-            <h1 className="font-bebas text-5xl sm:text-6xl md:text-[80px] lg:text-[96px] text-black/90 leading-[0.9] tracking-wide mb-6 uppercase">
-              RETHINKING<br />
-              FOOTWEAR.
+            {/* Breadcrumb */}
+            <div className="flex items-center gap-2 font-inter text-[10px] text-black/50 mb-12 uppercase tracking-widest">
+              <Link href="/" className="hover:text-black/90 transition-colors">Home</Link>
+              <span>&gt;</span>
+              <span className="text-black/90 font-medium">About Us</span>
+            </div>
+
+            {/* Eyebrow */}
+            <div className="flex items-center gap-3 mb-6">
+              <span className="w-8 h-[2px] bg-[#CC0000]" />
+              <span className="font-inter text-xs font-semibold uppercase tracking-[0.22em] text-[#CC0000]">About Us</span>
+            </div>
+
+            {/* Headline */}
+            <h1 className="font-bebas text-5xl sm:text-6xl md:text-[80px] lg:text-[96px] text-black/90 leading-[0.95] tracking-wide mb-8 uppercase">
+              Rethinking<br />
+              <span className="italic text-[#CC0000]">Footwear</span><br />
+              Entirely.
             </h1>
-            <p className="font-inter text-lg text-black/60 max-w-2xl leading-relaxed">
-              We are Schault. A materials-science driven company dedicated to building the world's most modular, sustainable, and functional footwear system. Built from discomfort. Designed for everyone.
+
+            {/* Subline */}
+            <p className="font-inter text-lg text-black/60 max-w-xl leading-relaxed">
+              For centuries, a broken sole meant a discarded shoe. We asked a different question &mdash; what if the shoe never had to end? SCHAULT was built on the belief that great footwear should be modular, repairable, and built to last a lifetime.
             </p>
           </div>
+        </div>
 
 
-          {/* The Story & Origin grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 mb-32">
+        {/* ─── STATS DIVIDER ─── */}
+        <div className="about-divider border-y border-black/10 px-4 sm:px-6 md:px-12 lg:px-20">
+          <div className="max-w-[1440px] mx-auto py-12 flex flex-wrap items-center justify-center gap-8 md:gap-16">
+            <div className="text-center">
+              <p className="font-bebas text-4xl md:text-5xl text-black/90 tracking-wide">22<span className="text-[#CC0000]">B+</span></p>
+              <p className="mt-1 font-inter text-[11px] font-semibold uppercase tracking-[0.18em] text-black/50">Shoes discarded yearly</p>
+            </div>
+            <div className="hidden sm:block w-[1px] h-14 bg-black/10" />
+            <div className="text-center">
+              <p className="font-bebas text-4xl md:text-5xl text-[#CC0000] tracking-wide">1</p>
+              <p className="mt-1 font-inter text-[11px] font-semibold uppercase tracking-[0.18em] text-black/50">Patent Published</p>
+            </div>
+            <div className="hidden sm:block w-[1px] h-14 bg-black/10" />
+            <div className="text-center">
+              <p className="font-bebas text-4xl md:text-5xl text-black/90 tracking-wide"><span className="text-[#CC0000]">0</span></p>
+              <p className="mt-1 font-inter text-[11px] font-semibold uppercase tracking-[0.18em] text-black/50">Tools needed to swap soles</p>
+            </div>
+            <div className="hidden sm:block w-[1px] h-14 bg-black/10" />
+            <div className="text-center">
+              <p className="font-bebas text-3xl md:text-4xl text-black/90 tracking-wide leading-tight">PU Casted</p>
+              <p className="mt-1 font-inter text-[11px] font-semibold uppercase tracking-[0.18em] text-black/50">Sole for flexibility &amp; durability</p>
+            </div>
+          </div>
+        </div>
+
+
+        {/* ─── ORIGIN SECTION ─── */}
+        <div className="px-4 sm:px-6 md:px-12 lg:px-20 py-24 md:py-32">
+          <div className="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center">
+
+            {/* Origin Image */}
+            <div className="about-story-col relative">
+              <div className="aspect-[4/5] w-full relative overflow-hidden bg-black/5">
+                <Image
+                  src="/images/harsh.jpg"
+                  alt="Founder Harsh Maheshwari working on Schault prototype"
+                  fill
+                  className="object-cover grayscale-[15%]"
+                />
+              </div>
+              {/* Red accent frame */}
+              <div className="absolute -top-4 -left-4 right-4 bottom-4 border-2 border-[#CC0000] -z-10" />
+            </div>
+
+            {/* Origin Text */}
             <div className="about-story-col">
               <p className="font-inter text-xs uppercase tracking-widest text-[#CC0000] mb-4">The Origin</p>
-              <h2 className="font-bebas text-[40px] leading-none mb-6 text-black/90 tracking-wide uppercase">
-                Born From Frustration.
+              <h2 className="font-bebas text-[40px] md:text-[56px] leading-none mb-6 text-black/90 tracking-wide">
+                Born From<br />
+                <span className="italic text-[#CC0000]">Frustration.</span>
               </h2>
-              <div className="border-l-2 border-[#CC0000] pl-6 mb-8 italic font-inter text-lg text-black/80">
-                "Why do we throw away an entire shoe when only the sole wears out?"
-              </div>
-              <div className="space-y-6 font-inter text-sm text-black/70 leading-relaxed">
-                <p>
-                  It started with a worn-out pair of shoes and a question that wouldn't go away. As a Materials Science & Engineering student at IIT Kanpur, Harsh Maheshwari watched perfectly good uppers, the fabric, the stitching, the fit built up over months, get discarded simply because the sole gave out.
-                </p>
-                <p>
-                  The traditional fix meant a trip to the cobbler, waiting, hoping. Often, it meant just buying new. The frustration wasn't just personal, it was a systems failure. Billions of shoes enter landfills every year, most of them structurally sound except for one worn-out component. SCHAULT was the answer: a shoe engineered from day one to be taken apart and put back together, effortlessly, by you.
-                </p>
-              </div>
-            </div>
-            <div className="about-story-col">
-              <p className="font-inter text-xs uppercase tracking-widest text-[#CC0000] mb-4">The Innovation</p>
-              <h2 className="font-bebas text-[40px] leading-none mb-6 text-black/90 tracking-wide">
-                PATENTED SNAP-FIT SYSTEM.
-              </h2>
-              <div className="space-y-6 font-inter text-sm text-black/70 leading-relaxed">
-                <p>
-                  The result is a patented modular footwear system that lets you replace parts, not the entire shoe. This drastically reduces waste, saves you money, and hands the power of customization back to you.
-                </p>
-                <p>
-                  Our unique snapping nodes and receiver cavities are meticulously engineered using advanced polymers. They guarantee a secure fit during high-impact movement while allowing simple detachment when the time comes to swap.
-                </p>
-              </div>
 
-              {/* Patent Callout */}
-              <div className="mt-10 border border-black/10 bg-black/5 p-6 md:p-8 flex items-start gap-6 hover:border-[#CC0000] transition-colors group">
-                <div className="h-12 w-12 shrink-0 border border-black/20 rounded-full flex items-center justify-center bg-white group-hover:bg-[#CC0000] group-hover:border-transparent group-hover:text-white transition-colors font-bebas text-lg">
-                  IP
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="h-2 w-2 rounded-full bg-[#CC0000]" />
-                    <span className="font-inter text-xs font-bold uppercase tracking-widest text-black/90">Patent Published</span>
-                  </div>
-                  <p className="font-inter text-sm text-black/60">
-                    Recognized under Intellectual Property India. Our mechanical interlocking mechanism is federally protected for its unique, glue-less assembly standard.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+              {/* Blockquote */}
+              <blockquote className="border-l-[3px] border-[#CC0000] pl-5 mb-8">
+                <p className="font-inter text-lg md:text-xl italic text-black/80 leading-relaxed">
+                  &ldquo;Why do we throw away an entire shoe when only the sole wears out?&rdquo;
+                </p>
+              </blockquote>
 
-          {/* Mission Statement */}
-          <div className="about-mission-grid mb-32 max-w-3xl">
-            <div>
-              <h2 className="font-bebas text-[48px] leading-none mb-8 text-black/90 tracking-wide">
-                BUILT FOR LONGEVITY. <br />
-                ENGINEERED FOR CHANGE.
-              </h2>
-              <div className="space-y-6 font-inter text-sm text-black/70 leading-relaxed border-l-2 border-[#CC0000] pl-6">
+              <div className="space-y-5 font-inter text-[15px] text-black/65 leading-[1.85]">
                 <p>
-                  Traditional footwear forces you to compromise. You buy a style, wear out the tread, and trash it. We envisioned an ecosystem where your shoe styles evolve with your wardrobe, and worn-out components slide out for fresh replacements.
+                  It started with a worn-out pair of shoes and a question that wouldn&apos;t go away. As a Materials Science & Engineering student at IIT Kanpur, Harsh Maheshwari watched perfectly good uppers &mdash; the fabric, the stitching, the fit built up over months &mdash; get discarded simply because the sole gave out.
                 </p>
                 <p>
-                  No cobblers. No toxic adhesives holding your life together. Just raw, mechanical efficiency.
+                  The traditional fix meant a trip to the cobbler, waiting, hoping. Often, it meant just buying new. The frustration wasn&apos;t just personal &mdash; it was a systems failure. Billions of shoes enter landfills every year, most of them structurally sound except for one worn-out component. SCHAULT was the answer.
                 </p>
               </div>
             </div>
           </div>
-
-          {/* Mission Stats */}
-          <div className="about-stats border-y border-black/10 py-16 mb-24 hidden md:block">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 divide-y sm:divide-y-0 sm:divide-x divide-black/10 text-center">
-              <div className="pt-8 sm:pt-0">
-                <h3 className="font-bebas text-6xl text-[#CC0000] mb-2 tracking-wide">0%</h3>
-                <p className="font-inter text-xs text-black/60 uppercase tracking-widest font-medium">Toxic Glues Used</p>
-              </div>
-              <div className="pt-8 sm:pt-0">
-                <h3 className="font-bebas text-6xl text-black/90 mb-2 tracking-wide">50%</h3>
-                <p className="font-inter text-xs text-black/60 uppercase tracking-widest font-medium">Reduction in Waste</p>
-              </div>
-              <div className="pt-8 sm:pt-0">
-                <h3 className="font-bebas text-6xl text-black/90 mb-2 tracking-wide">100%</h3>
-                <p className="font-inter text-xs text-black/60 uppercase tracking-widest font-medium">Modular System</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Team Section */}
-          <TeamSection />
-
-          {/* Join Us CTA */}
-          <div className="about-cta text-center bg-black text-white p-16 md:p-24 relative overflow-hidden group">
-            {/* Background glow effect for brutalist modern touch */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#CC0000] rounded-full blur-[120px] opacity-20 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none" />
-
-            <div className="relative z-10">
-              <h2 className="font-bebas text-[48px] md:text-[64px] tracking-wide mb-6">READY TO REBUILD?</h2>
-              <p className="font-inter text-white/60 text-sm md:text-base max-w-xl mx-auto mb-10">
-                Join the movement to fundamentally shift how we consume and wear fashion.
-                Interchangeable parts, endless possibilities.
-              </p>
-              <Link href="/shop" className="inline-block border border-white text-white font-bebas text-lg px-10 py-4 hover:bg-white hover:text-black transition-colors tracking-widest">
-                EXPLORE THE SHOP
-              </Link>
-            </div>
-          </div>
-
         </div>
+
+
+        {/* ─── INNOVATION SECTION (Dark) ─── */}
+        <div className="about-innovation bg-black text-white px-4 sm:px-6 md:px-12 lg:px-20 py-24 md:py-32">
+          <div className="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center">
+
+            {/* Innovation Text */}
+            <div>
+              <p className="font-inter text-xs uppercase tracking-widest text-[#CC0000] mb-4">The Innovation</p>
+              <h2 className="font-bebas text-[40px] md:text-[56px] leading-none mb-6 text-white tracking-wide">
+                Patented<br />
+                <span className="italic text-[#CC0000]">Snap-Fit</span><br />
+                System.
+              </h2>
+              <div className="space-y-5 font-inter text-[15px] text-white/65 leading-[1.85] mb-10">
+                <p>
+                  At the core of SCHAULT is a deceptively simple mechanism &mdash; a precision snap-fit interface between upper and sole that requires no tools, no adhesive, and no expertise. Press down to lock. Pull to release.
+                </p>
+                <p>
+                  The connector elements on the synthetic leather upper engage directly with cavities machined into the polyurethane sole, creating a secure bond strong enough to withstand rigorous daily use. The optimised CAD design, refined through real-world casting and 3D printing iterations, ensures dimensional precision.
+                </p>
+              </div>
+
+              {/* Feature Grid */}
+              <div className="grid grid-cols-2 gap-5">
+                {[
+                  { title: "Tool-Free Assembly", desc: "Swap soles bare-handed in under 10 seconds." },
+                  { title: "PU Casted Sole", desc: "Flexibility and durability for everyday use." },
+                  { title: "Traction Spikes", desc: "Removable grip system for the upper unit." },
+                  { title: "IP Protected", desc: "Federally protected mechanical interlocking mechanism." },
+                ].map((f) => (
+                  <div key={f.title} className="border-t-2 border-white/15 pt-3">
+                    <p className="font-inter text-xs font-bold uppercase tracking-widest text-[#CC0000] mb-1">{f.title}</p>
+                    <p className="font-inter text-sm text-white/50 leading-relaxed">{f.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Innovation Image */}
+            <div className="relative">
+              <div className="aspect-[4/5] w-full relative overflow-hidden">
+                <Image
+                  src="/images/fullshoe.webp"
+                  alt="SCHAULT modular shoe with snap-fit system"
+                  fill
+                  className="object-cover grayscale-[30%] contrast-[1.1]"
+                />
+              </div>
+              <div className="absolute top-6 left-6 bg-[#CC0000] text-white font-inter text-[11px] font-bold uppercase tracking-[0.12em] px-4 py-2.5">
+                Patent Published
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        {/* ─── LONGEVITY SECTION ─── */}
+        <div className="bg-[#F5F5F5]">
+
+          {/* Top text */}
+          <div className="about-longevity-top px-4 sm:px-6 md:px-12 lg:px-20 pt-24 md:pt-32 pb-12">
+            <div className="max-w-[900px]">
+              <p className="font-inter text-xs uppercase tracking-widest text-[#CC0000] mb-4">The Philosophy</p>
+              <h2 className="font-bebas text-[40px] md:text-[68px] leading-[1.05] mb-7 text-black/90 tracking-wide">
+                Built for <span className="italic text-[#CC0000]">Longevity.</span><br />
+                Engineered for Change.
+              </h2>
+              <p className="font-inter text-lg text-black/55 leading-[1.8] max-w-xl">
+                A shoe that lasts isn&apos;t just better for your wallet &mdash; it&apos;s better for the planet. SCHAULT is engineered with the entire lifecycle of the product in mind.
+              </p>
+            </div>
+          </div>
+
+          {/* Longevity Cards */}
+          <div className="longevity-cards grid grid-cols-1 sm:grid-cols-3 border-t border-black/10">
+            {[
+              { num: "01", title: "Reduce Waste", desc: "Replace only what's worn. Keep everything else." },
+              { num: "02", title: "Improve Hygiene", desc: "Detachable soles mean fully washable footwear systems." },
+              { num: "03", title: "Personalise", desc: "Mix uppers and soles for style, terrain, or occasion." },
+            ].map((card) => (
+              <div key={card.num} className="longevity-card p-8 md:p-10 border-l border-black/10 first:border-l-0 group hover:bg-white transition-colors duration-300">
+                <p className="font-bebas text-5xl text-[#CC0000] mb-3 tracking-wide">{card.num}</p>
+                <p className="font-inter text-sm font-bold uppercase tracking-[0.06em] text-black/90 mb-2">{card.title}</p>
+                <p className="font-inter text-sm text-black/50 leading-relaxed">{card.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Dark quote box */}
+          <div className="bg-black px-4 sm:px-6 md:px-12 lg:px-20 py-12">
+            <blockquote className="max-w-[1440px] mx-auto">
+              <p className="font-inter text-lg md:text-xl italic text-white/90 leading-relaxed">
+                &ldquo;The most sustainable shoe is the one you <span className="text-[#CC0000]">never have to replace.</span>&rdquo;
+              </p>
+            </blockquote>
+          </div>
+        </div>
+
+
+        {/* ─── PATENT CALLOUT ─── */}
+        <div className="px-4 sm:px-6 md:px-12 lg:px-20 py-16 border-b border-black/10">
+          <div className="max-w-[1440px] mx-auto">
+            <div className="border border-black/10 bg-black/[0.03] p-6 md:p-8 flex items-start gap-6 hover:border-[#CC0000] transition-colors group max-w-2xl">
+              <div className="h-12 w-12 shrink-0 border border-black/20 rounded-full flex items-center justify-center bg-white group-hover:bg-[#CC0000] group-hover:border-transparent group-hover:text-white transition-colors font-bebas text-lg">
+                IP
+              </div>
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="h-2 w-2 rounded-full bg-[#CC0000]" />
+                  <span className="font-inter text-xs font-bold uppercase tracking-widest text-black/90">Patent Published</span>
+                </div>
+                <p className="font-inter text-sm text-black/60">
+                  Recognized under Intellectual Property India. Our mechanical interlocking mechanism is federally protected for its unique, glue-less assembly standard.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        {/* ─── TEAM SECTION ─── */}
+        <TeamSection />
+
+
+        {/* ─── CTA SECTION ─── */}
+        <div className="about-cta text-center bg-black text-white p-16 md:p-24 relative overflow-hidden group">
+          {/* Background glow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#CC0000] rounded-full blur-[120px] opacity-20 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none" />
+
+          <div className="relative z-10">
+            <h2 className="font-bebas text-[48px] md:text-[64px] tracking-wide mb-6">READY TO REBUILD?</h2>
+            <p className="font-inter text-white/60 text-sm md:text-base max-w-xl mx-auto mb-10">
+              Join the movement to fundamentally shift how we consume and wear fashion.
+              Interchangeable parts, endless possibilities.
+            </p>
+            <Link href="/shop" className="inline-block border border-white text-white font-bebas text-lg px-10 py-4 hover:bg-white hover:text-black transition-colors tracking-widest">
+              EXPLORE THE SHOP
+            </Link>
+          </div>
+        </div>
+
       </main>
       <Footer />
     </>
