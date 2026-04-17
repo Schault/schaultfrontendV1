@@ -190,7 +190,6 @@ export default function CollaboratorsPage() {
               </div>
             ))}
             </div>
-          </div>
 
           {/* Partner with us CTA */}
           <div className="collab-hero border-t border-black/10 pt-16 text-center">
