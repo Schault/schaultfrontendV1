@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import ProductCard, { Product } from "./ProductCard";
+import SizeChartModal from "./SizeChartModal";
+import { Ruler } from "lucide-react";
 
 interface ProductGridProps {
   products: Product[];
@@ -19,6 +21,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
   onSortChange
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [isSizeChartOpen, setIsSizeChartOpen] = useState(false);
   const itemsPerPage = 6;
   const totalPages = Math.max(1, Math.ceil(products.length / itemsPerPage));
   
@@ -33,23 +36,33 @@ const ProductGrid: React.FC<ProductGridProps> = ({
     <div className="flex-1">
       {/* Results Bar - Desktop Tabs Style like Flipkart */}
       <div className="hidden md:flex flex-col border-b border-black/5 pb-4 mb-2">
-        <div className="flex items-center gap-6 py-2">
-          <span className="font-inter text-sm font-bold text-black/90">Sort By</span>
-          {[
-            { id: "popularity", label: "Relevance" },
-            { id: "popularity", label: "Popularity" },
-            { id: "low-high", label: "Price -- Low to High" },
-            { id: "high-low", label: "Price -- High to Low" },
-            { id: "newest", label: "Newest First" }
-          ].map((sortOption) => (
-            <button
-              key={sortOption.label}
-              onClick={() => onSortChange(sortOption.id)}
-              className="font-inter text-sm text-black/60 hover:text-[#CC0000] border-b-2 border-transparent hover:border-[#CC0000] pb-1 transition-all"
-            >
-              {sortOption.label}
-            </button>
-          ))}
+        <div className="flex items-center justify-between py-2">
+          <div className="flex items-center gap-6">
+            <span className="font-inter text-sm font-bold text-black/90">Sort By</span>
+            {[
+              { id: "popularity", label: "Relevance" },
+              { id: "popularity", label: "Popularity" },
+              { id: "low-high", label: "Price -- Low to High" },
+              { id: "high-low", label: "Price -- High to Low" },
+              { id: "newest", label: "Newest First" }
+            ].map((sortOption) => (
+              <button
+                key={sortOption.label}
+                onClick={() => onSortChange(sortOption.id)}
+                className="font-inter text-sm text-black/60 hover:text-[#CC0000] border-b-2 border-transparent hover:border-[#CC0000] pb-1 transition-all"
+              >
+                {sortOption.label}
+              </button>
+            ))}
+          </div>
+
+          <button 
+            onClick={() => setIsSizeChartOpen(true)}
+            className="flex items-center gap-2 font-bebas text-lg px-4 py-1.5 border-2 border-black/90 text-black hover:bg-black hover:text-white transition-all tracking-wider"
+          >
+            <Ruler size={16} />
+            SIZE CHART
+          </button>
         </div>
         
         {/* Active Filter Chips */}
@@ -126,6 +139,11 @@ const ProductGrid: React.FC<ProductGridProps> = ({
           </button>
         </div>
       </div>
+
+      <SizeChartModal 
+        isOpen={isSizeChartOpen} 
+        onClose={() => setIsSizeChartOpen(false)} 
+      />
     </div>
   );
 };

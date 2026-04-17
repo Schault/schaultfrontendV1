@@ -3,8 +3,8 @@ import { Product } from "@/components/shop/ProductCard";
 export const MOCK_PRODUCTS: Product[] = [
   {
     id: "1",
-    name: "MOMENT 1",
-    price: 2500,
+    name: "Arctic Dawn",
+    price: 2499,
     originalPrice: 4000,
     rating: 4.8,
     image: "/images/shoes/bluewhite.jpg",
@@ -16,8 +16,8 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "2",
-    name: "MOMENT 2",
-    price: 2500,
+    name: "Rust & Ash",
+    price: 2499,
     originalPrice: 4000,
     rating: 4.5,
     image: "/images/shoes/brownblack.jpg",
@@ -29,8 +29,8 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "3",
-    name: "MOMENT 3",
-    price: 2500,
+    name: "Navy Frost",
+    price: 2499,
     originalPrice: 4000,
     rating: 4.7,
     image: "/images/shoes/darkblue.jpg",
@@ -42,8 +42,8 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "4",
-    name: "MOMENT 4",
-    price: 2500,
+    name: "Heritage",
+    price: 2499,
     originalPrice: 4000,
     rating: 4.9,
     image: "/images/shoes/whitefull.jpg",
@@ -55,8 +55,8 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "5",
-    name: "MOMENT 5",
-    price: 2500,
+    name: "Ochre & Earth",
+    price: 2499,
     originalPrice: 4000,
     rating: 4.6,
     image: "/images/shoes/yellow.jpg",

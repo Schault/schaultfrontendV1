@@ -12,16 +12,26 @@ interface FormData {
   name: string;
   email: string;
   phone: string;
+  gender: string;
+  size: string;
 }
 
 interface FormErrors {
   name?: string;
   email?: string;
   phone?: string;
+  gender?: string;
+  size?: string;
 }
 
 export default function WaitlistForm() {
-  const [form, setForm] = useState<FormData>({ name: "", email: "", phone: "" });
+  const [form, setForm] = useState<FormData>({ 
+    name: "", 
+    email: "", 
+    phone: "",
+    gender: "",
+    size: ""
+  });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -66,6 +76,14 @@ export default function WaitlistForm() {
       errs.phone = "Enter a valid phone number";
     }
 
+    if (!form.gender) {
+      errs.gender = "Gender is required";
+    }
+
+    if (!form.size) {
+      errs.size = "Size is required";
+    }
+
     return errs;
   }
 
@@ -86,6 +104,8 @@ export default function WaitlistForm() {
         name: form.name.trim(),
         email: form.email.trim().toLowerCase(),
         phone: form.phone.trim() || null,
+        gender: form.gender,
+        size: form.size,
       });
 
       if (error) {
@@ -106,7 +126,7 @@ export default function WaitlistForm() {
     }
   }
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
     // Clear field error on change
@@ -205,6 +225,71 @@ export default function WaitlistForm() {
             {errors.email && (
               <p className="mt-1 font-inter text-xs text-[#CC0000]">{errors.email}</p>
             )}
+          </div>
+
+          {/* Gender and Size Grid */}
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+            {/* Gender */}
+            <div>
+              <label htmlFor="waitlist-gender" className="mb-1.5 block font-inter text-xs font-medium uppercase tracking-widest text-black/50">
+                Gender
+              </label>
+              <div className="relative">
+                <select
+                  id="waitlist-gender"
+                  name="gender"
+                  value={form.gender}
+                  onChange={handleChange}
+                  className={`w-full appearance-none border bg-white px-4 py-3.5 font-inter text-sm text-black/90 outline-none transition-colors focus:border-[#CC0000] ${
+                    errors.gender ? "border-[#CC0000]" : "border-black/10"
+                  }`}
+                >
+                  <option value="" disabled>Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Prefer not to say">Prefer not to say</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-black/40">
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+              {errors.gender && (
+                <p className="mt-1 font-inter text-xs text-[#CC0000]">{errors.gender}</p>
+              )}
+            </div>
+
+            {/* Size */}
+            <div>
+              <label htmlFor="waitlist-size" className="mb-1.5 block font-inter text-xs font-medium uppercase tracking-widest text-black/50">
+                Size (UK)
+              </label>
+              <div className="relative">
+                <select
+                  id="waitlist-size"
+                  name="size"
+                  value={form.size}
+                  onChange={handleChange}
+                  className={`w-full appearance-none border bg-white px-4 py-3.5 font-inter text-sm text-black/90 outline-none transition-colors focus:border-[#CC0000] ${
+                    errors.size ? "border-[#CC0000]" : "border-black/10"
+                  }`}
+                >
+                  <option value="" disabled>Select Size</option>
+                  {[4, 5, 6, 7, 8, 9, 10, 11].map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-black/40">
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+              {errors.size && (
+                <p className="mt-1 font-inter text-xs text-[#CC0000]">{errors.size}</p>
+              )}
+            </div>
           </div>
 
           {/* Phone */}

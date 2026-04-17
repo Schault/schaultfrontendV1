@@ -215,7 +215,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                 </div>
                 <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
                   {product.sizes.map((size) => {
-                    const isAvailable = size === "9";
+                    const isAvailable = size === "8";
                     return (
                       <button
                         key={size}

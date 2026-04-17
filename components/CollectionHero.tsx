@@ -18,16 +18,16 @@ type PlaceholderItem = {
 // ── Data ────────────────────────────────────────────────────────────────────
 
 const SHOES: PlaceholderItem[] = [
-  { id: "shoe-1", name: "Moment 1", price: "₹1,999", image: "/images/shoes/bluewhite.jpg" },
-  { id: "shoe-2", name: "Moment 2", price: "₹1,999", image: "/images/shoes/brownblack.jpg" },
-  { id: "shoe-3", name: "Moment 3", price: "₹1,999", image: "/images/shoes/darkblue.jpg" },
-  { id: "shoe-4", name: "Moment 4", price: "₹1,999", image: "/images/shoes/whitefull.jpg" },
-  { id: "shoe-5", name: "Moment 5", price: "₹1,999", image: "/images/shoes/yellow.jpg" },
+  { id: "shoe-1", name: "Arctic Dawn", price: "₹2,499", image: "/images/shoes/bluewhite.jpg" },
+  { id: "shoe-2", name: "Rust & Ash", price: "₹2,499", image: "/images/shoes/brownblack.jpg" },
+  { id: "shoe-3", name: "Navy Frost", price: "₹2,499", image: "/images/shoes/darkblue.jpg" },
+  { id: "shoe-4", name: "Heritage", price: "₹2,499", image: "/images/shoes/whitefull.jpg" },
+  { id: "shoe-5", name: "Ochre & Earth", price: "₹2,499", image: "/images/shoes/yellow.jpg" },
 ];
 
 const SOLES: PlaceholderItem[] = [
-  { id: "sole-1", name: "Standard Outsole", price: "₹899", image: "/images/sole_1.webp" },
-  { id: "sole-2", name: "Comfort Midsole", price: "₹599", image: "/images/sole_2.webp" },
+  { id: "sole-1", name: "White Outsole", price: "₹799", image: "/images/sole_1.webp" },
+  { id: "sole-2", name: "Black Outsole", price: "₹799", image: "/images/sole_2.webp" },
 ];
 
 // ── Placeholder Card ────────────────────────────────────────────────────────
@@ -76,7 +76,7 @@ function PlaceholderCard({ item, index }: { item: PlaceholderItem; index: number
               addItem({
                 id: item.id,
                 name: item.name,
-                price: parseInt(item.price.replace(/[^\d]/g, ""), 10) || 1999,
+                price: parseInt(item.price.replace(/[^\d]/g, ""), 10) || 2499,
                 image: item.image,
                 quantity: 1,
                 color: "Default",

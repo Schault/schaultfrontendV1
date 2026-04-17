@@ -34,7 +34,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     { name: "Camel", hex: "#C19A6B" }
   ];
 
-  const sizes = ["XXS", "XS", "S", "M", "L", "XL", "XXL", "All"];
+  const sizes = ["4", "5", "6", "7", "8", "9", "10", "11", "All"];
 
   return (
     <aside className="w-full md:w-[220px] flex-shrink-0 md:sticky md:top-24 h-fit md:pb-10">

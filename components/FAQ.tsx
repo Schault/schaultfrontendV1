@@ -10,7 +10,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "How do I replace a part?",
-    a: "Simply press the connector nodes on the upper into the matching cavities on the sole. It snaps in securely and releases with a simple press. No glue, no tools, no cobbler needed.",
+    a: "Simply press the connector nodes on the upper into the matching cavities on the sole from the front side to attach and detach. It snaps in securely and releases with a simple press. No glue, no tools, no cobbler needed.",
   },
   {
     q: "Are the parts sold separately?",
@@ -22,7 +22,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "What sizes are available?",
-    a: "SCHAULT is currently available in sizes UK 6–11 for men and UK 4–9 for women. More sizes coming soon.",
+    a: "SCHAULT is currently available in size UK 8 for both genders. More sizes coming soon.",
   },
   {
     q: "Where do you deliver?",
@@ -30,7 +30,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "What are the terms of the beta launch?",
-    a: "We are launching our beta phase on 16 April! During this time, we are selling our shoes at a significantly discounted price. Because of the limited nature and low pricing of the beta, please note that return policies are not available during this phase.",
+    a: "For our beta phase, we are selling our shoes at a significantly discounted price. Because of the limited nature and low pricing of the beta, please note that return policies and cash on delivery are not available during this phase.",
   },
 ];
 

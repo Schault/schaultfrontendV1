@@ -24,11 +24,11 @@ export const SHOES: ShoeDetails[] = [
             "Premium Texture: Light blue pebble-grain leather, velvety grey suede, and breathable white mesh.",
             "Triple-Density Sole: Engineered with an EVA, TPR, and Rubber hybrid black outsole for high-performance traction."
         ],
-        price: "₹1,990",
-        priceValue: 1990,
+        price: "₹2,499",
+        priceValue: 2499,
         image: "/images/shoes/bluewhite.jpg",
         allSizes: SIZES,
-        availableSizes: [9],
+        availableSizes: [8],
     },
     {
         id: "ochre-earth",
@@ -40,11 +40,11 @@ export const SHOES: ShoeDetails[] = [
             "Tactile Depth: The mix of smooth leather and velvety suede provides a rich, premium hand-feel.",
             "Skinfit Interior: Lined with a Lycra-Nylon blend to prevent friction."
         ],
-        price: "₹1,990",
-        priceValue: 1990,
+        price: "₹2,499",
+        priceValue: 2499,
         image: "/images/shoes/yellow.jpg",
         allSizes: SIZES,
-        availableSizes: [9],
+        availableSizes: [8],
     },
     {
         id: "rust-ash",
@@ -56,11 +56,11 @@ export const SHOES: ShoeDetails[] = [
             "Rustic Accents: Deep rust-tone suede on the toe and heel adds a rugged touch.",
             "Stealth Profile: An all-black matte midsole and outsole provides a grounded, aggressive look."
         ],
-        price: "₹1,990",
-        priceValue: 1990,
+        price: "₹2,499",
+        priceValue: 2499,
         image: "/images/shoes/brownblack.jpg",
         allSizes: SIZES,
-        availableSizes: [9],
+        availableSizes: [8],
     },
     {
         id: "cd-heritage",
@@ -72,11 +72,11 @@ export const SHOES: ShoeDetails[] = [
             "Mustard Energy: A sharp, horizontal leather stripe in mustard yellow provides a high-energy focal point.",
             "Hidden Detail: 'CARPE DIEM' subtly engraved directly into the rubber sidewall."
         ],
-        price: "₹1,990",
-        priceValue: 1990,
+        price: "₹2,499",
+        priceValue: 2499,
         image: "/images/shoes/whitefull.jpg",
         allSizes: SIZES,
-        availableSizes: [9],
+        availableSizes: [8],
     },
     {
         id: "navy-frost",
@@ -88,10 +88,10 @@ export const SHOES: ShoeDetails[] = [
             "Midnight Contrast: Deep Navy Blue leather heel counter adds a touch of formal luxury.",
             "Tonal Versatility: The Dove Grey suede toe cap ensures this pair transitions perfectly from casual denim."
         ],
-        price: "₹1,990",
-        priceValue: 1990,
+        price: "₹2,499",
+        priceValue: 2499,
         image: "/images/shoes/darkblue.jpg",
         allSizes: SIZES,
-        availableSizes: [9],
+        availableSizes: [8],
     },
 ];
