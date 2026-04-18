@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { motion, useScroll, useTransform, useMotionTemplate } from "framer-motion";
 
 const WaitlistBanner = () => {
@@ -37,21 +38,24 @@ const WaitlistBanner = () => {
   );
   
   return (
-    <motion.div 
-      style={{ top, opacity }}
-      className="fixed left-0 w-full bg-[#0350F0] py-2.5 overflow-hidden z-[10001]"
-    >
-      <div className="flex animate-marquee w-max select-none">
-        {[...Array(10)].map((_, i) => (
-          <div key={i} className="flex items-center gap-8 px-4">
-            <p className="font-bebas text-lg md:text-xl text-white whitespace-nowrap tracking-[0.1em] uppercase">
-              {text}
-            </p>
-            <span className="w-1.5 h-1.5 rounded-full bg-white/40 flex-shrink-0" />
-          </div>
-        ))}
-      </div>
-    </motion.div>
+    <Link href="/#waitlist" className="block">
+      <motion.div 
+        style={{ top, opacity }}
+        whileHover={{ backgroundColor: "#0246D9" }}
+        className="fixed left-0 w-full bg-[#0350F0] py-2.5 overflow-hidden z-[10001] cursor-pointer transition-colors duration-200"
+      >
+        <div className="flex animate-marquee w-max select-none">
+          {[...Array(10)].map((_, i) => (
+            <div key={i} className="flex items-center gap-8 px-4">
+              <p className="font-bebas text-lg md:text-xl text-white whitespace-nowrap tracking-[0.1em] uppercase">
+                {text}
+              </p>
+              <span className="w-1.5 h-1.5 rounded-full bg-white/40 flex-shrink-0" />
+            </div>
+          ))}
+        </div>
+      </motion.div>
+    </Link>
   );
 };
 
