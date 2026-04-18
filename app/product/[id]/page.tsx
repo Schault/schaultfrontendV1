@@ -2,7 +2,8 @@
 
 import { useCart } from "@/context/CartContext";
 import { notFound, useRouter } from "next/navigation";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { MOCK_PRODUCTS } from "@/lib/mockProducts";
 import Image from "next/image";
@@ -15,6 +16,15 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   const supabase = createClient();
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const { scrollLeft, offsetWidth } = scrollRef.current;
+      const scrollTo = direction === 'left' ? scrollLeft - offsetWidth : scrollLeft + offsetWidth;
+      scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+    }
+  };
 
   // Find product from mocked data
   const product = useMemo(() => {
@@ -110,17 +120,38 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             </div>
 
             {/* Mobile Horizon Swipe */}
-            <div className="lg:hidden flex w-full overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] border border-black/5 bg-white">
-              {(product.gallery || [product.image, product.image, product.image, product.image]).map((img, idx) => (
-                <div key={idx} className="relative w-full shrink-0 snap-center aspect-square flex items-center justify-center p-8">
-                  <Image
-                    src={img}
-                    alt={`${product.name} Slide ${idx + 1}`}
-                    fill
-                    className="object-contain p-8"
-                  />
-                </div>
-              ))}
+            <div className="lg:hidden relative">
+              <div 
+                ref={scrollRef}
+                className="flex w-full overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] border border-black/5 bg-white"
+              >
+                {(product.gallery || [product.image, product.image, product.image, product.image]).map((img, idx) => (
+                  <div key={idx} className="relative w-full shrink-0 snap-center aspect-square flex items-center justify-center p-8">
+                    <Image
+                      src={img}
+                      alt={`${product.name} Slide ${idx + 1}`}
+                      fill
+                      className="object-contain p-8"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Navigation Arrows */}
+              <button 
+                onClick={() => scroll('left')}
+                className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur-sm border border-black/5 flex items-center justify-center rounded-full shadow-sm active:scale-95 transition-all z-10"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="w-6 h-6 text-black" />
+              </button>
+              <button 
+                onClick={() => scroll('right')}
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur-sm border border-black/5 flex items-center justify-center rounded-full shadow-sm active:scale-95 transition-all z-10"
+                aria-label="Next image"
+              >
+                <ChevronRight className="w-6 h-6 text-black" />
+              </button>
             </div>
             
             {/* Action Buttons (Desktop only - Mobile has fixed bottom bar) */}
@@ -201,25 +232,18 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                 </div>
                 <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
                   {product.sizes.map((size) => {
-                    const isAvailable = size === "8";
                     return (
                       <button
                         key={size}
-                        disabled={!isAvailable}
                         onClick={() => setSelectedSize(size)}
                         className={`
                           pt-2 pb-1.5 font-bebas text-lg border transition-all duration-200 ease-out flex items-center justify-center relative overflow-hidden
-                          ${!isAvailable 
-                              ? "border-black/10 bg-[#F5F5F5] text-black/30 cursor-not-allowed"
-                              : selectedSize === size
-                                ? "border-black bg-black text-white"
-                                : "border-black/20 bg-white text-black hover:border-black/60"
+                          ${selectedSize === size
+                              ? "border-black bg-black text-white"
+                              : "border-black/20 bg-white text-black hover:border-black/60"
                           }`}
                       >
-                        <span className={!isAvailable ? "line-through" : ""}>{size}</span>
-                        {!isAvailable && (
-                           <div className="absolute inset-0 w-full h-[1px] bg-black/10 top-1/2 -rotate-[35deg] origin-center scale-150" />
-                        )}
+                        <span>{size}</span>
                       </button>
                     );
                   })}

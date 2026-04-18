@@ -310,10 +310,10 @@ export default function AboutPage() {
             <div className="relative">
               <div className="aspect-[4/5] w-full relative overflow-hidden">
                 <Image
-                  src="/images/fullshoe.webp"
-                  alt="SCHAULT modular shoe with snap-fit system"
+                  src="/images/ip-india-image.jpg"
+                  alt="Patent Published - Intellectual Property India"
                   fill
-                  className="object-cover grayscale-[30%] contrast-[1.1]"
+                  className="object-contain"
                 />
               </div>
               <div className="absolute top-6 left-6 bg-[#0350F0] text-white font-inter text-[11px] font-bold uppercase tracking-[0.12em] px-4 py-2.5">

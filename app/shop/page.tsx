@@ -22,7 +22,6 @@ export default function ShopPage() {
   const [sortBy, setSortBy] = useState("popularity");
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
 
-  const categories = ["All", "Jackets", "Shirts", "Pants", "Hoodies", "Shoes", "Accessories", "T-Shirts"];
 
   const filteredProducts = useMemo(() => {
     let result = MOCK_PRODUCTS.filter(product => {
@@ -57,29 +56,13 @@ export default function ShopPage() {
   return (
     <main className="bg-[#F1F3F6] min-h-screen pt-20 pb-20 md:pb-10 font-inter">
       {/* Mobile Top Header (Search & Category) */}
-      <div className="bg-white md:bg-transparent border-b border-black/5 md:border-none sticky top-[72px] z-50 md:static">
+      <div className="hidden md:block bg-transparent md:border-none md:static">
         <div className="max-w-[1440px] mx-auto px-4 md:px-12 py-3 md:pt-3">
           {/* Breadcrumb - Hidden on tiny mobile */}
           <div className="hidden md:flex items-center gap-2 text-[10px] text-black/50 mb-3 uppercase tracking-widest">
             <span>Shop</span> <ChevronRight size={10} /> <span className="text-black/90 font-medium">All Products</span>
           </div>
 
-          {/* Horizontal Category Scroll */}
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-4 md:hidden mt-1">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setFilters(prev => ({ ...prev, category: cat }))}
-                className={`flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-medium border transition-all ${
-                  (filters.category === cat || (!filters.category && cat === "All"))
-                    ? "bg-black text-white border-black"
-                    : "bg-white text-black/60 border-black/10 hover:border-black/30"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
         </div>
       </div>
 

@@ -72,28 +72,28 @@ const COLLABORATORS = [
     instagram: "https://www.instagram.com/exposetrendze",
     image: "/images/logo-expose-tran.png",
   },
-  {
-    num: "03",
-    name: "Liberty Shoes",
-    tagline: "Large-Scale Footwear Leader · India, Since 1954",
-    category: "Retail & Scale",
-    description: [
-      "Liberty Shoes Limited, one of India's largest and most recognised footwear companies, has been at the forefront of the Indian footwear industry for over seven decades. With a manufacturing capacity spanning multiple state of the art facilities and a retail presence across thousands of touchpoints nationwide, Liberty brings unmatched distribution expertise and consumer trust.",
-      "As SCHAULT scales from prototype to market, Liberty's established infrastructure, supply chain mastery, and brand visibility across India position them as a strategic partner for reaching millions of conscious consumers who are ready for modular, sustainable footwear.",
-    ],
-    whyTitle: "Scale Meets Innovation.",
-    whyIntro: "Liberty's manufacturing scale and distribution network complement SCHAULT's engineering innovation — together, bringing modular footwear from the lab to every Indian household.",
-    whyCards: [
-      { icon: Store, title: "Pan-India Retail Reach", desc: "Thousands of retail touchpoints and online presence ensure SCHAULT's modular system reaches consumers everywhere." },
-      { icon: Warehouse, title: "Manufacturing at Scale", desc: "Decades of industrial manufacturing expertise to help SCHAULT transition from artisanal prototyping to mass production." },
-      { icon: Briefcase, title: "Brand Trust", desc: "Over 70 years of consumer trust makes Liberty a credible launchpad for introducing new footwear technology to mainstream India." },
-      { icon: Package, title: "Supply Chain Mastery", desc: "Vertically integrated operations from raw material sourcing to final delivery — infrastructure that SCHAULT can leverage from day one." },
-    ],
-    website: "https://www.libertyshoesonline.com/",
-    instagram: "https://www.instagram.com/libertyshoesltd/",
-    image: "/images/liberty-logo.webp",
-  },
 ];
+
+const SUPPORTED_BY = {
+  name: "Liberty Shoes",
+  tagline: "Large-Scale Footwear Leader · India, Since 1954",
+  category: "Retail & Scale",
+  description: [
+    "Liberty Shoes Limited, one of India's largest and most recognised footwear companies, has been at the forefront of the Indian footwear industry for over seven decades. With a manufacturing capacity spanning multiple state of the art facilities and a retail presence across thousands of touchpoints nationwide, Liberty brings unmatched distribution expertise and consumer trust.",
+    "As SCHAULT scales from prototype to market, Liberty's established infrastructure, supply chain mastery, and brand visibility across India position them as a key supporter for reaching millions of conscious consumers who are ready for modular, sustainable footwear.",
+  ],
+  whyTitle: "Scale Meets Innovation.",
+  whyIntro: "Liberty's manufacturing scale and distribution network empower SCHAULT's engineering innovation — together, bringing modular footwear from the lab to every Indian household.",
+  whyCards: [
+    { icon: Store, title: "Pan-India Retail Reach", desc: "Thousands of retail touchpoints and online presence ensure SCHAULT's modular system reaches consumers everywhere." },
+    { icon: Warehouse, title: "Manufacturing at Scale", desc: "Decades of industrial manufacturing expertise to help SCHAULT transition from artisanal prototyping to mass production." },
+    { icon: Briefcase, title: "Brand Trust", desc: "Over 70 years of consumer trust makes Liberty a credible launchpad for introducing new footwear technology to mainstream India." },
+    { icon: Package, title: "Supply Chain Mastery", desc: "Vertically integrated operations from raw material sourcing to final delivery — infrastructure that SCHAULT can leverage from day one." },
+  ],
+  website: "https://www.libertyshoesonline.com/",
+  instagram: "https://www.instagram.com/libertyshoesltd/",
+  image: "/images/liberty-logo.webp",
+};
 
 export default function CollaboratorsPage() {
   const container = useRef<HTMLElement>(null);
@@ -216,7 +216,8 @@ export default function CollaboratorsPage() {
               ))}
 
               <p className="font-bebas text-[28px] text-white mt-5 leading-snug tracking-wide">
-                3 Strategic<br /><span className="text-[#0350F0]">Collaborators.</span>
+                2 Strategic <span className="text-[#0350F0]">Collaborators</span><br />
+                & Supported By <span className="text-[#0350F0]">Liberty Shoes.</span>
               </p>
             </div>
           </div>
@@ -353,6 +354,71 @@ export default function CollaboratorsPage() {
           </section>
         ))}
 
+        {/* ─── SUPPORTED BY SECTION ─── */}
+        <section className="collab-partner border-b border-black/10">
+          <div className="grid grid-cols-1 md:grid-cols-2">
+            {/* Image side */}
+            <div className="relative overflow-hidden min-h-[400px] md:min-h-[480px] group bg-[#F8F8F8] p-12 md:p-20">
+              <Image
+                src={SUPPORTED_BY.image}
+                alt={`${SUPPORTED_BY.name} supported partner`}
+                fill
+                className="object-contain transition-transform duration-700 group-hover:scale-[1.05]"
+              />
+              <div className="absolute bottom-6 left-6 bg-white py-3 px-5 border-l-[3px] border-[#0350F0]">
+                <p className="font-inter text-[10px] font-semibold uppercase tracking-[0.18em] text-black/50">Partner</p>
+                <p className="font-bebas text-xl text-black/90 tracking-wide">Supported By</p>
+              </div>
+            </div>
+
+            {/* Text side */}
+            <div className="collab-animate px-6 sm:px-10 md:px-14 lg:px-16 py-14 md:py-20 flex flex-col justify-center">
+              <p className="font-inter text-[11px] font-semibold uppercase tracking-[0.2em] text-[#0350F0] mb-3">
+                Supported By · {SUPPORTED_BY.category}
+              </p>
+              <h2 className="collab-animate font-bebas text-[40px] sm:text-[48px] md:text-[54px] text-black/90 leading-[1.05] tracking-wide mb-2">
+                {SUPPORTED_BY.name.split(" ").map((word, wi) => (
+                  <React.Fragment key={wi}>
+                    {wi > 0 && <br />}
+                    {wi === SUPPORTED_BY.name.split(" ").length - 1 ? (
+                      <span className="italic text-[#0350F0]">{word}</span>
+                    ) : (
+                      word
+                    )}
+                  </React.Fragment>
+                ))}
+              </h2>
+              <p className="collab-animate font-inter text-[13px] font-semibold uppercase tracking-[0.1em] text-black/40 mb-7">{SUPPORTED_BY.tagline}</p>
+
+              {SUPPORTED_BY.description.map((para, pi) => (
+                <p key={pi} className="collab-animate font-inter text-[15px] text-black/60 leading-[1.85] mb-5 max-w-[480px]">{para}</p>
+              ))}
+
+              {/* Links */}
+              <div className="collab-animate flex flex-wrap gap-3 mt-3">
+                <a
+                  href={SUPPORTED_BY.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-black text-white font-inter text-[12px] font-bold uppercase tracking-[0.12em] px-5 py-3 hover:bg-[#0350F0] hover:-translate-y-0.5 transition-all duration-200"
+                >
+                  <svg className="w-3.5 h-3.5 fill-current flex-shrink-0" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zM17.9 17.39c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" /></svg>
+                  Visit Website
+                </a>
+                <a
+                  href={SUPPORTED_BY.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-transparent text-black border-[1.5px] border-black font-inter text-[12px] font-bold uppercase tracking-[0.12em] px-5 py-3 hover:bg-black hover:text-white hover:-translate-y-0.5 transition-all duration-200"
+                >
+                  <svg className="w-3.5 h-3.5 fill-current flex-shrink-0" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" /></svg>
+                  Instagram
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
 
         {/* ─── JOINT VISION BANNER ─── */}
         <section className="joint-vision bg-[#F5F5F5] relative overflow-hidden py-20 md:py-24 px-4 sm:px-6 md:px-12 text-center">
@@ -361,10 +427,10 @@ export default function CollaboratorsPage() {
 
           <p className="font-inter text-[11px] font-semibold uppercase tracking-[0.22em] text-[#0350F0] mb-5">The Bigger Picture</p>
           <h2 className="font-bebas text-[36px] sm:text-[48px] md:text-[64px] text-black/90 leading-[1.08] tracking-wide max-w-[900px] mx-auto mb-8">
-            Three Brands.<br />One <span className="italic text-[#0350F0]">Shared Mission.</span>
+            Collectively <span className="italic text-[#0350F0]">Committed.</span>
           </h2>
           <p className="font-inter text-[15px] text-black/55 max-w-[700px] mx-auto mb-12 leading-[1.85]">
-            SCHAULT&apos;s modular system, Kapas Paduka&apos;s biodegradable materials, and Expose Trendze&apos;s precision manufacturing represent three complementary forces converging on a single goal: footwear that is responsibly made, exceptionally crafted, and designed to never become waste. Liberty Shoes brings the scale to make this vision mainstream.
+            SCHAULT&apos;s modular system, Kapas Paduka&apos;s biodegradable materials, and Expose Trendze&apos;s precision manufacturing represent three complementary forces converging on a single goal: footwear that is responsibly made, exceptionally crafted, and designed to never become waste. Supported by Liberty Shoes, we have the scale to make this vision mainstream.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
@@ -379,6 +445,12 @@ export default function CollaboratorsPage() {
                   <item.icon size={26} className="text-[#0350F0]" />
                 </span>
                 <p className="font-inter text-[13px] font-bold uppercase tracking-[0.08em] text-black/90 mb-2">{item.name}</p>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#0350F0]" />
+                  <span className="font-inter text-[10px] font-semibold uppercase tracking-widest text-black/40">
+                    {item.name === "Liberty Shoes" ? "Supported Partner" : "Collaborator"}
+                  </span>
+                </div>
                 <p className="font-inter text-[13px] text-black/50 leading-relaxed">{item.desc}</p>
               </div>
             ))}
