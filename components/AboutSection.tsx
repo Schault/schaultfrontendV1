@@ -46,14 +46,14 @@ export default function AboutSection() {
       <div className="mx-auto max-w-6xl">
         <div className="grid gap-16 lg:grid-cols-2 lg:gap-24">
           <div className="about-text">
-            <p className="font-inter text-xs uppercase tracking-widest text-[#CC0000]">
+            <p className="font-inter text-xs uppercase tracking-widest text-[#0350F0]">
               OUR STORY
             </p>
             <h2 className="mt-4 font-bebas text-4xl tracking-wide text-black/90 md:text-5xl uppercase">
               Born From Frustration.
             </h2>
             <div className="mt-6 space-y-4 font-inter text-sm leading-relaxed text-black/70">
-              <p className="italic text-black/80 border-l-2 border-[#CC0000] pl-4 py-1">
+              <p className="italic text-black/80 border-l-2 border-[#0350F0] pl-4 py-1">
                 "Why do we throw away an entire shoe when only the sole wears out?"
               </p>
               <p>
@@ -65,7 +65,7 @@ export default function AboutSection() {
             </div>
             <Link
               href="/about"
-              className="mt-8 inline-block font-inter text-sm font-medium text-[#CC0000] transition-opacity duration-200 hover:opacity-80"
+              className="mt-8 inline-block font-inter text-sm font-medium text-[#0350F0] transition-opacity duration-200 hover:opacity-80"
             >
               Read the full story →
             </Link>
@@ -73,7 +73,7 @@ export default function AboutSection() {
           <div className="flex items-center justify-center lg:justify-end">
             <div className="about-badge w-full max-w-sm border border-black/10 bg-white p-8">
               <div className="flex items-center gap-2">
-                <span className="h-2 w-2 shrink-0 rounded-full bg-[#CC0000]" />
+                <span className="h-2 w-2 shrink-0 rounded-full bg-[#0350F0]" />
                 <span className="font-inter text-xs font-medium uppercase tracking-widest text-black/70">
                   Patent Published
                 </span>

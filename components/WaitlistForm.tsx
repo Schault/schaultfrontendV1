@@ -146,8 +146,8 @@ export default function WaitlistForm() {
       >
         <div className="mx-auto max-w-xl text-center">
           <div className="waitlist-element rounded-2xl border border-black/10 bg-[#FAFAFA] p-12">
-            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[#CC0000]/10">
-              <svg className="h-8 w-8 text-[#CC0000]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[#0350F0]/10">
+              <svg className="h-8 w-8 text-[#0350F0]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
@@ -196,12 +196,12 @@ export default function WaitlistForm() {
               onChange={handleChange}
               placeholder="John Doe"
               autoComplete="name"
-              className={`w-full border bg-white px-4 py-3.5 font-inter text-sm text-black/90 outline-none transition-colors placeholder:text-black/30 focus:border-[#CC0000] ${
-                errors.name ? "border-[#CC0000]" : "border-black/10"
+              className={`w-full border bg-white px-4 py-3.5 font-inter text-sm text-black/90 outline-none transition-colors placeholder:text-black/30 focus:border-[#0350F0] ${
+                errors.name ? "border-[#0350F0]" : "border-black/10"
               }`}
             />
             {errors.name && (
-              <p className="mt-1 font-inter text-xs text-[#CC0000]">{errors.name}</p>
+              <p className="mt-1 font-inter text-xs text-[#0350F0]">{errors.name}</p>
             )}
           </div>
 
@@ -218,12 +218,12 @@ export default function WaitlistForm() {
               onChange={handleChange}
               placeholder="you@example.com"
               autoComplete="email"
-              className={`w-full border bg-white px-4 py-3.5 font-inter text-sm text-black/90 outline-none transition-colors placeholder:text-black/30 focus:border-[#CC0000] ${
-                errors.email ? "border-[#CC0000]" : "border-black/10"
+              className={`w-full border bg-white px-4 py-3.5 font-inter text-sm text-black/90 outline-none transition-colors placeholder:text-black/30 focus:border-[#0350F0] ${
+                errors.email ? "border-[#0350F0]" : "border-black/10"
               }`}
             />
             {errors.email && (
-              <p className="mt-1 font-inter text-xs text-[#CC0000]">{errors.email}</p>
+              <p className="mt-1 font-inter text-xs text-[#0350F0]">{errors.email}</p>
             )}
           </div>
 
@@ -240,8 +240,8 @@ export default function WaitlistForm() {
                   name="gender"
                   value={form.gender}
                   onChange={handleChange}
-                  className={`w-full appearance-none border bg-white px-4 py-3.5 font-inter text-sm text-black/90 outline-none transition-colors focus:border-[#CC0000] ${
-                    errors.gender ? "border-[#CC0000]" : "border-black/10"
+                  className={`w-full appearance-none border bg-white px-4 py-3.5 font-inter text-sm text-black/90 outline-none transition-colors focus:border-[#0350F0] ${
+                    errors.gender ? "border-[#0350F0]" : "border-black/10"
                   }`}
                 >
                   <option value="" disabled>Select Gender</option>
@@ -256,7 +256,7 @@ export default function WaitlistForm() {
                 </div>
               </div>
               {errors.gender && (
-                <p className="mt-1 font-inter text-xs text-[#CC0000]">{errors.gender}</p>
+                <p className="mt-1 font-inter text-xs text-[#0350F0]">{errors.gender}</p>
               )}
             </div>
 
@@ -271,8 +271,8 @@ export default function WaitlistForm() {
                   name="size"
                   value={form.size}
                   onChange={handleChange}
-                  className={`w-full appearance-none border bg-white px-4 py-3.5 font-inter text-sm text-black/90 outline-none transition-colors focus:border-[#CC0000] ${
-                    errors.size ? "border-[#CC0000]" : "border-black/10"
+                  className={`w-full appearance-none border bg-white px-4 py-3.5 font-inter text-sm text-black/90 outline-none transition-colors focus:border-[#0350F0] ${
+                    errors.size ? "border-[#0350F0]" : "border-black/10"
                   }`}
                 >
                   <option value="" disabled>Select Size</option>
@@ -287,7 +287,7 @@ export default function WaitlistForm() {
                 </div>
               </div>
               {errors.size && (
-                <p className="mt-1 font-inter text-xs text-[#CC0000]">{errors.size}</p>
+                <p className="mt-1 font-inter text-xs text-[#0350F0]">{errors.size}</p>
               )}
             </div>
           </div>
@@ -305,19 +305,19 @@ export default function WaitlistForm() {
               onChange={handleChange}
               placeholder="+91 98765 43210"
               autoComplete="tel"
-              className={`w-full border bg-white px-4 py-3.5 font-inter text-sm text-black/90 outline-none transition-colors placeholder:text-black/30 focus:border-[#CC0000] ${
-                errors.phone ? "border-[#CC0000]" : "border-black/10"
+              className={`w-full border bg-white px-4 py-3.5 font-inter text-sm text-black/90 outline-none transition-colors placeholder:text-black/30 focus:border-[#0350F0] ${
+                errors.phone ? "border-[#0350F0]" : "border-black/10"
               }`}
             />
             {errors.phone && (
-              <p className="mt-1 font-inter text-xs text-[#CC0000]">{errors.phone}</p>
+              <p className="mt-1 font-inter text-xs text-[#0350F0]">{errors.phone}</p>
             )}
           </div>
 
           {/* Server Error */}
           {serverError && (
-            <div className="border border-[#CC0000]/20 bg-[#CC0000]/5 px-4 py-3 text-center">
-              <p className="font-inter text-sm text-[#CC0000]">{serverError}</p>
+            <div className="border border-[#0350F0]/20 bg-[#0350F0]/5 px-4 py-3 text-center">
+              <p className="font-inter text-sm text-[#0350F0]">{serverError}</p>
             </div>
           )}
 
@@ -325,7 +325,7 @@ export default function WaitlistForm() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full border-2 border-[#CC0000] bg-[#CC0000] px-10 py-4 font-bebas text-xl tracking-widest text-white transition-all duration-300 hover:bg-transparent hover:text-[#CC0000] disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full border-2 border-[#0350F0] bg-[#0350F0] px-10 py-4 font-bebas text-xl tracking-widest text-white transition-all duration-300 hover:bg-transparent hover:text-[#0350F0] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isLoading ? (
               <span className="inline-flex items-center gap-2">

@@ -22,7 +22,7 @@ export default function ShopPage() {
   const [sortBy, setSortBy] = useState("popularity");
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
 
-  const categories = ["All", "Jackets", "Shirts", "Pants", "Hoodies", "Shoes & Bags", "Accessories", "T-Shirts"];
+  const categories = ["All", "Jackets", "Shirts", "Pants", "Hoodies", "Shoes", "Accessories", "T-Shirts"];
 
   const filteredProducts = useMemo(() => {
     let result = MOCK_PRODUCTS.filter(product => {
@@ -58,9 +58,9 @@ export default function ShopPage() {
     <main className="bg-[#F1F3F6] min-h-screen pt-20 pb-20 md:pb-10 font-inter">
       {/* Mobile Top Header (Search & Category) */}
       <div className="bg-white md:bg-transparent border-b border-black/5 md:border-none sticky top-[72px] z-50 md:static">
-        <div className="max-w-[1440px] mx-auto px-4 md:px-12 py-3 md:pt-6">
+        <div className="max-w-[1440px] mx-auto px-4 md:px-12 py-3 md:pt-3">
           {/* Breadcrumb - Hidden on tiny mobile */}
-          <div className="hidden md:flex items-center gap-2 text-[10px] text-black/50 mb-6 uppercase tracking-widest">
+          <div className="hidden md:flex items-center gap-2 text-[10px] text-black/50 mb-3 uppercase tracking-widest">
             <span>Shop</span> <ChevronRight size={10} /> <span className="text-black/90 font-medium">All Products</span>
           </div>
 
@@ -84,8 +84,8 @@ export default function ShopPage() {
       </div>
 
       {/* Desktop Hero Banner - Hidden on Mobile */}
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12 hidden md:block mt-8">
-        <div className="relative h-[220px] bg-black/5 flex items-center overflow-hidden mb-12">
+      <div className="w-full hidden md:block mt-2">
+        <div className="relative h-[280px] bg-black/5 flex items-center overflow-hidden mb-6 py-10">
           <div className="flex-1 pl-12 z-[2]">
             <h1 className="font-bebas text-[48px] md:text-[56px] text-black/90 leading-[0.9] mb-6 tracking-wide">
               NEW SEASON.<br />NEW ARRIVALS.
@@ -95,12 +95,12 @@ export default function ShopPage() {
             </p>
             <button 
               onClick={() => document.getElementById("product-grid")?.scrollIntoView({ behavior: "smooth" })}
-              className="bg-[#CC0000] text-white font-bebas text-lg px-10 py-3 hover:translate-x-1 transition-all tracking-widest"
+              className="bg-[#0350F0] text-white font-bebas text-lg px-10 py-3 hover:translate-x-1 transition-all tracking-widest"
             >
               SHOP NOW →
             </button>
           </div>
-          <div className="flex-1 h-full relative">
+          <div className="absolute right-0 top-0 w-1/2 h-full">
             <Image
               src="/assets/shop/hero/banner.png"
               alt="Hero Model"
@@ -116,7 +116,7 @@ export default function ShopPage() {
         {/* Main Content Layout */}
         <div className="flex flex-col md:flex-row gap-8 relative items-start">
           {/* Sidebar - Hidden on Mobile */}
-          <div className="hidden md:block w-[280px] shrink-0 sticky top-[90px] h-[calc(100vh-110px)] overflow-y-auto custom-scrollbar pr-2">
+          <div className="hidden md:block w-[280px] shrink-0 sticky top-[90px] h-[calc(100vh-110px)] overflow-y-auto pr-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             <FilterSidebar
               activeFilters={filters}
               onFilterChange={setFilters}
@@ -199,7 +199,7 @@ export default function ShopPage() {
                 </button>
                 <button 
                   onClick={() => setIsFilterDrawerOpen(false)}
-                  className="py-3 bg-[#CC0000] text-white text-xs font-bold uppercase tracking-widest"
+                  className="py-3 bg-[#0350F0] text-white text-xs font-bold uppercase tracking-widest"
                 >
                   Apply
                 </button>

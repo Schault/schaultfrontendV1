@@ -49,7 +49,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
               <button
                 key={sortOption.label}
                 onClick={() => onSortChange(sortOption.id)}
-                className="font-inter text-sm text-black/60 hover:text-[#CC0000] border-b-2 border-transparent hover:border-[#CC0000] pb-1 transition-all"
+                className="font-inter text-sm text-black/60 hover:text-[#0350F0] border-b-2 border-transparent hover:border-[#0350F0] pb-1 transition-all"
               >
                 {sortOption.label}
               </button>
@@ -86,7 +86,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
                 {label}
                 <button 
                   onClick={() => onRemoveFilter(key)}
-                  className="hover:text-[#CC0000] font-bold text-xs"
+                  className="hover:text-[#0350F0] font-bold text-xs"
                 >
                   ×
                 </button>

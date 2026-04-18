@@ -11,7 +11,7 @@ const categories = [
     link: "/shop/women"
   },
   {
-    title: "Shoes & Bags",
+    title: "Shoe",
     desc: "Premium modular footwear and functional carry essentials.",
     image: "/assets/shop/categories/all.png",
     link: "/shop/shoes-bags"
@@ -81,10 +81,10 @@ const CategorySection: React.FC = () => {
                 </p>
               </div>
               <button 
-                className="mt-8 font-inter text-xs text-black/70 flex items-center gap-2 group-hover:text-[#CC0000] transition-colors relative"
+                className="mt-8 font-inter text-xs text-black/70 flex items-center gap-2 group-hover:text-[#0350F0] transition-colors relative"
               >
                 EXPLORE NOW →
-                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#CC0000] transition-all duration-300 group-hover:w-full" />
+                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#0350F0] transition-all duration-300 group-hover:w-full" />
               </button>
             </div>
             <div className="flex-1 relative aspect-square md:aspect-auto overflow-hidden">

@@ -175,13 +175,13 @@ export default function Navbar() {
                   href={link.href}
                   className={`relative font-inter text-sm font-medium tracking-wide transition-colors duration-200 ${
                     isActive
-                      ? "text-[#CC0000]"
+                      ? "text-[#0350F0]"
                       : "text-black/70 hover:text-black/90"
                   }`}
                 >
                   {link.label}
                   {isActive && (
-                    <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-[#CC0000]" />
+                    <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-[#0350F0]" />
                   )}
                 </Link>
               );
@@ -192,8 +192,8 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             <Link
               href="/auth"
-              className={`p-2 transition-colors hover:text-[#CC0000] ${
-                pathname.startsWith("/auth") ? "text-[#CC0000]" : "text-black/80"
+              className={`p-2 transition-colors hover:text-[#0350F0] ${
+                pathname.startsWith("/auth") ? "text-[#0350F0]" : "text-black/80"
               }`}
             >
               <User size={22} className="stroke-[1.5]" />
@@ -201,20 +201,20 @@ export default function Navbar() {
 
             <Link
               href="/cart"
-              className={`relative p-2 transition-colors hover:text-[#CC0000] mr-2 ${
-                pathname === "/cart" ? "text-[#CC0000]" : "text-black/80"
+              className={`relative p-2 transition-colors hover:text-[#0350F0] mr-2 ${
+                pathname === "/cart" ? "text-[#0350F0]" : "text-black/80"
               }`}
             >
               <ShoppingCart size={22} className="stroke-[1.5]" />
               {cartItemCount > 0 && (
-                <span className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-[#CC0000] text-[10px] font-bold text-white">
+                <span className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-[#0350F0] text-[10px] font-bold text-white">
                   {cartItemCount}
                 </span>
               )}
             </Link>
             <Link
               href="/shop"
-              className="hidden rounded-full border border-black/90 px-5 py-2 font-inter text-sm font-medium text-black/90 transition-all duration-300 hover:border-[#CC0000] hover:bg-[#CC0000] hover:text-white md:inline-block"
+              className="hidden rounded-full border border-black/90 px-5 py-2 font-inter text-sm font-medium text-black/90 transition-all duration-300 hover:border-[#0350F0] hover:bg-[#0350F0] hover:text-white md:inline-block"
             >
               ORDER NOW
             </Link>
@@ -263,7 +263,7 @@ export default function Navbar() {
               >
                 <LuX
                   size={28}
-                  className="text-black/90 transition-colors hover:text-[#CC0000]"
+                  className="text-black/90 transition-colors hover:text-[#0350F0]"
                 />
               </button>
             </div>
@@ -277,8 +277,8 @@ export default function Navbar() {
                     href={link.href}
                     className={`font-inter text-lg font-medium tracking-wide transition-colors ${
                       isActive
-                        ? "text-[#CC0000]"
-                        : "text-black/80 hover:text-[#CC0000]"
+                        ? "text-[#0350F0]"
+                        : "text-black/80 hover:text-[#0350F0]"
                     }`}
                     onClick={() => setMobileOpen(false)}
                   >
@@ -289,7 +289,7 @@ export default function Navbar() {
 
               <Link
                 href="/shop"
-                className="mt-8 block rounded-full border border-black/90 px-6 py-4 text-center font-inter text-lg font-medium text-black/90 transition-all duration-300 hover:border-[#CC0000] hover:bg-[#CC0000] hover:text-white"
+                className="mt-8 block rounded-full border border-black/90 px-6 py-4 text-center font-inter text-lg font-medium text-black/90 transition-all duration-300 hover:border-[#0350F0] hover:bg-[#0350F0] hover:text-white"
                 onClick={() => setMobileOpen(false)}
               >
                 ORDER NOW

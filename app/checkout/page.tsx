@@ -171,7 +171,7 @@ export default function CheckoutPage() {
               <button 
                 type="submit" 
                 disabled={isProcessing || items.length === 0}
-                className="w-full bg-[#CC0000] px-10 py-5 font-bebas text-xl tracking-widest text-white transition-all hover:bg-black/90 disabled:cursor-not-allowed disabled:bg-black/20"
+                className="w-full bg-[#0350F0] px-10 py-5 font-bebas text-xl tracking-widest text-white transition-all hover:bg-black/90 disabled:cursor-not-allowed disabled:bg-black/20"
               >
                 {isProcessing ? "PROCESSING..." : `PAY ₹${finalPrice.toLocaleString("en-IN")} →`}
               </button>
@@ -187,7 +187,7 @@ export default function CheckoutPage() {
                 <div className="py-8 text-center font-inter text-sm text-black/50">
                   Your cart is empty.
                   <div className="mt-4">
-                    <Link href="/shop" className="text-black/90 underline hover:text-[#CC0000]">
+                    <Link href="/shop" className="text-black/90 underline hover:text-[#0350F0]">
                       Continue Shopping
                     </Link>
                   </div>
@@ -259,18 +259,18 @@ export default function CheckoutPage() {
                           }
                         }}
                         disabled={!couponInput}
-                        className="bg-black text-white px-6 font-bebas tracking-widest text-lg hover:bg-[#CC0000] disabled:bg-black/20 transition-all cursor-pointer"
+                        className="bg-black text-white px-6 font-bebas tracking-widest text-lg hover:bg-[#0350F0] disabled:bg-black/20 transition-all cursor-pointer"
                       >
                         APPLY
                       </button>
                     </div>
-                    {couponError && <p className="text-[#CC0000] text-xs font-inter font-medium">{couponError}</p>}
+                    {couponError && <p className="text-[#0350F0] text-xs font-inter font-medium">{couponError}</p>}
                     {appliedCoupon && (
                       <div className="flex items-center justify-between text-xs font-inter bg-green-50 px-3 py-2 border border-[#388e3c]/20">
                         <span className="font-bold text-[#388e3c] tracking-widest uppercase">COUPON APPLIED: {appliedCoupon}</span>
                         <button 
                           type="button"
-                          className="text-black/50 hover:text-[#CC0000] font-bold text-lg leading-none"
+                          className="text-black/50 hover:text-[#0350F0] font-bold text-lg leading-none"
                           onClick={() => setAppliedCoupon(null)}
                         >
                           ×
@@ -297,7 +297,7 @@ export default function CheckoutPage() {
                     
                     <div className="flex justify-between border-t border-black/10 pt-4 font-bebas text-3xl tracking-wide">
                       <span className="text-black/90">Total</span>
-                      <span className="text-[#CC0000]">₹{finalPrice.toLocaleString("en-IN")}</span>
+                      <span className="text-[#0350F0]">₹{finalPrice.toLocaleString("en-IN")}</span>
                     </div>
                   </div>
                 </div>

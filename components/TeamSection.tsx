@@ -8,7 +8,7 @@ const teamData = {
     name: "HARSH MAHESHWARI",
     role: "Founder & CEO",
     image: "/images/harsh.jpg",
-    note: "I started Schault because I was tired of watching perfectly good shoes end up in landfills over a worn-out sole. As a Materials Science student at IIT Kanpur, I knew there had to be a smarter way — one where engineering meets everyday wear. Schault is that answer: modular, repairable, and built to last.",
+    note: "I started Schault because I was tired of watching perfectly good shoes end up in landfills over a worn-out sole. As a Materials Science student at IIT Kanpur, I knew there had to be a smarter way, one where engineering meets everyday wear. Schault is that answer: modular, repairable, and built to last.",
   },
   mentors: [
     { 
@@ -20,7 +20,7 @@ const teamData = {
   ],
   teams: {
     content: [
-      { name: "BOYA ANUDEEP", role: "IIT KANPUR", image: "/placeholder.jpg" },
+      { name: "BOYA ANUDEEP", role: "IIT KANPUR", image: "/boya.png" },
     ],
     design: [
       { name: "ADITI ARYA", role: "NIFT", image: "/images/aditi.jpeg" },
@@ -75,12 +75,12 @@ function TeamMemberCard({
         </div>
         {/* Floating badge wrapper for perimeter rotation */}
         <div className="absolute inset-0 transition-transform duration-700 ease-in-out group-hover:-rotate-[90deg] pointer-events-none">
-          <div className="absolute bottom-[3%] right-[3%] w-9 h-9 md:w-12 md:h-12 bg-[#CC0000] rounded-full flex items-center justify-center text-white border-[3px] border-white z-10 shadow-md pointer-events-auto">
+          <div className="absolute bottom-[3%] right-[3%] w-9 h-9 md:w-12 md:h-12 bg-[#0350F0] rounded-full flex items-center justify-center text-white border-[3px] border-white z-10 shadow-md pointer-events-auto">
             <Icon size={18} className="md:w-6 md:h-6 transition-transform duration-700 ease-in-out group-hover:rotate-[90deg]" />
           </div>
         </div>
       </div>
-      <h4 className="font-bebas text-lg md:text-xl tracking-wide text-black/90 group-hover:text-[#CC0000] transition-colors duration-200 mb-1 leading-tight">
+      <h4 className="font-bebas text-lg md:text-xl tracking-wide text-black/90 group-hover:text-[#0350F0] transition-colors duration-200 mb-1 leading-tight">
         {member.name}
       </h4>
       <p className="font-inter text-[10px] md:text-xs text-black/50 uppercase tracking-[0.2em] px-2 outline-none">
@@ -136,7 +136,7 @@ export default function TeamSection() {
           <p className="font-inter text-sm md:text-base text-black/50 uppercase tracking-widest mb-8">
             {founder.role}
           </p>
-          <div className="border-l-2 border-[#CC0000] pl-6">
+          <div className="border-l-2 border-[#0350F0] pl-6">
             <p className="font-inter text-base md:text-lg text-black/70 italic leading-relaxed">
               &ldquo;{founder.note}&rdquo;
             </p>
@@ -148,7 +148,7 @@ export default function TeamSection() {
       <div className="team-mentors mb-32 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
         <div className="flex flex-col items-start text-left order-2 md:order-1">
           <div className="mb-4">
-            <h3 className="font-bebas text-2xl text-[#CC0000] tracking-widest mb-2">MENTOR</h3>
+            <h3 className="font-bebas text-2xl text-[#0350F0] tracking-widest mb-2">MENTOR</h3>
             <h2 className="font-bebas text-[48px] md:text-[80px] leading-[0.9] tracking-wide text-black/90 mb-4">
               {mentor.name}
             </h2>
@@ -156,7 +156,7 @@ export default function TeamSection() {
           <p className="font-inter text-sm md:text-base text-black/50 uppercase tracking-widest mb-8">
             {mentor.title}
           </p>
-          <div className="border-l-2 border-[#CC0000] pl-6">
+          <div className="border-l-2 border-[#0350F0] pl-6">
             <p className="font-inter text-base md:text-lg text-black/70 italic leading-relaxed">
               &ldquo;{mentor.note}&rdquo;
             </p>
@@ -183,7 +183,7 @@ export default function TeamSection() {
           <h3 className="font-bebas text-2xl tracking-widest text-black/90 text-center pb-4 mb-10 border-b border-black/5">
             CONTENT & DESIGN
           </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12">
+          <div className="flex flex-wrap justify-center gap-x-16 gap-y-12">
             {teams.content.map((member, idx) => (
               <TeamMemberCard key={member.name} member={member} teamType="content" index={idx} />
             ))}

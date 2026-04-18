@@ -40,7 +40,7 @@ const FeatureGrid: React.FC = () => {
         <div className="grid gap-8 md:grid-cols-3">
           <div className="feature-card-wrapper">
             <div className="group relative flex flex-col items-center rounded-2xl border border-black/5 bg-[#FAFAFA] p-10 text-center transition-all duration-500 hover:-translate-y-2 hover:border-black/10 hover:bg-white hover:shadow-xl hover:shadow-black/5">
-              <div className="mb-6 h-1 w-12 bg-[#CC0000] transition-all duration-500 group-hover:w-20 group-hover:bg-black" aria-hidden />
+              <div className="mb-6 h-1 w-12 bg-[#0350F0] transition-all duration-500 group-hover:w-20 group-hover:bg-black" aria-hidden />
               <h3 className="font-bebas text-2xl tracking-widest text-black/90">
                 Hygiene & Comfort
               </h3>
@@ -51,7 +51,7 @@ const FeatureGrid: React.FC = () => {
           </div>
           <div className="feature-card-wrapper">
             <div className="group relative flex flex-col items-center rounded-2xl border border-black/5 bg-[#FAFAFA] p-10 text-center transition-all duration-500 hover:-translate-y-2 hover:border-black/10 hover:bg-white hover:shadow-xl hover:shadow-black/5">
-              <div className="mb-6 h-1 w-12 bg-[#CC0000] transition-all duration-500 group-hover:w-20 group-hover:bg-black" aria-hidden />
+              <div className="mb-6 h-1 w-12 bg-[#0350F0] transition-all duration-500 group-hover:w-20 group-hover:bg-black" aria-hidden />
               <h3 className="font-bebas text-2xl tracking-widest text-black/90">
                 Cost Efficiency
               </h3>
@@ -62,7 +62,7 @@ const FeatureGrid: React.FC = () => {
           </div>
           <div className="feature-card-wrapper">
             <div className="group relative flex flex-col items-center rounded-2xl border border-black/5 bg-[#FAFAFA] p-10 text-center transition-all duration-500 hover:-translate-y-2 hover:border-black/10 hover:bg-white hover:shadow-xl hover:shadow-black/5">
-              <div className="mb-6 h-1 w-12 bg-[#CC0000] transition-all duration-500 group-hover:w-20 group-hover:bg-black" aria-hidden />
+              <div className="mb-6 h-1 w-12 bg-[#0350F0] transition-all duration-500 group-hover:w-20 group-hover:bg-black" aria-hidden />
               <h3 className="font-bebas text-2xl tracking-widest text-black/90">
                 Sustainability
               </h3>

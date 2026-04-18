@@ -73,7 +73,7 @@ export default function CreateYourOwnShoePage() {
           </div>
 
           <section className="border border-black/10 bg-gradient-to-br from-white via-[#F8F8F8] to-[#EFEFEF] p-8 text-center sm:p-12 md:p-16">
-            <p className="mb-4 font-inter text-xs uppercase tracking-[0.25em] text-[#CC0000]">
+            <p className="mb-4 font-inter text-xs uppercase tracking-[0.25em] text-[#0350F0]">
               3D Customizer
             </p>
             <h1 className="mb-6 font-bebas text-5xl leading-[0.9] tracking-wide text-black/90 sm:text-6xl md:text-[84px]">
@@ -85,7 +85,7 @@ export default function CreateYourOwnShoePage() {
 
             <Link
               href="/shop"
-              className="inline-block border border-black/90 px-8 py-4 font-inter text-sm font-medium tracking-wide text-black/90 transition-all duration-300 hover:border-[#CC0000] hover:bg-[#CC0000] hover:text-white"
+              className="inline-block border border-black/90 px-8 py-4 font-inter text-sm font-medium tracking-wide text-black/90 transition-all duration-300 hover:border-[#0350F0] hover:bg-[#0350F0] hover:text-white"
             >
               SHOP CURRENT COLLECTION
             </Link>
@@ -112,7 +112,7 @@ export default function CreateYourOwnShoePage() {
                   onClick={() => setActiveTab("upper")}
                   className={`flex-1 px-4 py-3 font-inter text-sm font-semibold uppercase tracking-wide transition ${
                     activeTab === "upper"
-                      ? "border-b-2 border-[#CC0000] bg-white text-black/90"
+                      ? "border-b-2 border-[#0350F0] bg-white text-black/90"
                       : "bg-gray-50 text-black/50 hover:bg-white"
                   }`}
                 >
@@ -142,8 +142,8 @@ export default function CreateYourOwnShoePage() {
                           isSwitchingModel ? "cursor-not-allowed opacity-60" : "cursor-pointer"
                         } ${
                           currentUpperPath === model.path
-                            ? "border-[#CC0000] bg-[#CC0000]/5"
-                            : "border-black/10 hover:border-[#CC0000]/40"
+                            ? "border-[#0350F0] bg-[#0350F0]/5"
+                            : "border-black/10 hover:border-[#0350F0]/40"
                         }`}
                       >
                         <div className="flex h-20 w-full items-center justify-center rounded-md bg-gray-200/50 group-hover:bg-gray-200">

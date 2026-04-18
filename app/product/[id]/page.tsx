@@ -97,13 +97,13 @@ export default function ProductPage({ params }: { params: { id: string } }) {
           <div className="w-full lg:w-[60%] lg:sticky top-24 shrink-0 flex flex-col gap-2">
             {/* Desktop 2x2 Grid (Mocked) */}
             <div className="hidden lg:grid grid-cols-2 gap-2">
-              {[1, 2, 3, 4].map((idx) => (
+              {(product.gallery || [product.image, product.image, product.image, product.image]).map((img, idx) => (
                 <div key={idx} className="relative aspect-square bg-white border border-black/5 flex items-center justify-center p-8 group overflow-hidden">
                   <Image
-                    src={product.image}
-                    alt={`${product.name} View ${idx}`}
+                    src={img}
+                    alt={`${product.name} View ${idx + 1}`}
                     fill
-                    className={`object-contain transition-transform duration-700 group-hover:scale-105 p-8 ${idx > 1 ? "scale-90 opacity-90" : ""}`}
+                    className={`object-contain transition-transform duration-700 group-hover:scale-105 p-8 ${!product.gallery && idx > 0 ? "scale-90 opacity-90" : ""}`}
                   />
                 </div>
               ))}
@@ -111,11 +111,11 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
             {/* Mobile Horizon Swipe */}
             <div className="lg:hidden flex w-full overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] border border-black/5 bg-white">
-              {[1, 2, 3, 4].map((idx) => (
+              {(product.gallery || [product.image, product.image, product.image, product.image]).map((img, idx) => (
                 <div key={idx} className="relative w-full shrink-0 snap-center aspect-square flex items-center justify-center p-8">
                   <Image
-                    src={product.image}
-                    alt={`${product.name} View ${idx}`}
+                    src={img}
+                    alt={`${product.name} Slide ${idx + 1}`}
                     fill
                     className="object-contain p-8"
                   />
@@ -133,7 +133,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               </button>
               <button
                 onClick={handleBuyNow}
-                className="flex-1 bg-[#CC0000] text-white font-bebas text-2xl tracking-wider transition-all hover:bg-black"
+                className="flex-1 bg-[#0350F0] text-white font-bebas text-2xl tracking-wider transition-all hover:bg-black"
               >
                 BUY NOW
               </button>
@@ -164,20 +164,6 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               )}
             </div>
 
-            {/* Special Offers Block */}
-            <div className="mt-6 border border-dashed border-black/20 p-4 bg-green-50/30">
-              <div className="flex items-start gap-3">
-                <span className="mt-0.5 text-[#388e3c] text-lg">✦</span>
-                <div>
-                  <h4 className="font-bold text-sm text-black/90">Available offers</h4>
-                  <ul className="mt-2 space-y-2 text-xs text-black/70 font-inter">
-                    <li><span className="font-bold text-black/80">Bank Offer</span> 5% Unlimited Cashback on Schault Axis Bank Credit Card</li>
-                    <li><span className="font-bold text-black/80">Special Price</span> Get extra ₹1500 off (price inclusive of cashback/coupon)</li>
-                    <li><span className="font-bold text-black/80">Partner Offer</span> Sign up for Schault Pay Later and get free exclusive patches</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
 
             {/* Color Selection */}
             {product.colors && product.colors.length > 0 && (
@@ -191,7 +177,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                       key={color.name}
                       onClick={() => setSelectedColor(color.name)}
                       className={`w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all ${
-                        selectedColor === color.name ? "border-[#CC0000] p-1 scale-110" : "border-black/10 hover:border-black/30"
+                        selectedColor === color.name ? "border-[#0350F0] p-1 scale-110" : "border-black/10 hover:border-black/30"
                       }`}
                     >
                       <span 
@@ -211,7 +197,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   <h3 className="font-inter text-sm text-black/50 uppercase tracking-widest font-semibold">
                     Size
                   </h3>
-                  <button onClick={() => toast("Size chart coming soon!", { icon: "📏" })} className="text-xs text-[#CC0000] font-semibold hover:underline">Size Chart</button>
+                  <button onClick={() => toast("Size chart coming soon!", { icon: "📏" })} className="text-xs text-[#0350F0] font-semibold hover:underline">Size Chart</button>
                 </div>
                 <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
                   {product.sizes.map((size) => {
@@ -284,7 +270,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
         </button>
         <button
           onClick={handleBuyNow}
-          className="flex items-center justify-center font-bebas text-xl text-white tracking-widest bg-[#CC0000] active:bg-black transition-colors"
+          className="flex items-center justify-center font-bebas text-xl text-white tracking-widest bg-[#0350F0] active:bg-black transition-colors"
         >
           BUY NOW
         </button>

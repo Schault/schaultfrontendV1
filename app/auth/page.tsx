@@ -106,7 +106,7 @@ export default function AuthPage() {
         className="fixed left-6 top-6 z-50 rounded-full bg-white/80 p-2 shadow-sm backdrop-blur-md transition-all hover:scale-110 hover:bg-white active:scale-95 md:left-12 md:top-12"
         aria-label="Back to Home"
       >
-        <ArrowLeft size={24} className="text-[#CC0000]" />
+        <ArrowLeft size={24} className="text-[#0350F0]" />
       </Link>
 
       {/* Full Page White Background */}
@@ -123,13 +123,13 @@ export default function AuthPage() {
         <div 
           className="absolute inset-[-150%] z-0 animate-[spin_6s_linear_infinite]"
           style={{
-            background: "conic-gradient(from 0deg, transparent 0deg, transparent 310deg, rgba(204, 0, 0, 1) 340deg, transparent 350deg)"
+            background: "conic-gradient(from 0deg, transparent 0deg, transparent 310deg, rgba(3, 80, 240, 1) 340deg, transparent 350deg)"
           }}
         />
         <div 
           className="absolute inset-[-150%] z-0 animate-[spin_6s_linear_infinite]"
           style={{
-            background: "conic-gradient(from 180deg, transparent 0deg, transparent 310deg, rgba(204, 0, 0, 1) 340deg, transparent 350deg)"
+            background: "conic-gradient(from 180deg, transparent 0deg, transparent 310deg, rgba(3, 80, 240, 1) 340deg, transparent 350deg)"
           }}
         />
 
@@ -152,7 +152,7 @@ export default function AuthPage() {
                     Welcome !
                   </h1>
                   <p className="mt-1 font-inter text-[18px] text-black/80 sm:text-[20px]">
-                    Sign in to <span className="font-bebas tracking-wider text-[#CC0000]">SCHAULT</span>
+                    Sign in to <span className="font-bebas tracking-wider text-[#0350F0]">SCHAULT</span>
                   </p>
 
                   <form onSubmit={handleLogin} className="mt-8 flex flex-col gap-4">
@@ -166,7 +166,7 @@ export default function AuthPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="you@example.com"
-                        className="rounded-[0.5rem] border border-black/10 bg-white/60 px-4 py-3.5 font-inter text-sm outline-none transition-all placeholder:text-black/40 focus:border-[#CC0000] focus:bg-white focus:ring-1 focus:ring-[#CC0000]/20 text-black"
+                        className="rounded-[0.5rem] border border-black/10 bg-white/60 px-4 py-3.5 font-inter text-sm outline-none transition-all placeholder:text-black/40 focus:border-[#0350F0] focus:bg-white focus:ring-1 focus:ring-[#0350F0]/20 text-black"
                       />
                     </div>
 
@@ -181,12 +181,12 @@ export default function AuthPage() {
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           placeholder="••••••••••"
-                          className="w-full rounded-[0.5rem] border border-black/10 bg-white/60 px-4 py-3.5 pr-12 font-inter text-sm outline-none transition-all placeholder:text-black/40 focus:border-[#CC0000] focus:bg-white focus:ring-1 focus:ring-[#CC0000]/20 text-black"
+                          className="w-full rounded-[0.5rem] border border-black/10 bg-white/60 px-4 py-3.5 pr-12 font-inter text-sm outline-none transition-all placeholder:text-black/40 focus:border-[#0350F0] focus:bg-white focus:ring-1 focus:ring-[#0350F0]/20 text-black"
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 text-black/50 transition-colors hover:text-[#CC0000]"
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-black/50 transition-colors hover:text-[#0350F0]"
                         >
                           {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
                         </button>
@@ -197,16 +197,16 @@ export default function AuthPage() {
                       <label className="group flex cursor-pointer items-center gap-2">
                         <input
                           type="checkbox"
-                          className="h-4 w-4 rounded border-black/20 text-[#CC0000] accent-[#CC0000] transition-all focus:ring-[#CC0000]"
+                          className="h-4 w-4 rounded border-black/20 text-[#0350F0] accent-[#0350F0] transition-all focus:ring-[#0350F0]"
                         />
-                        <span className="font-inter text-[13px] font-medium text-black/80 transition-colors group-hover:text-[#CC0000]">
+                        <span className="font-inter text-[13px] font-medium text-black/80 transition-colors group-hover:text-[#0350F0]">
                           Remember me
                         </span>
                       </label>
                       <button
                         type="button"
                         onClick={handlePasswordReset}
-                        className="font-inter text-[13px] text-[#A0A0A0] transition-colors hover:text-[#CC0000]"
+                        className="font-inter text-[13px] text-[#A0A0A0] transition-colors hover:text-[#0350F0]"
                       >
                         Forgot password?
                       </button>
@@ -215,7 +215,7 @@ export default function AuthPage() {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="mt-3 flex items-center justify-center gap-2 rounded-[0.5rem] bg-[#CC0000] py-3.5 font-inter text-[15px] font-medium text-white shadow-md transition-all hover:bg-[#A30000] active:scale-[0.98] disabled:opacity-70 disabled:pointer-events-none"
+                      className="mt-3 flex items-center justify-center gap-2 rounded-[0.5rem] bg-[#0350F0] py-3.5 font-inter text-[15px] font-medium text-white shadow-md transition-all hover:bg-[#0240C0] active:scale-[0.98] disabled:opacity-70 disabled:pointer-events-none"
                     >
                       {loading ? <Loader2 size={18} className="animate-spin" /> : "Login"}
                     </button>
@@ -259,7 +259,7 @@ export default function AuthPage() {
                           setEmail("");
                           setPassword("");
                         }}
-                        className="font-bold text-[#CC0000] drop-shadow-sm transition-colors hover:text-[#FF3333] hover:underline"
+                        className="font-bold text-[#0350F0] drop-shadow-sm transition-colors hover:text-[#FF3333] hover:underline"
                       >
                         Register
                       </button>
@@ -279,7 +279,7 @@ export default function AuthPage() {
                     Welcome !
                   </h1>
                   <p className="mt-1 font-inter text-[18px] text-black/80 sm:text-[20px]">
-                    Register for <span className="font-bebas tracking-wider text-[#CC0000]">SCHAULT</span>
+                    Register for <span className="font-bebas tracking-wider text-[#0350F0]">SCHAULT</span>
                   </p>
 
                   <form onSubmit={handleSignup} className="mt-8 flex flex-col gap-4">
@@ -293,7 +293,7 @@ export default function AuthPage() {
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
                         placeholder="Jane Doe"
-                        className="rounded-[0.5rem] border border-black/10 bg-white/60 px-4 py-3.5 font-inter text-sm outline-none transition-all placeholder:text-black/40 focus:border-[#CC0000] focus:bg-white focus:ring-1 focus:ring-[#CC0000]/20 text-black"
+                        className="rounded-[0.5rem] border border-black/10 bg-white/60 px-4 py-3.5 font-inter text-sm outline-none transition-all placeholder:text-black/40 focus:border-[#0350F0] focus:bg-white focus:ring-1 focus:ring-[#0350F0]/20 text-black"
                       />
                     </div>
 
@@ -307,7 +307,7 @@ export default function AuthPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="you@example.com"
-                        className="rounded-[0.5rem] border border-white/50 bg-white/60 px-4 py-3.5 font-inter text-sm outline-none transition-all placeholder:text-black/40 focus:border-[#CC0000] focus:bg-white focus:ring-1 focus:ring-[#CC0000]/20 text-black"
+                        className="rounded-[0.5rem] border border-white/50 bg-white/60 px-4 py-3.5 font-inter text-sm outline-none transition-all placeholder:text-black/40 focus:border-[#0350F0] focus:bg-white focus:ring-1 focus:ring-[#0350F0]/20 text-black"
                       />
                     </div>
 
@@ -322,12 +322,12 @@ export default function AuthPage() {
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           placeholder="••••••••••"
-                          className="w-full rounded-[0.5rem] border border-white/50 bg-white/60 px-4 py-3.5 pr-12 font-inter text-sm outline-none transition-all placeholder:text-black/40 focus:border-[#CC0000] focus:bg-white focus:ring-1 focus:ring-[#CC0000]/20 text-black"
+                          className="w-full rounded-[0.5rem] border border-white/50 bg-white/60 px-4 py-3.5 pr-12 font-inter text-sm outline-none transition-all placeholder:text-black/40 focus:border-[#0350F0] focus:bg-white focus:ring-1 focus:ring-[#0350F0]/20 text-black"
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 text-black/50 transition-colors hover:text-[#CC0000]"
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-black/50 transition-colors hover:text-[#0350F0]"
                         >
                           {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
                         </button>
@@ -337,7 +337,7 @@ export default function AuthPage() {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="mt-6 flex items-center justify-center gap-2 rounded-[0.5rem] bg-[#CC0000] py-3.5 font-inter text-[15px] font-medium text-white shadow-md transition-all hover:bg-[#A30000] active:scale-[0.98] disabled:opacity-70 disabled:pointer-events-none"
+                      className="mt-6 flex items-center justify-center gap-2 rounded-[0.5rem] bg-[#0350F0] py-3.5 font-inter text-[15px] font-medium text-white shadow-md transition-all hover:bg-[#0240C0] active:scale-[0.98] disabled:opacity-70 disabled:pointer-events-none"
                     >
                       {loading ? <Loader2 size={18} className="animate-spin" /> : "Register"}
                     </button>
@@ -352,7 +352,7 @@ export default function AuthPage() {
                           setPassword("");
                           setFullName("");
                         }}
-                        className="font-bold text-[#CC0000] drop-shadow-sm transition-colors hover:text-[#FF3333] hover:underline"
+                        className="font-bold text-[#0350F0] drop-shadow-sm transition-colors hover:text-[#FF3333] hover:underline"
                       >
                         Login
                       </button>

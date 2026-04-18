@@ -71,14 +71,14 @@ export default function Footer() {
                   href="https://www.instagram.com/wearschault/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-full border border-black/10 p-2 text-black/70 transition-all duration-200 hover:scale-110 hover:border-[#CC0000] hover:text-[#CC0000]"
+                  className="rounded-full border border-black/10 p-2 text-black/70 transition-all duration-200 hover:scale-110 hover:border-[#0350F0] hover:text-[#0350F0]"
                   aria-label="Instagram"
                 >
                   <FaInstagram size={18} />
                 </Link>
                 <Link
                   href="mailto:wearschault@gmail.com"
-                  className="rounded-full border border-black/10 p-2 text-black/70 transition-all duration-200 hover:scale-110 hover:border-[#CC0000] hover:text-[#CC0000]"
+                  className="rounded-full border border-black/10 p-2 text-black/70 transition-all duration-200 hover:scale-110 hover:border-[#0350F0] hover:text-[#0350F0]"
                   aria-label="Email"
                 >
                   <FaEnvelope size={18} />
@@ -105,7 +105,7 @@ export default function Footer() {
                 <button
                   type="button"
                   onClick={handleSubscribe}
-                  className="bg-black px-4 py-2 font-bebas tracking-wider text-white transition-colors duration-200 hover:bg-[#CC0000]"
+                  className="bg-black px-4 py-2 font-bebas tracking-wider text-white transition-colors duration-200 hover:bg-[#0350F0]"
                 >
                   SUBSCRIBE
                 </button>
@@ -125,7 +125,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="group relative flex items-center font-inter text-sm text-black/70 transition-all duration-200 hover:pl-5 hover:text-[#CC0000]"
+                      className="group relative flex items-center font-inter text-sm text-black/70 transition-all duration-200 hover:pl-5 hover:text-[#0350F0]"
                     >
                       <span className="absolute left-0 -translate-x-2 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100">
                         &rarr;

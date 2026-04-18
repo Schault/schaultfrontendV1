@@ -33,7 +33,7 @@ export default function NewArrivals() {
         </h2>
         <Link 
           href="/shop" 
-          className="font-inter text-[10px] tracking-widest text-black/50 uppercase hover:text-[#CC0000] transition-colors flex items-center gap-2"
+          className="font-inter text-[10px] tracking-widest text-black/50 uppercase hover:text-[#0350F0] transition-colors flex items-center gap-2"
         >
           SEE ALL <span className="text-sm">→</span>
         </Link>

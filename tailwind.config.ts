@@ -15,7 +15,7 @@ const config: Config = {
       colors: {
         schlaut: {
           white: "#FFFFFF",
-          red: "#CC0000",
+          red: "#0350F0",
           black: {
             DEFAULT: "rgba(0,0,0,0.9)",
             muted: "rgba(0,0,0,0.6)",

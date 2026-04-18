@@ -43,7 +43,7 @@ export default function FAQ() {
       className="border-t border-black/10 bg-[#FFFFFF] px-6 py-24 md:px-12 lg:px-24"
     >
       <div className="mx-auto max-w-3xl">
-        <div className="mb-2 h-0.5 w-12 bg-[#CC0000]" aria-hidden />
+        <div className="mb-2 h-0.5 w-12 bg-[#0350F0]" aria-hidden />
         <h2 className="font-bebas text-4xl tracking-wide text-black/90 md:text-5xl">
           FAQ
         </h2>
@@ -65,7 +65,7 @@ export default function FAQ() {
                     {item.q}
                   </span>
                   <span
-                    className="flex h-6 w-6 shrink-0 items-center justify-center text-[#CC0000] transition-transform duration-200"
+                    className="flex h-6 w-6 shrink-0 items-center justify-center text-[#0350F0] transition-transform duration-200"
                     aria-hidden
                   >
                     <motion.span

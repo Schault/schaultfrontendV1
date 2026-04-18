@@ -139,7 +139,7 @@ const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({ min, max, onChange 
 
         /* For Chrome browsers */
         .thumb::-webkit-slider-thumb {
-          background-color: #cc0000;
+          background-color: #0350F0;
           border: 2px solid white;
           border-radius: 50%;
           cursor: pointer;
@@ -152,7 +152,7 @@ const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({ min, max, onChange 
 
         /* For Firefox browsers */
         .thumb::-moz-range-thumb {
-          background-color: #cc0000;
+          background-color: #0350F0;
           border: 2px solid white;
           border-radius: 50%;
           cursor: pointer;
@@ -180,7 +180,7 @@ const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({ min, max, onChange 
         }
 
         .slider__range {
-          background-color: #cc0000;
+          background-color: #0350F0;
           z-index: 2;
         }
       `}</style>

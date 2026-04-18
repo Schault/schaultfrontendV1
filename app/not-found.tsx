@@ -34,7 +34,7 @@ export default function NotFound() {
   const moveRightY = useTransform(mouseY, [-1, 1], [-rightPupilLimit, rightPupilLimit]);
 
   return (
-    <main className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-red-50 selection:bg-[#CC0000] selection:text-white">
+    <main className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-red-50 selection:bg-[#0350F0] selection:text-white">
       {/* Eyes Container */}
       <div className="relative z-10 flex flex-row items-center justify-center gap-2 md:gap-4 mb-16 md:mb-24">
         
@@ -66,7 +66,7 @@ export default function NotFound() {
         
         <Link
           href="/"
-          className="group relative flex items-center justify-center overflow-hidden rounded-full bg-[#111111] px-8 py-3.5 font-inter text-sm md:text-base font-medium text-white transition-all duration-300 hover:scale-105 hover:bg-[#CC0000] hover:shadow-xl hover:shadow-[#CC0000]/20"
+          className="group relative flex items-center justify-center overflow-hidden rounded-full bg-[#111111] px-8 py-3.5 font-inter text-sm md:text-base font-medium text-white transition-all duration-300 hover:scale-105 hover:bg-[#0350F0] hover:shadow-xl hover:shadow-[#0350F0]/20"
         >
           <span className="relative z-10">Please Take Me Home</span>
         </Link>

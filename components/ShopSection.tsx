@@ -104,7 +104,7 @@ function ProductCard({
           )}
         </Link>
         <div className="flex flex-1 flex-col p-5">
-          <Link href={`/product/${product.id}`} className="hover:text-[#CC0000] transition-colors">
+          <Link href={`/product/${product.id}`} className="hover:text-[#0350F0] transition-colors">
             <h3 className="font-bebas text-xl tracking-wide text-black/90">
               {product.name}
             </h3>
@@ -117,7 +117,7 @@ function ProductCard({
           </p>
           <button
             onClick={handleAddToCart}
-            className="mt-auto w-full border border-black py-2.5 text-center font-inter text-[10px] uppercase tracking-widest transition-all duration-250 ease-out hover:border-[#CC0000] hover:bg-[#CC0000] hover:text-white"
+            className="mt-6 w-full border border-black py-2.5 text-center font-inter text-[10px] uppercase tracking-widest transition-all duration-250 ease-out hover:border-[#0350F0] hover:bg-[#0350F0] hover:text-white"
           >
             Add to Cart
           </button>
@@ -145,13 +145,13 @@ export default function ShopSection({ collections }: { collections: ShopifyColle
       <div className="mx-auto max-w-6xl">
         <div className="flex items-end justify-between mb-8 border-b-2 border-black pb-4">
           <div>
-            <div className="mb-2 h-0.5 w-12 bg-[#CC0000]" aria-hidden />
+            <div className="mb-2 h-0.5 w-12 bg-[#0350F0]" aria-hidden />
             <h2 className="font-bebas text-5xl tracking-wide text-black/90 md:text-7xl">
               CARPE DIEM
             </h2>
           </div>
           <div className="text-right pb-1">
-            <p className="font-inter text-xs font-bold uppercase tracking-[0.2em] text-[#CC0000]">The Modular System</p>
+            <p className="font-inter text-xs font-bold uppercase tracking-[0.2em] text-[#0350F0]">The Modular System</p>
             <p className="font-inter text-[10px] text-black/40 uppercase tracking-widest mt-1">Version 1.0 // SS24</p>
           </div>
         </div>

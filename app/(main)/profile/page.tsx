@@ -40,7 +40,7 @@ export default async function ProfilePage() {
                 </div>
 
                 <section>
-                    <div className="mb-2 h-0.5 w-8 bg-[#CC0000]" aria-hidden />
+                    <div className="mb-2 h-0.5 w-8 bg-[#0350F0]" aria-hidden />
                     <h2 className="font-bebas text-3xl tracking-wide text-black/90 mb-8">Order History</h2>
 
                     <p className="font-inter text-black/60">No orders placed yet.</p>

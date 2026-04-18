@@ -84,7 +84,7 @@ function PlaceholderCard({ item, index }: { item: PlaceholderItem; index: number
               });
               toast.success(`${item.name} added to cart!`);
             }}
-            className="mt-auto w-full border border-black py-2.5 text-center font-inter text-[10px] uppercase tracking-widest transition-all duration-250 ease-out hover:border-[#CC0000] hover:bg-[#CC0000] hover:text-white"
+            className="mt-6 w-full border border-black py-2.5 text-center font-inter text-[10px] uppercase tracking-widest transition-all duration-250 ease-out hover:border-[#0350F0] hover:bg-[#0350F0] hover:text-white"
           >
             Add to Cart
           </button>
@@ -107,7 +107,7 @@ export default function CollectionHero() {
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="mb-16"
         >
-          <div className="mb-4 h-0.5 w-12 bg-[#CC0000]" aria-hidden />
+          <div className="mb-4 h-0.5 w-12 bg-[#0350F0]" aria-hidden />
           <h1 className="font-bebas text-5xl tracking-[0.1em] text-black md:text-7xl lg:text-8xl">
             OUR COLLECTION
           </h1>

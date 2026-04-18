@@ -30,7 +30,7 @@ export default function UpdatePasswordPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#F5F5F5] px-6">
       <div className="w-full max-w-md bg-white p-10 shadow-sm border border-black/5">
-        <div className="mb-2 h-0.5 w-12 bg-[#CC0000]" aria-hidden />
+        <div className="mb-2 h-0.5 w-12 bg-[#0350F0]" aria-hidden />
         <h1 className="font-bebas text-4xl tracking-wide text-black/90 mt-4 mb-2">Update Password</h1>
         <p className="font-inter text-sm text-black/60 mb-8">
           Enter your new password below.
@@ -53,7 +53,7 @@ export default function UpdatePasswordPage() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-0 top-1/2 -translate-y-1/2 text-black/50 transition-colors hover:text-[#CC0000] pb-2"
+                className="absolute right-0 top-1/2 -translate-y-1/2 text-black/50 transition-colors hover:text-[#0350F0] pb-2"
               >
                 {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
               </button>

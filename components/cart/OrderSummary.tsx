@@ -98,7 +98,7 @@ export default function OrderSummary() {
       <button 
         onClick={handleCheckout}
         disabled={isLoading}
-        className="w-full bg-[#CC0000] text-white font-bebas text-xl py-4 uppercase tracking-widest mt-6 hover:bg-[#A30000] transition-colors disabled:opacity-50"
+        className="w-full bg-[#0350F0] text-white font-bebas text-xl py-4 uppercase tracking-widest mt-6 hover:bg-[#A30000] transition-colors disabled:opacity-50"
       >
         {isLoading ? "Processing..." : "Check Out"}
       </button>

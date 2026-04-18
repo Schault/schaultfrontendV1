@@ -14,6 +14,7 @@ export interface Product {
   originalPrice?: number;
   rating?: number;
   image: string;
+  gallery?: string[];
   category: string;
   colors: { name: string; hex: string }[];
   sizes: string[];
@@ -63,7 +64,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           }
         }}
         className={`absolute top-2.5 right-2.5 p-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-black/5 transition-all shadow-sm z-10 ${
-          isWishlisted ? "text-[#CC0000]" : "text-black/30 hover:text-[#CC0000] hover:bg-white"
+          isWishlisted ? "text-[#0350F0]" : "text-black/30 hover:text-[#0350F0] hover:bg-white"
         }`}
       >
         <Heart size={16} fill={isWishlisted ? "currentColor" : "none"} />
@@ -73,7 +74,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <div className="flex flex-col p-3 space-y-2 flex-grow">
         <div>
           <Link href={`/product/${product.id}`}>
-            <h3 className="font-inter text-[13px] text-black/90 font-medium line-clamp-1 hover:text-[#CC0000] transition-colors">
+            <h3 className="font-inter text-[13px] text-black/90 font-medium line-clamp-1 hover:text-[#0350F0] transition-colors">
               {product.name}
             </h3>
           </Link>
@@ -100,7 +101,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
         
         {/* Schault Aesthetic Branding - Subtle bar */}
-        <div className="h-0.5 w-6 bg-[#CC0000] opacity-0 group-hover:opacity-100 group-hover:w-12 transition-all duration-300" />
+        <div className="h-0.5 w-6 bg-[#0350F0] opacity-0 group-hover:opacity-100 group-hover:w-12 transition-all duration-300" />
 
         {/* Add to Cart - Flipkart often has this on hover or in footer. We'll keep it as a sleek button */}
         <button
@@ -116,7 +117,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               size: product.sizes[0]
             });
           }}
-          className="w-full bg-black text-white py-2 text-[10px] font-bebas tracking-[0.2em] transition-all hover:bg-[#CC0000] mt-auto uppercase"
+          className="w-full bg-black text-white py-2 text-[10px] font-bebas tracking-[0.2em] transition-all hover:bg-[#0350F0] mt-4 uppercase"
         >
           QUICK ADD
         </button>

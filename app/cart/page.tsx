@@ -59,7 +59,7 @@ export default function CartPage() {
               </h2>
               <Link 
                 href="/shop" 
-                className="font-bebas text-xl text-[#CC0000] border-b border-[#CC0000] pb-1 hover:text-[#A30000] hover:border-[#A30000] transition-colors"
+                className="font-bebas text-xl text-[#0350F0] border-b border-[#0350F0] pb-1 hover:text-[#A30000] hover:border-[#A30000] transition-colors"
               >
                 CONTINUE SHOPPING
               </Link>
@@ -100,7 +100,7 @@ export default function CartPage() {
                 onClick={() => {
                   router.push("/checkout");
                 }}
-                className="bg-[#CC0000] text-white font-bebas text-lg px-8 py-3 uppercase tracking-widest hover:bg-[#A30000] active:scale-95 transition-all"
+                className="bg-[#0350F0] text-white font-bebas text-lg px-8 py-3 uppercase tracking-widest hover:bg-[#A30000] active:scale-95 transition-all"
               >
                 Checkout
               </button>
