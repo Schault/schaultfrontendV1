@@ -6,7 +6,6 @@ export const MOCK_PRODUCTS: Product[] = [
     name: "Arctic Dawn",
     price: 2499,
     originalPrice: 4000,
-    rating: 4.8,
     image: "/images/shoes/Arctic Dawn/1.png",
     gallery: [
       "/images/shoes/Arctic Dawn/1.png",
@@ -25,7 +24,6 @@ export const MOCK_PRODUCTS: Product[] = [
     name: "Rust & Ash",
     price: 2499,
     originalPrice: 4000,
-    rating: 4.5,
     image: "/images/shoes/Rust & Ash/1.png",
     gallery: [
       "/images/shoes/Rust & Ash/1.png",
@@ -44,7 +42,6 @@ export const MOCK_PRODUCTS: Product[] = [
     name: "Navy Frost",
     price: 2499,
     originalPrice: 4000,
-    rating: 4.7,
     image: "/images/shoes/Navy Frost/1.png",
     gallery: [
       "/images/shoes/Navy Frost/1.png",
@@ -63,7 +60,6 @@ export const MOCK_PRODUCTS: Product[] = [
     name: "Heritage",
     price: 2499,
     originalPrice: 4000,
-    rating: 4.9,
     image: "/images/shoes/Heritage/1.png",
     gallery: [
       "/images/shoes/Heritage/1.png",
@@ -82,7 +78,6 @@ export const MOCK_PRODUCTS: Product[] = [
     name: "Ochre & Earth",
     price: 2499,
     originalPrice: 4000,
-    rating: 4.6,
     image: "/images/shoes/Ochre & Earth/1.png",
     gallery: [
       "/images/shoes/Ochre & Earth/1.png",
