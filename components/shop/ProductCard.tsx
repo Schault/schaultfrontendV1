@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import toast from "react-hot-toast";
-import { Heart, Star } from "lucide-react";
+import { Heart } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
 export interface Product {
@@ -12,7 +12,6 @@ export interface Product {
   name: string;
   price: number;
   originalPrice?: number;
-  rating?: number;
   image: string;
   gallery?: string[];
   category: string;
@@ -44,12 +43,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           />
         </div>
         
-        {/* Rating Badge */}
-        {product.rating && (
-          <div className="absolute bottom-2.5 left-2.5 flex items-center gap-0.5 bg-green-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm z-10">
-            {product.rating} <Star size={8} fill="currentColor" stroke="none" />
-          </div>
-        )}
       </Link>
 
       {/* Wishlist Heart */}
