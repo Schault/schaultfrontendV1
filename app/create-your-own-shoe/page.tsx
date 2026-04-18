@@ -13,27 +13,27 @@ type ModelOption = {
 
 const UPPER_MODELS: ModelOption[] = [
   {
-    name: "Ocre & Olive",
+    name: "Ochre & Earth",
     path: "/assets/models/customizer/upper/Ocre_and_Olive-lowres.glb",
     image : '',
   },
   {
-    name: "White & Blue",
+    name: "Navy Frost",
     path: "/assets/models/customizer/upper/White_and_Blue-lowres.glb",
     image : '',
   },
   {
-    name: "White & Yellow",
+    name: "Heritage",
     path: "/assets/models/customizer/upper/White_and_Yellow-lowres.glb",
     image : '',
   },
   {
-    name: "Red & Black",
+    name: "Rust & Ash",
     path: "/assets/models/customizer/upper/Red_and_Black-lowres.glb",
     image : '',
   },
   {
-    name: "Blue Sun",
+    name: "Arctic Dawn",
     path: "/assets/models/customizer/upper/Blue_Sun-lowres.glb",
     image : '',
   },
