@@ -2,8 +2,8 @@
 
 import { useCart } from "@/context/CartContext";
 import { notFound, useRouter } from "next/navigation";
-import { useState, useMemo, useRef } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState, useMemo, useRef, useEffect } from "react";
+import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { MOCK_PRODUCTS } from "@/lib/mockProducts";
 import Image from "next/image";
@@ -17,6 +17,8 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [isAdding, setIsAdding] = useState(false);
+  const [isBuying, setIsBuying] = useState(false);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -37,9 +39,11 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   }
 
   // Set default color
-  if (!selectedColor && product.colors.length > 0) {
-    setSelectedColor(product.colors[0].name);
-  }
+  useEffect(() => {
+    if (product && !selectedColor && product.colors.length > 0) {
+      setSelectedColor(product.colors[0].name);
+    }
+  }, [product, selectedColor]);
 
   const discount = product.originalPrice 
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) 
@@ -56,34 +60,52 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   };
 
   const handleAddToCart = async () => {
-    if (!selectedSize) return;
-    if (!(await checkAuth())) return;
+    if (!selectedSize) {
+      toast.error("Please select a size first!", { icon: "📏" });
+      return;
+    }
+    
+    setIsAdding(true);
+    try {
+      if (!(await checkAuth())) return;
 
-    addItem({
-      id: `${product.id}-${selectedSize}-${selectedColor}`,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      quantity: 1,
-      color: selectedColor || undefined,
-      size: selectedSize
-    });
+      addItem({
+        id: `${product.id}-${selectedSize}-${selectedColor}`,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        quantity: 1,
+        color: selectedColor || undefined,
+        size: selectedSize
+      });
+    } finally {
+      setIsAdding(false);
+    }
   };
 
   const handleBuyNow = async () => {
-    if (!selectedSize) return;
-    if (!(await checkAuth())) return;
+    if (!selectedSize) {
+      toast.error("Please select a size first!", { icon: "📏" });
+      return;
+    }
+    
+    setIsBuying(true);
+    try {
+      if (!(await checkAuth())) return;
 
-    addItem({
-      id: `${product.id}-${selectedSize}-${selectedColor}`,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      quantity: 1,
-      color: selectedColor || undefined,
-      size: selectedSize
-    });
-    router.push("/checkout");
+      addItem({
+        id: `${product.id}-${selectedSize}-${selectedColor}`,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        quantity: 1,
+        color: selectedColor || undefined,
+        size: selectedSize
+      });
+      router.push("/checkout");
+    } finally {
+      setIsBuying(false);
+    }
   };
 
   return (
@@ -158,15 +180,17 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             <div className="hidden lg:flex gap-4 mt-4 h-16">
               <button
                 onClick={handleAddToCart}
-                className="flex-1 border-2 border-black/10 hover:border-black bg-white text-black font-bebas text-2xl tracking-wider transition-all duration-300"
+                disabled={isAdding}
+                className="flex-1 border-2 border-black/10 hover:border-black bg-white text-black font-bebas text-2xl tracking-wider transition-all duration-300 flex items-center justify-center disabled:opacity-50"
               >
-                ADD TO CART
+                {isAdding ? <Loader2 className="w-6 h-6 animate-spin" /> : "ADD TO CART"}
               </button>
               <button
                 onClick={handleBuyNow}
-                className="flex-1 bg-[#0350F0] text-white font-bebas text-2xl tracking-wider transition-all hover:bg-black"
+                disabled={isBuying}
+                className="flex-1 bg-[#0350F0] text-white font-bebas text-2xl tracking-wider transition-all hover:bg-black flex items-center justify-center disabled:opacity-50"
               >
-                BUY NOW
+                {isBuying ? <Loader2 className="w-6 h-6 animate-spin" /> : "BUY NOW"}
               </button>
             </div>
           </div>
@@ -288,15 +312,17 @@ export default function ProductPage({ params }: { params: { id: string } }) {
       <div className="lg:hidden fixed bottom-0 left-0 w-full h-16 bg-white grid grid-cols-2 border-t border-black/10 z-[100] shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
         <button
           onClick={handleAddToCart}
-          className="flex items-center justify-center font-bebas text-xl text-black tracking-widest border-r border-black/10 bg-white active:bg-black/5 transition-colors"
+          disabled={isAdding}
+          className="flex items-center justify-center font-bebas text-xl text-black tracking-widest border-r border-black/10 bg-white active:bg-black/5 transition-colors disabled:opacity-50"
         >
-          ADD TO CART
+          {isAdding ? <Loader2 className="w-5 h-5 animate-spin" /> : "ADD TO CART"}
         </button>
         <button
           onClick={handleBuyNow}
-          className="flex items-center justify-center font-bebas text-xl text-white tracking-widest bg-[#0350F0] active:bg-black transition-colors"
+          disabled={isBuying}
+          className="flex items-center justify-center font-bebas text-xl text-white tracking-widest bg-[#0350F0] active:bg-black transition-colors disabled:opacity-50"
         >
-          BUY NOW
+          {isBuying ? <Loader2 className="w-5 h-5 animate-spin" /> : "BUY NOW"}
         </button>
       </div>
 

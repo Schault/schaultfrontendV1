@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 import { Providers } from "@/components/providers";
 import Navbar from "@/components/Navbar";
 import { CartDrawer } from "@/components/CartDrawer";
+import CartToast from "@/components/CartToast";
 import { Toaster } from "react-hot-toast";
 
 export default function RootLayout({
@@ -33,6 +34,7 @@ export default function RootLayout({
       >
         <Providers>
           <LenisProvider>
+            <CartToast />
             <CartDrawer />
             <Navbar />
             {children}
