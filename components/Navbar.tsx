@@ -151,7 +151,7 @@ export default function Navbar() {
       <motion.header
         data-lenis-prevent
         style={dynamicStyles}
-        className="fixed left-1/2 -translate-x-1/2 z-[10000] border border-black/10 px-4 md:px-8"
+        className="fixed left-0 right-0 mx-auto z-[10000] border border-black/10 px-4 md:px-8"
       >
         <nav className="mx-auto flex h-full w-full items-center justify-between">
           {/* LEFT: Logo Section */}

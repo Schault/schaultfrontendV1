@@ -22,7 +22,10 @@ if (typeof window !== "undefined" && !("requestIdleCallback" in window)) {
   (window as any).cancelIdleCallback = (id: number) => clearTimeout(id);
 }
 
-const TOTAL_FRAMES = 200;
+const SEQUENCE_PATH = "/sequence";
+const FRAME_PREFIX = "ezgif-frame-";
+  const FRAME_EXT = "jpg";
+const TOTAL_FRAMES = 240;
 const INITIAL_PRELOAD = 10;
 const BATCH_SIZE = 15;
 const PRELOAD_AHEAD = 20;
@@ -30,8 +33,12 @@ const PRELOAD_AHEAD = 20;
 const IDLE_CHUNK_SIZE = 5;
 const IDLE_SCROLL_TIMEOUT = 2000;
 
+// Vertical offset (in CSS pixels) to push the rendered shoe below the
+// fixed waitlist banner + navbar so they never crop the product.
+const TOP_OFFSET_PX = 200;
+
 function getFramePath(i: number): string {
-  return `/sequence/ezgif-frame-${String(i + 1).padStart(3, "0")}.webp`;
+  return `${SEQUENCE_PATH}/${FRAME_PREFIX}${String(i + 1).padStart(3, "0")}.${FRAME_EXT}`;
 }
 
 type ScrollContextValue = {
@@ -119,17 +126,20 @@ export default function ShoeScroll({
     const logicalW = canvas.width / dpr;
     const logicalH = canvas.height / dpr;
 
+    const usableH = Math.max(0, logicalH - TOP_OFFSET_PX);
     const scale = Math.max(
       logicalW / img.naturalWidth,
-      logicalH / img.naturalHeight
+      usableH / img.naturalHeight
     );
     const drawW = img.naturalWidth * scale;
     const drawH = img.naturalHeight * scale;
     const x = (logicalW - drawW) / 2;
-    const y = (logicalH - drawH) / 2;
+    const y = TOP_OFFSET_PX + (usableH - drawH) / 2;
 
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(dpr, dpr);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
     ctx.clearRect(0, 0, logicalW, logicalH);
     ctx.fillStyle = "#FFFFFF";
     ctx.fillRect(0, 0, logicalW, logicalH);
@@ -299,7 +309,7 @@ export default function ShoeScroll({
         ref={containerRef}
         style={{
           position: "relative",
-          height: "500vh",
+          height: "400vh",
           width: "100%",
         }}
       >
