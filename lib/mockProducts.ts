@@ -18,7 +18,7 @@ export const MOCK_PRODUCTS: Product[] = [
     colors: [
       { name: "Blue / White", hex: "#4A90E2" }
     ],
-    sizes: ["7", "8", "9", "10", "11"]
+    sizes: ["4", "5", "6", "7", "8", "9", "10", "11"]
   },
   {
     id: "2",
@@ -37,7 +37,7 @@ export const MOCK_PRODUCTS: Product[] = [
     colors: [
       { name: "Brown / Black", hex: "#8B4513" }
     ],
-    sizes: ["8", "9", "10", "11"]
+    sizes: ["4", "5", "6", "7", "8", "9", "10", "11"]
   },
   {
     id: "3",
@@ -56,7 +56,7 @@ export const MOCK_PRODUCTS: Product[] = [
     colors: [
       { name: "Dark Blue", hex: "#00008B" }
     ],
-    sizes: ["7", "8", "9", "10"]
+    sizes: ["4", "5", "6", "7", "8", "9", "10", "11"]
   },
   {
     id: "4",
@@ -75,7 +75,7 @@ export const MOCK_PRODUCTS: Product[] = [
     colors: [
       { name: "White", hex: "#FFFFFF" }
     ],
-    sizes: ["7", "8", "9", "10", "11"]
+    sizes: ["4", "5", "6", "7", "8", "9", "10", "11"]
   },
   {
     id: "5",
@@ -94,6 +94,6 @@ export const MOCK_PRODUCTS: Product[] = [
     colors: [
       { name: "Yellow", hex: "#FFD700" }
     ],
-    sizes: ["8", "9", "10"]
+    sizes: ["4", "5", "6", "7", "8", "9", "10", "11"]
   }
 ];

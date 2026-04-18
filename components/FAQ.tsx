@@ -22,7 +22,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "What sizes are available?",
-    a: "SCHAULT is currently available in size UK 8 for both genders. More sizes coming soon.",
+    a: "SCHAULT is now available in sizes UK 4 to UK 11. We are committed to providing a perfect fit for everyone.",
   },
   {
     q: "Where do you deliver?",

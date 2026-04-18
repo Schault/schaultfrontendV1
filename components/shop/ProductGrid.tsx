@@ -58,7 +58,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
 
           <button 
             onClick={() => setIsSizeChartOpen(true)}
-            className="flex items-center gap-2 font-bebas text-lg px-4 py-1.5 border-2 border-black/90 text-black hover:bg-black hover:text-white transition-all tracking-wider"
+            className="flex items-center gap-2 font-bebas text-lg px-4 py-1.5 border-2 border-black/90 text-black hover:bg-[#0350F0] hover:border-[#0350F0] hover:text-white transition-all tracking-wider"
           >
             <Ruler size={16} />
             SIZE CHART

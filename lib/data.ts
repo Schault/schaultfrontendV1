@@ -11,7 +11,7 @@ export type ShoeDetails = {
     allSizes: number[];
 };
 
-export const SIZES = [7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12];
+export const SIZES = [4, 5, 6, 7, 8, 9, 10, 11];
 
 export const SHOES: ShoeDetails[] = [
     {
@@ -28,7 +28,7 @@ export const SHOES: ShoeDetails[] = [
         priceValue: 2499,
         image: "/images/shoes/bluewhite.jpg",
         allSizes: SIZES,
-        availableSizes: [8],
+        availableSizes: [4, 5, 6, 7, 8, 9, 10, 11],
     },
     {
         id: "ochre-earth",
@@ -44,7 +44,7 @@ export const SHOES: ShoeDetails[] = [
         priceValue: 2499,
         image: "/images/shoes/yellow.jpg",
         allSizes: SIZES,
-        availableSizes: [8],
+        availableSizes: [4, 5, 6, 7, 8, 9, 10, 11],
     },
     {
         id: "rust-ash",
@@ -60,7 +60,7 @@ export const SHOES: ShoeDetails[] = [
         priceValue: 2499,
         image: "/images/shoes/brownblack.jpg",
         allSizes: SIZES,
-        availableSizes: [8],
+        availableSizes: [4, 5, 6, 7, 8, 9, 10, 11],
     },
     {
         id: "cd-heritage",
@@ -76,7 +76,7 @@ export const SHOES: ShoeDetails[] = [
         priceValue: 2499,
         image: "/images/shoes/whitefull.jpg",
         allSizes: SIZES,
-        availableSizes: [8],
+        availableSizes: [4, 5, 6, 7, 8, 9, 10, 11],
     },
     {
         id: "navy-frost",
@@ -92,6 +92,6 @@ export const SHOES: ShoeDetails[] = [
         priceValue: 2499,
         image: "/images/shoes/darkblue.jpg",
         allSizes: SIZES,
-        availableSizes: [8],
+        availableSizes: [4, 5, 6, 7, 8, 9, 10, 11],
     },
 ];

@@ -228,7 +228,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   <h3 className="font-inter text-sm text-black/50 uppercase tracking-widest font-semibold">
                     Size
                   </h3>
-                  <button onClick={() => toast("Size chart coming soon!", { icon: "📏" })} className="text-xs text-[#0350F0] font-semibold hover:underline">Size Chart</button>
+                  <button onClick={() => toast("Size chart coming soon!", { icon: "📏" })} className="text-xs text-black/50 font-semibold hover:text-[#0350F0] transition-colors hover:underline">Size Chart</button>
                 </div>
                 <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
                   {product.sizes.map((size) => {
