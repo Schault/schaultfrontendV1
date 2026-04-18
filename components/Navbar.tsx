@@ -35,6 +35,7 @@ export default function Navbar() {
   const [windowWidth, setWindowWidth] = useState(0);
 
   const isAuthPage = pathname.startsWith("/auth");
+  const isAdminPage = pathname.startsWith("/admin");
 
   useEffect(() => {
     setMounted(true);
@@ -119,7 +120,7 @@ export default function Navbar() {
   );
   const backdropFilter = useMotionTemplate`blur(${blurRaw}px)`;
 
-  if (isAuthPage || !mounted) return null;
+  if (isAuthPage || isAdminPage || !mounted) return null;
 
   const isHomePage = pathname === "/";
 

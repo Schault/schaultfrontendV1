@@ -15,8 +15,9 @@ export function CartDrawer() {
     const router = useRouter();
 
     const isAuthPage = pathname.startsWith("/auth");
+    const isAdminPage = pathname.startsWith("/admin");
 
-    if (isAuthPage) return null;
+    if (isAuthPage || isAdminPage) return null;
 
     const handleCheckout = async () => {
         // Supabase checkout lives on /cart (OrderSummary). Shopify checkout needs a Storefront API token.
