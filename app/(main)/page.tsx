@@ -1,6 +1,5 @@
-import ShoeScroll from "@/components/ShoeScroll";
-import ScrollProgressBar from "@/components/ScrollProgressBar";
-import ScrollOverlays from "@/components/ScrollOverlays";
+import HeroSwitch from "@/components/HeroSwitch";
+import EveryLayerSection from "@/components/EveryLayerSection";
 import CollectionHero from "@/components/CollectionHero";
 import AboutSection from "@/components/AboutSection";
 import FAQ from "@/components/FAQ";
@@ -16,10 +15,13 @@ export default async function Home() {
   return (
     <main className="bg-[#FFFFFF]">
       <WaitlistBanner />
-      <ShoeScroll>
+      {/* <ShoeScroll>
         <ScrollProgressBar />
         <ScrollOverlays />
-      </ShoeScroll>
+      </ShoeScroll> */}
+
+      <HeroSwitch />
+      <EveryLayerSection />
 
       {/* Section A — THE SYSTEM */}
       <FeatureGrid />
