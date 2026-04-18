@@ -9,12 +9,13 @@ import FeatureGrid from "@/components/FeatureGrid";
 import StatsSection from "@/components/StatsSection";
 import CTAFooter from "@/components/CTAFooter";
 import WaitlistForm from "@/components/WaitlistForm";
+import WaitlistBanner from "@/components/WaitlistBanner";
 
 export default async function Home() {
 
   return (
     <main className="bg-[#FFFFFF]">
-
+      <WaitlistBanner />
       <ShoeScroll>
         <ScrollProgressBar />
         <ScrollOverlays />

@@ -75,7 +75,7 @@ export default function Navbar() {
   const topRaw = useTransform(
     scrollY,
     [safeThreshold, safeThreshold + shrinkDistance],
-    [0, 16]
+    [44, 16] // Offset by 44px (banner height) initially, then shrink to 16px
   );
   const top = useMotionTemplate`${topRaw}px`;
 
