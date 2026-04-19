@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import LenisProvider from "@/components/LenisProvider.tsx/Lenis";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "SCHAULT — Replace parts. Not the entire shoe.",
@@ -32,6 +33,7 @@ export default function RootLayout({
         }}
         className="bg-[#FFFFFF] font-inter text-black/90 antialiased"
       >
+        <Analytics />
         <Providers>
           <LenisProvider>
             <CartToast />
