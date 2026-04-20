@@ -23,10 +23,10 @@ export default async function Home() {
       <HeroSwitch />
       <EveryLayerSection />
 
-      {/* Section A — THE SYSTEM */}
+      {/* Section A - THE SYSTEM */}
       <FeatureGrid />
 
-      {/* Section B — THE NUMBERS */}
+      {/* Section B - THE NUMBERS */}
       <StatsSection />
 
       <CollectionHero />
@@ -34,10 +34,10 @@ export default async function Home() {
       <AboutSection />
       <FAQ />
 
-      {/* Section D — WAITLIST */}
+      {/* Section D - WAITLIST */}
       <WaitlistForm />
 
-      {/* Section C — CTA FOOTER */}
+      {/* Section C - CTA FOOTER */}
       <CTAFooter />
 
       <Footer />

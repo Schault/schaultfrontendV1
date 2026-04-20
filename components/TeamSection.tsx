@@ -119,7 +119,7 @@ export default function TeamSection() {
 
   return (
     <section className="py-24 px-6 md:px-16 max-w-7xl mx-auto">
-      {/* Section 1 — Founder Block */}
+      {/* Section 1 - Founder Block */}
       <div className="team-founder mb-32 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
         <div className="group w-full aspect-square md:aspect-[4/5] rounded-2xl overflow-hidden relative shadow-xl">
           <Image
@@ -144,7 +144,7 @@ export default function TeamSection() {
         </div>
       </div>
 
-      {/* Section 2 — Mentor Block (Alternating side) */}
+      {/* Section 2 - Mentor Block (Alternating side) */}
       <div className="team-mentors mb-32 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
         <div className="flex flex-col items-start text-left order-2 md:order-1">
           <div className="mb-4">
@@ -172,7 +172,7 @@ export default function TeamSection() {
         </div>
       </div>
 
-      {/* Section 3 — Team Grid */}
+      {/* Section 3 - Team Grid */}
       <div className="team-grid pt-16 border-t border-black/5">
         <h2 className="font-bebas text-[48px] md:text-[64px] tracking-wide text-black/90 mb-16 text-center uppercase">
           CORE TEAM

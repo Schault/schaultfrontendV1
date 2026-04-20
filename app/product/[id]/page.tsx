@@ -224,7 +224,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             {product.colors && product.colors.length > 0 && (
               <div className="mt-8">
                 <h3 className="font-inter text-sm text-black/50 uppercase tracking-widest font-semibold mb-3">
-                  Color <span className="text-black/80 capitalize font-normal">— {selectedColor}</span>
+                  Color <span className="text-black/80 capitalize font-normal">- {selectedColor}</span>
                 </h3>
                 <div className="flex gap-3">
                   {product.colors.map((color) => (

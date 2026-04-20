@@ -83,12 +83,12 @@ const SUPPORTED_BY = {
     "As SCHAULT scales from prototype to market, Liberty's established infrastructure, supply chain mastery, and brand visibility across India position them as a key supporter for reaching millions of conscious consumers who are ready for modular, sustainable footwear.",
   ],
   whyTitle: "Scale Meets Innovation.",
-  whyIntro: "Liberty's manufacturing scale and distribution network empower SCHAULT's engineering innovation — together, bringing modular footwear from the lab to every Indian household.",
+  whyIntro: "Liberty's manufacturing scale and distribution network empower SCHAULT's engineering innovation - together, bringing modular footwear from the lab to every Indian household.",
   whyCards: [
     { icon: Store, title: "Pan-India Retail Reach", desc: "Thousands of retail touchpoints and online presence ensure SCHAULT's modular system reaches consumers everywhere." },
     { icon: Warehouse, title: "Manufacturing at Scale", desc: "Decades of industrial manufacturing expertise to help SCHAULT transition from artisanal prototyping to mass production." },
     { icon: Briefcase, title: "Brand Trust", desc: "Over 70 years of consumer trust makes Liberty a credible launchpad for introducing new footwear technology to mainstream India." },
-    { icon: Package, title: "Supply Chain Mastery", desc: "Vertically integrated operations from raw material sourcing to final delivery — infrastructure that SCHAULT can leverage from day one." },
+    { icon: Package, title: "Supply Chain Mastery", desc: "Vertically integrated operations from raw material sourcing to final delivery - infrastructure that SCHAULT can leverage from day one." },
   ],
   website: "https://www.libertyshoesonline.com/",
   instagram: "https://www.instagram.com/libertyshoesltd/",
@@ -168,7 +168,7 @@ export default function CollaboratorsPage() {
         <div className="pt-20 md:pt-20">
           <div className="grid grid-cols-1 md:grid-cols-2 min-h-[420px]">
 
-            {/* Left — Text */}
+            {/* Left - Text */}
             <div className="collab-hero-text px-4 sm:px-6 md:px-12 lg:px-16 py-16 md:py-20 flex flex-col justify-center">
               {/* Breadcrumb */}
               <div className="flex items-center gap-2 font-inter text-[10px] text-black/50 mb-8 uppercase tracking-widest">
@@ -196,7 +196,7 @@ export default function CollaboratorsPage() {
               </p>
             </div>
 
-            {/* Right — Dark panel with pills */}
+            {/* Right - Dark panel with pills */}
             <div className="bg-black relative overflow-hidden flex flex-col items-start justify-end px-8 sm:px-12 py-10 md:py-14 gap-2.5">
               {/* Ghost text */}
               <span className="absolute -top-3 -right-5 font-bebas text-[130px] text-white/[0.03] leading-none pointer-events-none select-none tracking-tight">

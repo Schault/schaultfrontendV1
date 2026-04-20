@@ -148,7 +148,7 @@ export default function AboutPage() {
         {/* ─── HERO SECTION (Split) ─── */}
         <div className="about-hero min-h-[600px] flex flex-col lg:flex-row border-b border-black/5">
           
-          {/* Left Side — Blue background with Image */}
+          {/* Left Side - Blue background with Image */}
           <div className="w-full lg:w-1/2 bg-[#052ca8] flex items-start justify-center p-8 sm:p-12 lg:p-20 relative overflow-hidden">
             {/* Background Glow */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-[100px] -mr-32 -mt-32" />
@@ -165,7 +165,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Right Side — White background with Text content */}
+          {/* Right Side - White background with Text content */}
           <div className="w-full lg:w-1/2 bg-white flex flex-col justify-center px-6 sm:px-12 lg:px-20 py-16 md:py-24">
             <div className="max-w-[540px]">
               {/* Breadcrumb */}

@@ -73,7 +73,7 @@ export default function TestDBPage() {
       {status === "connected" && (
         <>
           <p style={{ color: "green", fontWeight: "bold", fontSize: "1.2rem" }}>
-            ✅ Connected — Supabase is working!
+            ✅ Connected - Supabase is working!
           </p>
 
           {products.length === 0 ? (
