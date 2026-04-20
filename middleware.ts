@@ -3,6 +3,13 @@ import { updateSession } from "@/utils/supabase/middleware";
 import { createServerClient } from "@supabase/ssr";
 
 export async function middleware(request: NextRequest) {
+  // CRITICAL FIX: Bypass middleware entirely for the auth callback route!
+  // If middleware runs before the callback has a chance to exchange the code,
+  // it can prematurely delete the freshly generated session cookies!
+  if (request.nextUrl.pathname.startsWith("/auth/callback")) {
+    return NextResponse.next();
+  }
+
   // Important: ensure session is refreshed
   const response = await updateSession(request);
 
