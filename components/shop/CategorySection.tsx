@@ -44,7 +44,7 @@ const CategorySection: React.FC = () => {
   return (
     <section className="py-24 border-t border-black/10 px-6 md:px-12">
       <div className="flex items-center justify-between mb-12">
-        <h2 className="font-bebas text-[40px] text-black/90 tracking-wide uppercase">
+        <h2 className="font-inter text-[40px] text-black/90 tracking-wide uppercase">
           OTHER CATEGORIES
         </h2>
         <div className="flex gap-4">
@@ -75,7 +75,7 @@ const CategorySection: React.FC = () => {
           >
             <div className="flex-1 p-8 flex flex-col justify-between">
               <div>
-                <h3 className="font-bebas text-2xl text-black/90 mb-2 tracking-wide">{cat.title}</h3>
+                <h3 className="font-inter text-2xl text-black/90 mb-2 tracking-wide">{cat.title}</h3>
                 <p className="font-inter text-sm text-black/50 leading-relaxed max-w-[200px]">
                   {cat.desc}
                 </p>

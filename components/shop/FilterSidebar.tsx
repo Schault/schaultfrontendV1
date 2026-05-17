@@ -42,7 +42,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       <div className="border-b border-black/10 py-6">
         <button 
           onClick={() => toggleSection("price")}
-          className="flex items-center justify-between w-full font-bebas text-lg text-black/90 tracking-wide"
+          className="flex items-center justify-between w-full font-inter text-lg text-black/90 tracking-wide"
         >
           PRICE
           <span className={`transition-transform duration-300 ${expandedSections.price ? "rotate-180" : ""}`}>
@@ -66,7 +66,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       <div className="border-b border-black/10 py-6">
         <button 
           onClick={() => toggleSection("color")}
-          className="flex items-center justify-between w-full font-bebas text-lg text-black/90 tracking-wide"
+          className="flex items-center justify-between w-full font-inter text-lg text-black/90 tracking-wide"
         >
           COLOR
           <span className={`transition-transform duration-300 ${expandedSections.color ? "rotate-180" : ""}`}>
@@ -101,7 +101,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       <div className="border-b border-black/10 py-6">
         <button 
           onClick={() => toggleSection("size")}
-          className="flex items-center justify-between w-full font-bebas text-lg text-black/90 tracking-wide"
+          className="flex items-center justify-between w-full font-inter text-lg text-black/90 tracking-wide"
         >
           SIZE
           <span className={`transition-transform duration-300 ${expandedSections.size ? "rotate-180" : ""}`}>

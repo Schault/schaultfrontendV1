@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { Package, Truck, CheckCircle2 } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function ProfilePage() {
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -26,7 +28,7 @@ export default async function ProfilePage() {
             <div className="mx-auto max-w-5xl px-6 md:px-12">
                 <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-black/10 pb-6 mb-12">
                     <div>
-                        <h1 className="font-bebas text-5xl tracking-wide text-black/90">Hello, {name}</h1>
+                        <h1 className="font-inter text-5xl tracking-wide text-black/90">Hello, {name}</h1>
                         <p className="font-inter text-sm text-black/60 mt-2">{user.email}</p>
                     </div>
                     <form action={signOut}>
@@ -41,7 +43,7 @@ export default async function ProfilePage() {
 
                 <section>
                     <div className="mb-2 h-0.5 w-8 bg-[#0350F0]" aria-hidden />
-                    <h2 className="font-bebas text-3xl tracking-wide text-black/90 mb-8">Order History</h2>
+                    <h2 className="font-inter text-3xl tracking-wide text-black/90 mb-8">Order History</h2>
 
                     <p className="font-inter text-black/60">No orders placed yet.</p>
                 </section>

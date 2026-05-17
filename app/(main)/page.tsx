@@ -13,7 +13,7 @@ import WaitlistBanner from "@/components/WaitlistBanner";
 export default async function Home() {
 
   return (
-    <main className="bg-[#FFFFFF]">
+    <main className="bg-[#f1f1f1]">
       <WaitlistBanner />
       {/* <ShoeScroll>
         <ScrollProgressBar />

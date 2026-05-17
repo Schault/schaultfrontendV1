@@ -75,7 +75,7 @@ export function CartDrawer() {
                     >
                         {/* Header */}
                         <div className="flex items-center justify-between border-b border-black/10 px-6 py-4">
-                            <h2 className="font-bebas text-2xl tracking-wide text-black/90">Your Bag</h2>
+                            <h2 className="font-inter text-2xl tracking-wide text-black/90">Your Bag</h2>
                             <button
                                 onClick={() => setIsCartOpen(false)}
                                 className="p-2 text-black/50 transition-colors hover:text-black/90"
@@ -113,7 +113,7 @@ export function CartDrawer() {
                                             {/* Details */}
                                             <div className="flex flex-1 flex-col">
                                                 <div className="flex justify-between">
-                                                    <h3 className="font-bebas tracking-wide text-lg text-black/90">
+                                                    <h3 className="font-inter tracking-wide text-lg text-black/90">
                                                         {item.name}
                                                     </h3>
                                                     <p className="font-semibold text-black/90 font-inter text-sm">
@@ -172,7 +172,7 @@ export function CartDrawer() {
 
                                 <hr className="my-4 border-black/10" />
 
-                                <div className="flex justify-between font-bebas text-xl tracking-wide">
+                                <div className="flex justify-between font-inter text-xl tracking-wide">
                                     <span>Total</span>
                                     <span>₹{totalPrice.toLocaleString("en-IN")}</span>
                                 </div>

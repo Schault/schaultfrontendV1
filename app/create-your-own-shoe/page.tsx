@@ -76,7 +76,7 @@ export default function CreateYourOwnShoePage() {
             <p className="mb-4 font-inter text-xs uppercase tracking-[0.25em] text-[#0350F0]">
               3D Customizer
             </p>
-            <h1 className="mb-6 font-bebas text-5xl leading-[0.9] tracking-wide text-black/90 sm:text-6xl md:text-[84px]">
+            <h1 className="mb-6 font-inter text-5xl leading-[0.9] tracking-wide text-black/90 sm:text-6xl md:text-[84px]">
               CREATE YOUR OWN SHOE
             </h1>
             <p className="mx-auto mb-10 max-w-2xl font-inter text-sm leading-relaxed text-black/60 md:text-base">
@@ -94,7 +94,7 @@ export default function CreateYourOwnShoePage() {
           <section className="mt-12 grid gap-6 border border-black/10 bg-white p-4 sm:p-6 md:grid-cols-2 md:gap-8 md:p-8">
             <div>
               <div className="mb-4 flex items-center justify-between gap-3">
-                <h2 className="font-bebas text-3xl tracking-wide text-black/90 sm:text-4xl">3D PREVIEW</h2>
+                <h2 className="font-inter text-3xl tracking-wide text-black/90 sm:text-4xl">3D PREVIEW</h2>
                 <span className="font-inter text-xs uppercase tracking-[0.18em] text-black/50">Live</span>
               </div>
               <div className="h-[420px] w-full border border-black/10 bg-[#0f2d1b]">
@@ -150,7 +150,7 @@ export default function CreateYourOwnShoePage() {
                           {model.image ? (
                             <img src={model.image} alt={model.name} className="h-full w-full object-contain p-2" />
                           ) : (
-                            <span className="font-bebas text-3xl font-bold text-black/30">{model.name.charAt(0)}</span>
+                            <span className="font-inter text-3xl font-bold text-black/30">{model.name.charAt(0)}</span>
                           )}
                         </div>
                         <span className="text-center font-inter text-xs font-medium text-black/80">{model.name}</span>
@@ -178,7 +178,7 @@ export default function CreateYourOwnShoePage() {
                           {model.image ? (
                             <img src={model.image} alt={model.name} className="h-full w-full object-contain p-2" />
                           ) : (
-                            <span className="font-bebas text-3xl font-bold text-black/30">{model.name.charAt(0)}</span>
+                            <span className="font-inter text-3xl font-bold text-black/30">{model.name.charAt(0)}</span>
                           )}
                         </div>
                         <span className="text-center font-inter text-xs font-medium text-black/80">{model.name}</span>

@@ -2,6 +2,20 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CTAFooter from "@/components/CTAFooter";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact Us | Get In Touch with SCHAULT",
+  description: "Have a question about our modular snap-fit shoes, ourIIT Kanpur origins, or your order? Contact the SCHAULT support team directly.",
+  alternates: {
+    canonical: "/contact"
+  },
+  openGraph: {
+    title: "Contact SCHAULT | Modular Footwear Customer Support",
+    description: "Reach out to the SCHAULT team for modular sneaker inquiries and customer support.",
+    url: "https://www.schault.com/contact"
+  }
+};
 
 export default function ContactPage() {
     return (
@@ -15,7 +29,7 @@ export default function ContactPage() {
                     </Link>
                 </div>
                 <div className="mb-2 h-0.5 w-12 bg-[#0350F0]" aria-hidden />
-                <h1 className="font-bebas text-4xl md:text-5xl tracking-wide text-black/95">
+                <h1 className="font-inter text-4xl md:text-5xl tracking-wide text-black/95">
                     CONTACT US
                 </h1>
                 <p className="mt-3 font-inter text-black/50 text-sm">SCHAULT</p>
@@ -26,7 +40,7 @@ export default function ContactPage() {
                     <p className="text-lg">We&apos;re here to help. Whether you have a question about our products, your order, or just want to know more about Schault, feel free to reach out to us.</p>
 
                     <div>
-                        <h2 className="font-bebas text-2xl tracking-wide text-black mb-4">Customer Support</h2>
+                        <h2 className="font-inter text-2xl tracking-wide text-black mb-4">Customer Support</h2>
                         <ul className="space-y-4">
                             <li><strong>Email:</strong> <a href="mailto:WEARSCHAULT@GMAIL.COM" className="text-[#0350F0] hover:underline">WEARSCHAULT@GMAIL.COM</a></li>
                         </ul>
@@ -34,7 +48,7 @@ export default function ContactPage() {
                     </div>
 
                     <div>
-                        <h2 className="font-bebas text-2xl tracking-wide text-black mb-4">Business Hours</h2>
+                        <h2 className="font-inter text-2xl tracking-wide text-black mb-4">Business Hours</h2>
                         <ul className="space-y-2">
                             <li><strong>Monday to Saturday:</strong> 10:00 AM – 5:00 PM</li>
                             <li><strong>Sunday:</strong> Closed</li>

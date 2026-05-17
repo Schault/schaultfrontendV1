@@ -49,7 +49,7 @@ export default function AboutSection() {
             <p className="font-inter text-xs uppercase tracking-widest text-[#0350F0]">
               OUR STORY
             </p>
-            <h2 className="mt-4 font-bebas text-4xl tracking-wide text-black/90 md:text-5xl uppercase">
+            <h2 className="mt-4 font-inter text-4xl tracking-wide text-black/90 md:text-5xl uppercase">
               Born From Frustration.
             </h2>
             <div className="mt-6 space-y-4 font-inter text-sm leading-relaxed text-black/70">

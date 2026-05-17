@@ -47,7 +47,7 @@ const WaitlistBanner = () => {
         <div className="flex animate-marquee w-max select-none">
           {[...Array(10)].map((_, i) => (
             <div key={i} className="flex items-center gap-8 px-4">
-              <p className="font-bebas text-lg md:text-xl text-white whitespace-nowrap tracking-[0.1em] uppercase">
+              <p className="font-inter text-lg md:text-xl text-white whitespace-nowrap tracking-[0.1em] uppercase">
                 {text}
               </p>
               <span className="w-1.5 h-1.5 rounded-full bg-white/40 flex-shrink-0" />

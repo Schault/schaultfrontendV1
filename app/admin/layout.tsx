@@ -6,8 +6,9 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-[#F9FAFB] text-black antialiased pt-8">
+    <div className="min-h-screen bg-[#f1f1f1] text-[#0a0a0a] antialiased">
       {children}
     </div>
   );
 }
+

@@ -45,7 +45,7 @@ export default function SizeChartModal({ isOpen, onClose }: SizeChartModalProps)
             <div className="flex items-center justify-between p-4 border-b border-black/10 bg-[#FAFAFA]">
               <div className="flex items-center gap-3">
                 <Ruler className="text-[#0350F0]" size={20} />
-                <h2 className="font-bebas text-2xl tracking-wide text-black/90">SIZE GUIDE</h2>
+                <h2 className="font-inter text-2xl tracking-wide text-black/90">SIZE GUIDE</h2>
               </div>
               <button 
                 onClick={onClose}
@@ -67,7 +67,7 @@ export default function SizeChartModal({ isOpen, onClose }: SizeChartModalProps)
 
               {/* Table */}
               <div className="space-y-4">
-                <h3 className="font-bebas text-xl tracking-widest text-black/80 flex items-center gap-2">
+                <h3 className="font-inter text-xl tracking-widest text-black/80 flex items-center gap-2">
                   CONVERSION TABLE
                 </h3>
                 <div className="border border-black/10 overflow-hidden">
@@ -94,7 +94,7 @@ export default function SizeChartModal({ isOpen, onClose }: SizeChartModalProps)
 
               {/* How to Measure */}
               <div className="space-y-6 pt-4 border-t border-black/5">
-                <h3 className="font-bebas text-xl tracking-widest text-black/80 flex items-center gap-2">
+                <h3 className="font-inter text-xl tracking-widest text-black/80 flex items-center gap-2">
                   <Footprints size={20} className="text-[#0350F0]" />
                   HOW TO MEASURE
                 </h3>
@@ -106,8 +106,8 @@ export default function SizeChartModal({ isOpen, onClose }: SizeChartModalProps)
                     { step: "03", title: "MARK", desc: "Mark the longest part of your foot and measure the distance." }
                   ].map((item) => (
                     <div key={item.step} className="space-y-2">
-                      <span className="font-bebas text-2xl text-[#0350F0]/30">{item.step}</span>
-                      <h4 className="font-bebas text-lg tracking-wide text-black/90">{item.title}</h4>
+                      <span className="font-inter text-2xl text-[#0350F0]/30">{item.step}</span>
+                      <h4 className="font-inter text-lg tracking-wide text-black/90">{item.title}</h4>
                       <p className="font-inter text-xs text-black/50 leading-relaxed">{item.desc}</p>
                     </div>
                   ))}
@@ -123,7 +123,7 @@ export default function SizeChartModal({ isOpen, onClose }: SizeChartModalProps)
             <div className="p-4 border-t border-black/5 bg-[#FAFAFA] flex justify-end">
               <button 
                 onClick={onClose}
-                className="bg-black text-white font-bebas text-base px-8 py-2.5 tracking-widest hover:bg-[#0350F0] transition-colors"
+                className="bg-black text-white font-inter text-base px-8 py-2.5 tracking-widest hover:bg-[#0350F0] transition-colors"
               >
                 GOT IT
               </button>

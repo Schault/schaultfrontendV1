@@ -70,7 +70,7 @@ function TeamMemberCard({
               className="object-cover transition-all duration-300 ease-in-out"
             />
           ) : (
-            <span className="font-bebas text-[80px] md:text-[100px] text-black/10 font-bold select-none">{member.name.charAt(0)}</span>
+            <span className="font-inter text-[80px] md:text-[100px] text-black/10 font-bold select-none">{member.name.charAt(0)}</span>
           )}
         </div>
         {/* Floating badge wrapper for perimeter rotation */}
@@ -80,7 +80,7 @@ function TeamMemberCard({
           </div>
         </div>
       </div>
-      <h4 className="font-bebas text-lg md:text-xl tracking-wide text-black/90 group-hover:text-[#0350F0] transition-colors duration-200 mb-1 leading-tight">
+      <h4 className="font-inter text-lg md:text-xl tracking-wide text-black/90 group-hover:text-[#0350F0] transition-colors duration-200 mb-1 leading-tight">
         {member.name}
       </h4>
       <p className="font-inter text-[10px] md:text-xs text-black/50 uppercase tracking-[0.2em] px-2 outline-none">
@@ -101,7 +101,7 @@ function TeamSubSection({
 }) {
   return (
     <div className="mb-20 last:mb-0">
-      <h3 className="font-bebas text-2xl tracking-widest text-black/90 text-center pb-4 mb-10 border-b border-black/5">
+      <h3 className="font-inter text-2xl tracking-widest text-black/90 text-center pb-4 mb-10 border-b border-black/5">
         {title}
       </h3>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-16">
@@ -130,7 +130,7 @@ export default function TeamSection() {
           />
         </div>
         <div className="flex flex-col items-start text-left">
-          <h2 className="font-bebas text-[48px] md:text-[80px] leading-[0.9] tracking-wide text-black/90 mb-4">
+          <h2 className="font-inter text-[48px] md:text-[80px] leading-[0.9] tracking-wide text-black/90 mb-4">
             {founder.name}
           </h2>
           <p className="font-inter text-sm md:text-base text-black/50 uppercase tracking-widest mb-8">
@@ -148,8 +148,8 @@ export default function TeamSection() {
       <div className="team-mentors mb-32 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
         <div className="flex flex-col items-start text-left order-2 md:order-1">
           <div className="mb-4">
-            <h3 className="font-bebas text-2xl text-[#0350F0] tracking-widest mb-2">MENTOR</h3>
-            <h2 className="font-bebas text-[48px] md:text-[80px] leading-[0.9] tracking-wide text-black/90 mb-4">
+            <h3 className="font-inter text-2xl text-[#0350F0] tracking-widest mb-2">MENTOR</h3>
+            <h2 className="font-inter text-[48px] md:text-[80px] leading-[0.9] tracking-wide text-black/90 mb-4">
               {mentor.name}
             </h2>
           </div>
@@ -174,13 +174,13 @@ export default function TeamSection() {
 
       {/* Section 3 - Team Grid */}
       <div className="team-grid pt-16 border-t border-black/5">
-        <h2 className="font-bebas text-[48px] md:text-[64px] tracking-wide text-black/90 mb-16 text-center uppercase">
+        <h2 className="font-inter text-[48px] md:text-[64px] tracking-wide text-black/90 mb-16 text-center uppercase">
           CORE TEAM
         </h2>
         
         {/* Combined Content & Design Team - 4 members total */}
         <div className="mb-20">
-          <h3 className="font-bebas text-2xl tracking-widest text-black/90 text-center pb-4 mb-10 border-b border-black/5">
+          <h3 className="font-inter text-2xl tracking-widest text-black/90 text-center pb-4 mb-10 border-b border-black/5">
             CONTENT & DESIGN
           </h3>
           <div className="flex flex-wrap justify-center gap-x-16 gap-y-12">

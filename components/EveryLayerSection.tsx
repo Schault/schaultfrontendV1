@@ -17,7 +17,7 @@ export default function EveryLayerSection() {
           The Schault System
         </span>
 
-        <h2 className="mt-6 font-bebas text-4xl tracking-wide text-black md:text-6xl lg:text-7xl">
+        <h2 className="mt-6 font-inter text-4xl tracking-wide text-black md:text-6xl lg:text-7xl">
           Every Layer. Perfected.
         </h2>
 

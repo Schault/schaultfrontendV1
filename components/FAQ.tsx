@@ -44,7 +44,7 @@ export default function FAQ() {
     >
       <div className="mx-auto max-w-3xl">
         <div className="mb-2 h-0.5 w-12 bg-[#0350F0]" aria-hidden />
-        <h2 className="font-bebas text-4xl tracking-wide text-black/90 md:text-5xl">
+        <h2 className="font-inter text-4xl tracking-wide text-black/90 md:text-5xl">
           FAQ
         </h2>
         <ul className="mt-12">
@@ -57,9 +57,11 @@ export default function FAQ() {
               >
                 <button
                   type="button"
-                  className="flex w-full items-start justify-between gap-4 py-5 text-left transition-colors duration-200 hover:opacity-80"
+                  id={`faq-question-${index}`}
+                  className="flex w-full items-start justify-between gap-4 py-5 text-left transition-colors duration-200 hover:opacity-80 focus-visible:ring-2 focus-visible:ring-[#0350F0] focus-visible:outline-none"
                   onClick={() => setOpenIndex(isOpen ? null : index)}
                   aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${index}`}
                 >
                   <span className="font-inter text-base font-medium text-black/90">
                     {item.q}
@@ -80,6 +82,9 @@ export default function FAQ() {
                 <AnimatePresence initial={false}>
                   {isOpen && (
                     <motion.div
+                      id={`faq-answer-${index}`}
+                      role="region"
+                      aria-labelledby={`faq-question-${index}`}
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}

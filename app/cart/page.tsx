@@ -48,18 +48,18 @@ export default function CartPage() {
     <>
       <main className="min-h-screen bg-white pt-32 pb-32 px-6 md:px-12 lg:px-20">
         <div className="max-w-[1440px] mx-auto">
-          <h1 className="font-bebas text-xl md:text-2xl text-black/50 uppercase tracking-[0.2em] mb-12">
+          <h1 className="font-inter text-xl md:text-2xl text-black/50 uppercase tracking-[0.2em] mb-12">
             YOUR CART
           </h1>
 
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-40 border-t border-black/10 text-center">
-              <h2 className="font-bebas text-[32px] sm:text-[48px] md:text-[80px] text-black/90 uppercase mb-8 leading-none">
+              <h2 className="font-inter text-[32px] sm:text-[48px] md:text-[80px] text-black/90 uppercase mb-8 leading-none">
                 YOUR CART IS EMPTY
               </h2>
               <Link 
                 href="/shop" 
-                className="font-bebas text-xl text-[#0350F0] border-b border-[#0350F0] pb-1 hover:text-[#A30000] hover:border-[#A30000] transition-colors"
+                className="font-inter text-xl text-[#0350F0] border-b border-[#0350F0] pb-1 hover:text-[#A30000] hover:border-[#A30000] transition-colors"
               >
                 CONTINUE SHOPPING
               </Link>
@@ -94,13 +94,13 @@ export default function CartPage() {
             <div className="flex items-center justify-between mx-auto max-w-lg">
               <div className="flex flex-col">
                 <span className="font-inter text-[10px] text-black/40 uppercase tracking-widest">Total Amount</span>
-                <span className="font-bebas text-2xl text-black">₹{(totalPrice + 24).toLocaleString("en-IN")}</span>
+                <span className="font-inter text-2xl text-black">₹{(totalPrice + 24).toLocaleString("en-IN")}</span>
               </div>
               <button 
                 onClick={() => {
                   router.push("/checkout");
                 }}
-                className="bg-[#0350F0] text-white font-bebas text-lg px-8 py-3 uppercase tracking-widest hover:bg-[#A30000] active:scale-95 transition-all"
+                className="bg-[#0350F0] text-white font-inter text-lg px-8 py-3 uppercase tracking-widest hover:bg-[#A30000] active:scale-95 transition-all"
               >
                 Checkout
               </button>

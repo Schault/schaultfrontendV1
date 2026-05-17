@@ -181,14 +181,14 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               <button
                 onClick={handleAddToCart}
                 disabled={isAdding}
-                className="flex-1 border-2 border-black/10 hover:border-black bg-white text-black font-bebas text-2xl tracking-wider transition-all duration-300 flex items-center justify-center disabled:opacity-50"
+                className="flex-1 border-2 border-black/10 hover:border-black bg-white text-black font-inter text-2xl tracking-wider transition-all duration-300 flex items-center justify-center disabled:opacity-50"
               >
                 {isAdding ? <Loader2 className="w-6 h-6 animate-spin" /> : "ADD TO CART"}
               </button>
               <button
                 onClick={handleBuyNow}
                 disabled={isBuying}
-                className="flex-1 bg-[#0350F0] text-white font-bebas text-2xl tracking-wider transition-all hover:bg-black flex items-center justify-center disabled:opacity-50"
+                className="flex-1 bg-[#0350F0] text-white font-inter text-2xl tracking-wider transition-all hover:bg-black flex items-center justify-center disabled:opacity-50"
               >
                 {isBuying ? <Loader2 className="w-6 h-6 animate-spin" /> : "BUY NOW"}
               </button>
@@ -198,7 +198,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
           {/* RIGHT: Product Info */}
           <div className="w-full lg:w-[40%] flex flex-col pt-2 md:pt-0 bg-transparent lg:bg-white lg:p-8 lg:border lg:border-black/5 relative">
             
-            <h1 className="font-bebas text-3xl sm:text-4xl lg:text-5xl tracking-wide text-black/95 leading-[1.1]">
+            <h1 className="font-inter text-3xl sm:text-4xl lg:text-5xl tracking-wide text-black/95 leading-[1.1]">
               {product.name}
             </h1>
             <p className="mt-2 text-sm text-black/50 tracking-wide uppercase">{product.category}</p>
@@ -261,7 +261,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                         key={size}
                         onClick={() => setSelectedSize(size)}
                         className={`
-                          pt-2 pb-1.5 font-bebas text-lg border transition-all duration-200 ease-out flex items-center justify-center relative overflow-hidden
+                          pt-2 pb-1.5 font-inter text-lg border transition-all duration-200 ease-out flex items-center justify-center relative overflow-hidden
                           ${selectedSize === size
                               ? "border-black bg-black text-white"
                               : "border-black/20 bg-white text-black hover:border-black/60"
@@ -280,7 +280,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
             {/* Description / Static Specs */}
             <div className="mt-12 pt-6 border-t border-black/10">
-              <h3 className="font-bebas text-xl tracking-wide text-black/90 mb-4">Product Details</h3>
+              <h3 className="font-inter text-xl tracking-wide text-black/90 mb-4">Product Details</h3>
               <p className="font-inter text-sm leading-relaxed text-black/70">
                 Engineered for maximum modularity, the {product.name} lets you swap components effortlessly, meaning you only replace what's worn out. Features advanced breathability, patented snap-fit connectors, and uncompromising brutalist aesthetics.
               </p>
@@ -313,14 +313,14 @@ export default function ProductPage({ params }: { params: { id: string } }) {
         <button
           onClick={handleAddToCart}
           disabled={isAdding}
-          className="flex items-center justify-center font-bebas text-xl text-black tracking-widest border-r border-black/10 bg-white active:bg-black/5 transition-colors disabled:opacity-50"
+          className="flex items-center justify-center font-inter text-xl text-black tracking-widest border-r border-black/10 bg-white active:bg-black/5 transition-colors disabled:opacity-50"
         >
           {isAdding ? <Loader2 className="w-5 h-5 animate-spin" /> : "ADD TO CART"}
         </button>
         <button
           onClick={handleBuyNow}
           disabled={isBuying}
-          className="flex items-center justify-center font-bebas text-xl text-white tracking-widest bg-[#0350F0] active:bg-black transition-colors disabled:opacity-50"
+          className="flex items-center justify-center font-inter text-xl text-white tracking-widest bg-[#0350F0] active:bg-black transition-colors disabled:opacity-50"
         >
           {isBuying ? <Loader2 className="w-5 h-5 animate-spin" /> : "BUY NOW"}
         </button>

@@ -23,7 +23,7 @@ export default function Footer() {
         { label: "Home", href: "/" },
         { label: "Products", href: "/shop" },
         { label: "About", href: "/about" },
-        { label: "Blog", href: "/#blog" },
+        { label: "Blog", href: "/blog" },
       ],
     },
     {
@@ -55,7 +55,7 @@ export default function Footer() {
             {/* BRAND */}
             <div className="flex flex-col items-start">
               <Image
-                src="/assets/Schault_icon.webp"
+                src="/assets/logo.webp"
                 alt="Schault Logo"
                 width={120}
                 height={64}
@@ -64,7 +64,7 @@ export default function Footer() {
               <p className="mt-4 font-inter text-sm text-black/50">
                 Replace parts. Not the entire shoe.
               </p>
-              <p className="mt-1 font-bebas text-sm text-black/30">EST. 2024</p>
+              <p className="mt-1 font-inter text-sm text-black/30">EST. 2024</p>
 
               <div className="mt-6 flex gap-3">
                 <Link
@@ -88,7 +88,7 @@ export default function Footer() {
 
             {/* NEWSLETTER */}
             <div className="flex flex-col items-start">
-              <h3 className="font-bebas text-xl tracking-wide text-black/90">
+              <h3 className="font-inter text-xl tracking-wide text-black/90">
                 STAY IN THE LOOP
               </h3>
               <p className="mt-1 font-inter text-xs text-black/50">
@@ -105,7 +105,7 @@ export default function Footer() {
                 <button
                   type="button"
                   onClick={handleSubscribe}
-                  className="bg-black px-4 py-2 font-bebas tracking-wider text-white transition-colors duration-200 hover:bg-[#0350F0]"
+                  className="bg-black px-4 py-2 font-inter tracking-wider text-white transition-colors duration-200 hover:bg-[#0350F0]"
                 >
                   SUBSCRIBE
                 </button>
@@ -117,7 +117,7 @@ export default function Footer() {
           {/* Navigation Columns */}
           {navColumns.map((col) => (
             <div key={col.title} className="flex flex-col items-start md:col-span-1 border-t border-black/5 pt-8 md:border-t-0 md:pt-0">
-              <h3 className="mb-4 font-bebas text-xl text-black/90">
+              <h3 className="mb-4 font-inter text-xl text-black/90">
                 {col.title}
               </h3>
               <ul className="flex flex-col gap-3">
@@ -144,7 +144,7 @@ export default function Footer() {
           <p className="font-inter text-xs text-black/40">
             © {currentYear} Schault. All rights reserved.
           </p>
-          <p className="font-bebas text-sm tracking-widest text-black/20">
+          <p className="font-inter text-sm tracking-widest text-black/20">
             SCHAULT
           </p>
           <p className="font-inter text-xs text-black/40">Made in India</p>

@@ -18,14 +18,14 @@ const CatalogCTA: React.FC = () => {
 
       {/* Content */}
       <div className="relative z-20 h-full flex flex-col items-center justify-center text-center px-6">
-        <h2 className="font-bebas text-[48px] md:text-[64px] text-white tracking-widest leading-none mb-4">
+        <h2 className="font-inter text-[48px] md:text-[64px] text-white tracking-widest leading-none mb-4">
           EXPLORE OUR FULL CATALOG
         </h2>
         <p className="font-inter text-white/60 text-sm md:text-base max-w-[500px] mx-auto mb-8 leading-relaxed">
           Discover the complete range of modular footwear and interchangeable components. 
           Built for longevity, designed for expression.
         </p>
-        <Link href="/shop" className="border border-white/20 text-white font-bebas text-xl px-12 py-4 hover:bg-white hover:text-black transition-all duration-500 tracking-widest relative overflow-hidden inline-block mt-4">
+        <Link href="/shop" className="border border-white/20 text-white font-inter text-xl px-12 py-4 hover:bg-white hover:text-black transition-all duration-500 tracking-widest relative overflow-hidden inline-block mt-4">
           VIEW ALL PRODUCTS →
         </Link>
       </div>

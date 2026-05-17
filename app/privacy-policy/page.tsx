@@ -15,7 +15,7 @@ export default function PrivacyPolicyPage() {
                     </Link>
                 </div>
                 <div className="mb-2 h-0.5 w-12 bg-[#0350F0]" aria-hidden />
-                <h1 className="font-bebas text-4xl md:text-5xl tracking-wide text-black/95">
+                <h1 className="font-inter text-4xl md:text-5xl tracking-wide text-black/95">
                     PRIVACY POLICY
                 </h1>
                 <p className="mt-3 font-inter text-black/50 text-sm">Last updated: March 26, 2026</p>
@@ -30,7 +30,7 @@ export default function PrivacyPolicyPage() {
                         Please read this Privacy Policy carefully. By using and accessing any of the Services, you acknowledge that you have read this Privacy Policy and understand the collection, use, and disclosure of your information as described in this Privacy Policy.
                     </p>
 
-                    <h2 className="font-bebas text-2xl tracking-wide text-black mt-10 mb-4">Personal Information We Collect or Process</h2>
+                    <h2 className="font-inter text-2xl tracking-wide text-black mt-10 mb-4">Personal Information We Collect or Process</h2>
                     <p>When we use the term &quot;personal information,&quot; we are referring to information that identifies or can reasonably be linked to you or another person. Personal information does not include information that is collected anonymously or that has been de-identified, so that it cannot identify or be reasonably linked to you. We may collect or process the following categories of personal information, including inferences drawn from this personal information, depending on how you interact with the Services, where you live, and as permitted or required by applicable law:</p>
                     <ul className="list-disc pl-6 space-y-2">
                         <li><strong>Contact details</strong> including your name, address, billing address, shipping address, phone number, and email address.</li>
@@ -42,7 +42,7 @@ export default function PrivacyPolicyPage() {
                         <li><strong>Usage information</strong> including information regarding your interaction with the Services, including how and when you interact with or navigate the Services.</li>
                     </ul>
 
-                    <h2 className="font-bebas text-2xl tracking-wide text-black mt-10 mb-4">Personal Information Sources</h2>
+                    <h2 className="font-inter text-2xl tracking-wide text-black mt-10 mb-4">Personal Information Sources</h2>
                     <p>We may collect personal information from the following sources:</p>
                     <ul className="list-disc pl-6 space-y-2">
                         <li><strong>Directly from you</strong> including when you create an account, visit or use the Services, communicate with us, or otherwise provide us with your personal information;</li>
@@ -51,7 +51,7 @@ export default function PrivacyPolicyPage() {
                         <li><strong>From our partners</strong> or other third parties.</li>
                     </ul>
 
-                    <h2 className="font-bebas text-2xl tracking-wide text-black mt-10 mb-4">How We Use Your Personal Information</h2>
+                    <h2 className="font-inter text-2xl tracking-wide text-black mt-10 mb-4">How We Use Your Personal Information</h2>
                     <p>Depending on how you interact with us or which of the Services you use, we may use personal information for the following purposes:</p>
                     <ul className="list-disc pl-6 space-y-2">
                         <li><strong>Provide, Tailor, and Improve the Services.</strong> We use your personal information to provide you with the Services, including to perform our contract with you, to process your payments, to fulfill your orders, to remember your preferences and items you are interested in, to send notifications to you related to your account, to process purchases, returns, exchanges or other transactions, to create, maintain and otherwise manage your account, to arrange for shipping, to facilitate any returns and exchanges, to enable you to post reviews, and to create a customized shopping experience for you, such as recommending products related to your purchases. This may include using your personal information to better tailor and improve the Services.</li>
@@ -61,7 +61,7 @@ export default function PrivacyPolicyPage() {
                         <li><strong>Legal Reasons.</strong> We use your personal information to comply with applicable law or respond to valid legal process, including requests from law enforcement or government agencies, to investigate or participate in civil discovery, potential or actual litigation, or other adversarial legal proceedings, and to enforce or investigate potential violations of our terms or policies.</li>
                     </ul>
 
-                    <h2 className="font-bebas text-2xl tracking-wide text-black mt-10 mb-4">How We Disclose Personal Information</h2>
+                    <h2 className="font-inter text-2xl tracking-wide text-black mt-10 mb-4">How We Disclose Personal Information</h2>
                     <p>In certain circumstances, we may disclose your personal information to third parties for legitimate purposes subject to this Privacy Policy. Such circumstances may include:</p>
                     <ul className="list-disc pl-6 space-y-2">
                         <li>With Shopify, vendors and other third parties who perform services on our behalf (e.g. IT management, payment processing, data analytics, customer support, cloud storage, fulfillment and shipping).</li>
@@ -71,20 +71,20 @@ export default function PrivacyPolicyPage() {
                         <li>In connection with a business transaction such as a merger or bankruptcy, to comply with any applicable legal obligations (including to respond to subpoenas, search warrants and similar requests), to enforce any applicable terms of service or policies, and to protect or defend the Services, our rights, and the rights of our users or others.</li>
                     </ul>
 
-                    <h2 className="font-bebas text-2xl tracking-wide text-black mt-10 mb-4">Relationship with Shopify</h2>
+                    <h2 className="font-inter text-2xl tracking-wide text-black mt-10 mb-4">Relationship with Shopify</h2>
                     <p>The Services are hosted by Shopify, which collects and processes personal information about your access to and use of the Services in order to provide and improve the Services for you. Information you submit to the Services will be transmitted to and shared with Shopify as well as third parties that may be located in countries other than where you reside, in order to provide and improve the Services for you. In addition, to help protect, grow, and improve our business, we use certain Shopify enhanced features that incorporate data and information obtained from your interactions with our Store, along with other merchants and with Shopify. To provide these enhanced features, Shopify may make use of personal information collected about your interactions with our store, along with other merchants, and with Shopify. In these circumstances, Shopify is responsible for the processing of your personal information, including for responding to your requests to exercise your rights over use of your personal information for these purposes. To learn more about how Shopify uses your personal information and any rights you may have, you can visit the Shopify Consumer Privacy Policy. Depending on where you live, you may exercise certain rights with respect to your personal information here Shopify Privacy Portal Link.</p>
 
-                    <h2 className="font-bebas text-2xl tracking-wide text-black mt-10 mb-4">Third Party Websites and Links</h2>
+                    <h2 className="font-inter text-2xl tracking-wide text-black mt-10 mb-4">Third Party Websites and Links</h2>
                     <p>The Services may provide links to websites or other online platforms operated by third parties. If you follow links to sites not affiliated or controlled by us, you should review their privacy and security policies and other terms and conditions. We do not guarantee and are not responsible for the privacy or security of such sites, including the accuracy, completeness, or reliability of information found on these sites. Information you provide on public or semi-public venues, including information you share on third-party social networking platforms may also be viewable by other users of the Services and/or users of those third-party platforms without limitation as to its use by us or by a third party. Our inclusion of such links does not, by itself, imply any endorsement of the content on such platforms or of their owners or operators, except as disclosed on the Services.</p>
 
-                    <h2 className="font-bebas text-2xl tracking-wide text-black mt-10 mb-4">Children&apos;s Data</h2>
+                    <h2 className="font-inter text-2xl tracking-wide text-black mt-10 mb-4">Children&apos;s Data</h2>
                     <p>The Services are not intended to be used by children, and we do not knowingly collect any personal information about children under the age of majority in your jurisdiction. If you are the parent or guardian of a child who has provided us with their personal information, you may contact us using the contact details set out below to request that it be deleted. As of the Effective Date of this Privacy Policy, we do not have actual knowledge that we &quot;share&quot; or &quot;sell&quot; (as those terms are defined in applicable law) personal information of individuals under 16 years of age.</p>
 
-                    <h2 className="font-bebas text-2xl tracking-wide text-black mt-10 mb-4">Security and Retention of Your Information</h2>
+                    <h2 className="font-inter text-2xl tracking-wide text-black mt-10 mb-4">Security and Retention of Your Information</h2>
                     <p>Please be aware that no security measures are perfect or impenetrable, and we cannot guarantee &quot;perfect security.&quot; In addition, any information you send to us may not be secure while in transit. We recommend that you do not use unsecure channels to communicate sensitive or confidential information to us.</p>
                     <p>How long we retain your personal information depends on different factors, such as whether we need the information to maintain your account, to provide you with Services, comply with legal obligations, resolve disputes or enforce other applicable contracts and policies.</p>
 
-                    <h2 className="font-bebas text-2xl tracking-wide text-black mt-10 mb-4">Your Rights and Choices</h2>
+                    <h2 className="font-inter text-2xl tracking-wide text-black mt-10 mb-4">Your Rights and Choices</h2>
                     <p>Depending on where you live, you may have some or all of the rights listed below in relation to your personal information. However, these rights are not absolute, may apply only in certain circumstances and, in certain cases, we may decline your request as permitted by law.</p>
                     <ul className="list-disc pl-6 space-y-2">
                         <li><strong>Right to Access / Know.</strong> You may have a right to request access to personal information that we hold about you.</li>
@@ -96,17 +96,17 @@ export default function PrivacyPolicyPage() {
                     <p>You may exercise any of these rights where indicated on the Services or by contacting us using the contact details provided below. To learn more about how Shopify uses your personal information and any rights you may have, including rights related to data processed by Shopify, you can visit https://privacy.shopify.com/en.</p>
                     <p>We will not discriminate against you for exercising any of these rights. We may need to verify your identity before we can process your requests, as permitted or required under applicable law. In accordance with applicable laws, you may designate an authorized agent to make requests on your behalf to exercise your rights. Before accepting such a request from an agent, we will require that the agent provide proof you have authorized them to act on your behalf, and we may need you to verify your identity directly with us. We will respond to your request in a timely manner as required under applicable law.</p>
 
-                    <h2 className="font-bebas text-2xl tracking-wide text-black mt-10 mb-4">Complaints</h2>
+                    <h2 className="font-inter text-2xl tracking-wide text-black mt-10 mb-4">Complaints</h2>
                     <p>If you have complaints about how we process your personal information, please contact us using the contact details provided below. Depending on where you live, you may have the right to appeal our decision by contacting us using the contact details set out below, or lodge your complaint with your local data protection authority.</p>
 
-                    <h2 className="font-bebas text-2xl tracking-wide text-black mt-10 mb-4">International Transfers</h2>
+                    <h2 className="font-inter text-2xl tracking-wide text-black mt-10 mb-4">International Transfers</h2>
                     <p>Please note that we may transfer, store and process your personal information outside the country you live in.</p>
                     <p>If we transfer your personal information out of the European Economic Area or the United Kingdom, we will rely on recognized transfer mechanisms like the European Commission&apos;s Standard Contractual Clauses, or any equivalent contracts issued by the relevant competent authority of the UK, as relevant, unless the data transfer is to a country that has been determined to provide an adequate level of protection.</p>
 
-                    <h2 className="font-bebas text-2xl tracking-wide text-black mt-10 mb-4">Changes to This Privacy Policy</h2>
+                    <h2 className="font-inter text-2xl tracking-wide text-black mt-10 mb-4">Changes to This Privacy Policy</h2>
                     <p>We may update this Privacy Policy from time to time, including to reflect changes to our practices or for other operational, legal, or regulatory reasons. We will post the revised Privacy Policy on this website, update the &quot;Last updated&quot; date and provide notice as required by applicable law.</p>
 
-                    <h2 className="font-bebas text-2xl tracking-wide text-black mt-10 mb-4">Contact</h2>
+                    <h2 className="font-inter text-2xl tracking-wide text-black mt-10 mb-4">Contact</h2>
                     <p>Should you have any questions about our privacy practices or this Privacy Policy, or if you would like to exercise any of the rights available to you, please call or email us at <strong>wearschault@gmail.com</strong> or contact us at:</p>
                     <p>74 Narottam Kunj Road Narottam Kunj,<br />near madhu nagar,<br />Agra, UP, 282001, IN</p>
                 </div>
@@ -114,7 +114,7 @@ export default function PrivacyPolicyPage() {
 
             <section className="bg-[#111111] py-16 px-6 text-center">
                 <div className="mx-auto max-w-3xl">
-                    <h2 className="font-bebas text-3xl md:text-5xl tracking-wide text-white mb-6">REDEFINE FOOTWEAR</h2>
+                    <h2 className="font-inter text-3xl md:text-5xl tracking-wide text-white mb-6">REDEFINE FOOTWEAR</h2>
                     <p className="font-inter text-white/70 max-w-2xl mx-auto">
                         Schault redefines footwear with a modular design that lets you switch styles effortlessly without buying multiple pairs. Built for comfort, durability, and sustainability, our shoes adapt to your lifestyle while reducing waste. Designed with precision and trusted for everyday versatility, Schault keeps you moving.
                     </p>

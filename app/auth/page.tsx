@@ -148,11 +148,11 @@ export default function AuthPage() {
                   transition={{ duration: 0.2 }}
                   className="flex w-full flex-col items-center text-center md:items-start md:text-left"
                 >
-                  <h1 className="font-bebas text-3xl text-black/90 sm:text-[2.75rem] sm:leading-tight">
+                  <h1 className="font-inter text-3xl text-black/90 sm:text-[2.75rem] sm:leading-tight">
                     Welcome !
                   </h1>
                   <p className="mt-1 font-inter text-[18px] text-black/80 sm:text-[20px]">
-                    Sign in to <span className="font-bebas tracking-wider text-[#0350F0]">SCHAULT</span>
+                    Sign in to <span className="font-inter tracking-wider text-[#0350F0]">SCHAULT</span>
                   </p>
 
                   <form onSubmit={handleLogin} className="mt-8 flex flex-col gap-4">
@@ -275,11 +275,11 @@ export default function AuthPage() {
                   transition={{ duration: 0.2 }}
                   className="flex w-full flex-col items-center text-center md:items-start md:text-left"
                 >
-                  <h1 className="font-bebas text-3xl text-black/90 sm:text-[2.75rem] sm:leading-tight">
+                  <h1 className="font-inter text-3xl text-black/90 sm:text-[2.75rem] sm:leading-tight">
                     Welcome !
                   </h1>
                   <p className="mt-1 font-inter text-[18px] text-black/80 sm:text-[20px]">
-                    Register for <span className="font-bebas tracking-wider text-[#0350F0]">SCHAULT</span>
+                    Register for <span className="font-inter tracking-wider text-[#0350F0]">SCHAULT</span>
                   </p>
 
                   <form onSubmit={handleSignup} className="mt-8 flex flex-col gap-4">
