@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import toast from "react-hot-toast";
+import { createClient } from "@/utils/supabase/client";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -12,23 +13,29 @@ export default function AdminLoginPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // Check if session is already active and valid
-    const authSession = localStorage.getItem("schault_admin_session");
-    if (authSession) {
-      try {
-        const { expiry } = JSON.parse(authSession);
-        if (new Date().getTime() < expiry) {
+    // Check if a valid Supabase session already exists
+    const checkExistingSession = async () => {
+      const supabase = createClient();
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (session) {
+        // Verify admin role
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', session.user.id)
+          .single();
+
+        if (profile?.role === 'admin') {
           router.push("/admin");
-        } else {
-          localStorage.removeItem("schault_admin_session");
         }
-      } catch (e) {
-        localStorage.removeItem("schault_admin_session");
       }
-    }
+    };
+
+    checkExistingSession();
   }, [router]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
@@ -38,35 +45,40 @@ export default function AdminLoginPage() {
       return;
     }
 
-    // Normalized email
-    const cleanEmail = email.trim().toLowerCase();
-    
-    // Whitelisted emails - checks standard whitelist and credentials
-    // Fallback if env variable is not set
-    const whitelist = ["admin@schault.com", "superadmin@schault.com", "mohit@schault.com", "design@schault.com"];
-    
-    // We allow standard username "admin" as well for backward compatibility, mapping it to admin@schault.com
-    const isWhitelisted = whitelist.includes(cleanEmail) || cleanEmail === "admin";
-    const isValidPassword = password === "admin" || password === "admin123" || password === "schault2026";
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.trim().toLowerCase(),
+        password,
+      });
 
-    if (isWhitelisted && isValidPassword) {
-      // Create session with 8-hour expiry
-      const sessionExpiry = new Date().getTime() + 8 * 60 * 60 * 1000;
-      const sessionData = {
-        email: cleanEmail === "admin" ? "admin@schault.com" : cleanEmail,
-        expiry: sessionExpiry,
-      };
+      if (error) {
+        console.error("Login error:", error);
+        toast.error("AUTHENTICATION FAILED. PLEASE CHECK YOUR CREDENTIALS.");
+        setIsLoading(false);
+        return;
+      }
 
-      localStorage.setItem("schault_admin_session", JSON.stringify(sessionData));
-      // For legacy components
-      localStorage.setItem("admin_auth", "true");
+      // Verify admin role immediately after login
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', data.user.id)
+        .single();
+
+      if (profileError || profile?.role !== 'admin') {
+        await supabase.auth.signOut();
+        toast.error("UNAUTHORIZED: ADMIN ACCESS REQUIRED");
+        setIsLoading(false);
+        return;
+      }
 
       toast.success("AUTHENTICATION SUCCESSFUL");
       setTimeout(() => {
         router.push("/admin");
       }, 500);
-    } else {
-      toast.error("INVALID CREDENTIALS OR NOT WHITELISTED");
+    } catch (err: any) {
+      toast.error("AUTHENTICATION SYSTEM ERROR");
       setIsLoading(false);
     }
   };
@@ -92,13 +104,6 @@ export default function AdminLoginPage() {
           </p>
         </div>
  
-        {/* Credentials Tip */}
-        <div className="mb-6 border border-[#e4e4e7] bg-[#fafafa] p-4 text-[10px] text-[#52525b] tracking-[0.1em] uppercase leading-relaxed font-mono">
-          <p className="font-semibold text-black/60 mb-1">AUTHORIZED DEMO ACCESS:</p>
-          <p>EMAIL: <span className="text-black font-mono">admin@schault.com</span></p>
-          <p>PASS: <span className="text-black font-mono">admin123</span></p>
-        </div>
- 
         {/* Login Form */}
         <form onSubmit={handleLogin} className="space-y-6">
           <div className="space-y-1.5">
@@ -106,7 +111,7 @@ export default function AdminLoginPage() {
               EMAIL ADDRESS
             </label>
             <input
-              type="text"
+              type="email"
               placeholder="ENTER REGISTERED EMAIL"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -137,7 +142,7 @@ export default function AdminLoginPage() {
         </form>
  
         <div className="mt-8 text-center text-[9px] font-semibold tracking-[0.2em] text-[#a1a1aa] uppercase">
-          SECURE PROTOCOL V1.0 • PRIVILEGED ACCESS ONLY
+          SECURE PROTOCOL V2.0 • SUPABASE AUTHENTICATED
         </div>
       </div>
     </div>
