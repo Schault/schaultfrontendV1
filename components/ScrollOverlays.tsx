@@ -2,64 +2,161 @@
 
 import { useTransform, motion } from "framer-motion";
 import { useShoeScroll } from "./ShoeScroll";
+import Link from "next/link";
+import { RefreshCw, Leaf, Sliders } from "lucide-react";
 
 export default function ScrollOverlays() {
   const { scrollProgress } = useShoeScroll();
 
-  const headline1Opacity = useTransform(scrollProgress, [0, 0.08, 0.25], [1, 1, 0]);
-  const headline2Opacity = useTransform(
-    scrollProgress,
-    [0.25, 0.35, 0.55, 0.65],
-    [0, 1, 1, 0]
-  );
-  const headline3Opacity = useTransform(
-    scrollProgress,
-    [0.65, 0.75, 0.95, 1],
-    [0, 1, 1, 0]
-  );
+  // Smoothly fade out the hero content as the user reaches the end of the scroll sequence
+  const opacity = useTransform(scrollProgress, [0.85, 0.95], [1, 0]);
+  const y = useTransform(scrollProgress, [0.85, 0.95], [0, -20]);
+
+  // Framer Motion entrance variants for smooth luxury staggered load
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.12,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 24 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1], // Custom premium easeOut
+      },
+    },
+  };
 
   return (
-    <>
-      <motion.div
-        className="scroll-overlay-text absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center md:px-12"
-        style={{ opacity: headline1Opacity }}
-      >
-        <h1 className="font-lejour text-[14vw] leading-none tracking-[0.17em] text-black md:text-7xl md:tracking-[0.2em] lg:text-8xl xl:text-9xl">
-          SCHAULT.
-        </h1>
-        <p className="mt-4 max-w-md font-inter text-base text-black/70 md:text-lg lg:text-xl">
-          Replace parts. Not the entire shoe.
-        </p>
-      </motion.div>
+    <motion.div
+      style={{ opacity, y }}
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="w-full flex flex-col justify-center select-none"
+    >
+          {/* Brand/Product Heading */}
+          <motion.div variants={itemVariants} className="space-y-3">
+            <h1 
+              style={{
+                fontSize: "clamp(38px, 3.8vw, 68px)",
+                fontWeight: 300,
+                letterSpacing: "0.25em",
+                lineHeight: 1.1,
+              }}
+              className="font-sans text-[#0A0A0A] font-light uppercase"
+            >
+              SCHAULT.
+            </h1>
+            <p className="text-xs uppercase tracking-[0.25em] text-[#666666] font-medium pl-1">
+              Replace parts. Not the entire shoe.
+            </p>
+          </motion.div>
 
-      <motion.div
-        className="scroll-overlay-text absolute inset-0 z-10 flex items-center px-6 md:left-0 md:max-w-md md:px-12 lg:px-24"
-        style={{ opacity: headline2Opacity }}
-      >
-        <div className="text-left">
-          <h2 className="font-bebas text-3xl tracking-wide text-black md:text-4xl lg:text-5xl">
-            Breathable Upper.
-          </h2>
-          <p className="mt-3 font-inter text-sm text-black/70 md:text-base lg:text-lg">
-            Separates in seconds. Wash it, swap it, style it differently.
-          </p>
-        </div>
-      </motion.div>
+          {/* Description */}
+          <motion.p 
+            variants={itemVariants}
+            className="mt-8 text-sm md:text-base text-[#666666] leading-relaxed max-w-[450px] font-normal pl-1"
+          >
+            SCHAULT sneakers are built for change.<br />
+            Swap parts. Extend life. Express you.<br />
+            Sustainable by design. Unique by choice.
+          </motion.p>
 
-      <motion.div
-        className="scroll-overlay-text absolute inset-0 z-10 flex items-center px-6 md:right-0 md:left-auto md:max-w-md md:px-12 md:text-right lg:px-24"
-        style={{ opacity: headline3Opacity }}
-      >
-        <div className="ml-auto text-left md:text-right">
-          <h2 className="font-bebas text-3xl tracking-wide text-black md:text-4xl lg:text-5xl">
-            Durable Grip Sole.
-          </h2>
-          <p className="mt-3 font-inter text-sm text-black/70 md:text-base lg:text-lg">
-            PU-casted with customized tread. Built to last longer,
-            independently.
-          </p>
-        </div>
-      </motion.div>
-    </>
+          {/* CTA Buttons */}
+          <motion.div 
+            variants={itemVariants}
+            className="mt-10 flex flex-wrap gap-4 pl-1"
+          >
+            <Link href="/shop" className="block">
+              <motion.button
+                whileHover={{ 
+                  scale: 1.02, 
+                  backgroundColor: "#2457FF", 
+                  boxShadow: "0 10px 20px rgba(36, 87, 255, 0.15)" 
+                }}
+                whileTap={{ scale: 0.98 }}
+                className="rounded-full bg-[#0A0A0A] px-8 py-4 font-inter text-xs font-semibold uppercase tracking-widest text-[#FFFFFF] transition-colors duration-300"
+              >
+                SHOP COLLECTION
+              </motion.button>
+            </Link>
+
+            <Link href="/create-your-own-shoe" className="block">
+              <motion.button
+                whileHover={{ 
+                  scale: 1.02, 
+                  borderColor: "#0A0A0A",
+                  backgroundColor: "#0A0A0A",
+                  color: "#FFFFFF"
+                }}
+                whileTap={{ scale: 0.98 }}
+                className="rounded-full border border-black/20 bg-[#FFFFFF] px-8 py-4 font-inter text-xs font-semibold uppercase tracking-widest text-[#0A0A0A] transition-all duration-300"
+              >
+                CREATE YOUR OWN
+              </motion.button>
+            </Link>
+          </motion.div>
+
+          {/* Feature Highlights Grid */}
+          <motion.div 
+            variants={itemVariants}
+            className="mt-16 grid grid-cols-3 gap-6 pt-10 border-t border-[#0A0A0A]/10 max-w-[500px]"
+          >
+            {/* Feature 1 */}
+            <div className="flex flex-col gap-2.5">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-[#F6F6F4] text-[#0A0A0A]">
+                <RefreshCw size={14} className="stroke-[1.5]" />
+              </div>
+              <div className="space-y-0.5">
+                <h4 className="font-inter text-[11px] font-bold text-[#0A0A0A] uppercase tracking-wider">
+                  Replaceable Parts
+                </h4>
+                <p className="font-inter text-[10px] text-[#666666] leading-snug">
+                  Swap. Style. Repeat.
+                </p>
+              </div>
+            </div>
+
+            {/* Feature 2 */}
+            <div className="flex flex-col gap-2.5">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-[#F6F6F4] text-[#0A0A0A]">
+                <Leaf size={14} className="stroke-[1.5]" />
+              </div>
+              <div className="space-y-0.5">
+                <h4 className="font-inter text-[11px] font-bold text-[#0A0A0A] uppercase tracking-wider">
+                  Sustainable
+                </h4>
+                <p className="font-inter text-[10px] text-[#666666] leading-snug">
+                  Built to reduce waste.
+                </p>
+              </div>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="flex flex-col gap-2.5">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-[#F6F6F4] text-[#0A0A0A]">
+                <Sliders size={14} className="stroke-[1.5]" />
+              </div>
+              <div className="space-y-0.5">
+                <h4 className="font-inter text-[11px] font-bold text-[#0A0A0A] uppercase tracking-wider">
+                  Made for You
+                </h4>
+                <p className="font-inter text-[10px] text-[#666666] leading-snug">
+                  Customizable always.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+    </motion.div>
   );
 }

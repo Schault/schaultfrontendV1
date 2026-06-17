@@ -6,7 +6,7 @@ import ScrollProgressBar from "@/components/ScrollProgressBar";
 import ScrollOverlays from "@/components/ScrollOverlays";
 import HeroMobile from "@/components/HeroMobile";
 
-const DESKTOP_BREAKPOINT = "(min-width: 768px)";
+const DESKTOP_BREAKPOINT = "(min-width: 1024px)";
 
 export default function HeroSwitch() {
   const [mounted, setMounted] = useState(false);

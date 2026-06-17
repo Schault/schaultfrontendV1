@@ -13,7 +13,7 @@ export default function ScrollProgressBar() {
       aria-hidden
     >
       <motion.div
-        className="h-full bg-[#0350F0]"
+        className="h-full bg-[#2457FF]"
         style={{ width }}
         transition={{ duration: 0.15 }}
       />

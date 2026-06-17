@@ -21,6 +21,9 @@ export default function LenisProvider({
       lerp: 0.05,
     });
     lenisRef.current = lenis;
+    if (typeof window !== "undefined") {
+      (window as any).lenis = lenis;
+    }
 
     // Sync Lenis scroll with GSAP ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
@@ -39,6 +42,9 @@ export default function LenisProvider({
         lenis.raf(time * 1000);
       });
       lenisRef.current = null;
+      if (typeof window !== "undefined") {
+        (window as any).lenis = null;
+      }
     };
   }, []);
 
