@@ -37,6 +37,11 @@ const UPPER_MODELS: ModelOption[] = [
     path: "/assets/models/customizer/upper/Blue_Sun-lowres.glb",
     image : '',
   },
+  {
+    name: "Full Leather",
+    path: "/assets/models/customizer/upper/Full_leather-lowres.glb",
+    image : '',
+  },
 ];
 
 const SOLE_MODELS: ModelOption[] = [
@@ -49,6 +54,26 @@ const SOLE_MODELS: ModelOption[] = [
     name: "Sole White",
     path: "/assets/models/customizer/sole/sole_white.glb",
     image : '/images/sole_1.webp',
+  },
+  {
+    name: "Coffee",
+    path: "/assets/models/customizer/sole/Lower_Coffee.glb",
+    image : '',
+  },
+  // {
+  //   name: "Dark Blue",
+  //   path: "/assets/models/customizer/sole/Lower_DBlue.glb",
+  //   image : '',
+  // },
+  // {
+  //   name: "Grey",
+  //   path: "/assets/models/customizer/sole/Lower_Grey.glb",
+  //   image : '',
+  // },
+  {
+    name: "Olive",
+    path: "/assets/models/customizer/sole/Lower_Olive.glb",
+    image : '',
   },
 ];
 
