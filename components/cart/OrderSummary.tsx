@@ -1,71 +1,12 @@
 "use client";
 
 import { useCart } from "@/components/providers";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import { createClient } from "@/utils/supabase/client";
 
 export default function OrderSummary() {
   const { totalPrice } = useCart();
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const shipping = 0; // Free
-  const postage = 24; // Fixed value from reference image example
-
-  const handleCheckout = async () => {
-    setIsLoading(true);
-    
-    try {
-      const supabase = createClient();
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (!session) {
-        toast.error("Please sign in to checkout");
-        router.push("/auth");
-        return;
-      }
-
-      // Mock user address
-      const mockAddress = {
-        full_name: session.user.user_metadata?.full_name || "Schault Customer",
-        line1: "123 Shoe Street",
-        city: "Mumbai",
-        state: "Maharashtra",
-        postal_code: "400001",
-        phone: "+91 9876543210"
-      };
-
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/checkout`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${session.access_token}`,
-          },
-          body: JSON.stringify({ shipping_address: mockAddress }),
-        }
-      );
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || "Checkout failed");
-      }
-
-      toast.success("Order placed successfully!");
-      // Clear cart from local storage since the DB cart is cleared
-      localStorage.removeItem("schault_cart");
-      
-      router.push(`/orders/${data.order_id}`);
-    } catch (error: any) {
-      console.error(error);
-      toast.error(error.message || "An error occurred");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const postage = 24;
 
   return (
     <div className="sticky top-24 border border-black/10 bg-white p-6">
@@ -95,12 +36,11 @@ export default function OrderSummary() {
         </div>
       </div>
 
-      <button 
-        onClick={handleCheckout}
-        disabled={isLoading}
-        className="w-full bg-[#0350F0] text-white font-inter text-xl py-4 uppercase tracking-widest mt-6 hover:bg-[#A30000] transition-colors disabled:opacity-50"
+      <button
+        onClick={() => router.push("/checkout")}
+        className="w-full bg-[#0350F0] text-white font-inter text-xl py-4 uppercase tracking-widest mt-6 hover:bg-[#A30000] transition-colors"
       >
-        {isLoading ? "Processing..." : "Check Out"}
+        Check Out
       </button>
     </div>
   );
