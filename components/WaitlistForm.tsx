@@ -54,6 +54,34 @@ export default function WaitlistForm() {
     });
   }, { scope: container });
 
+  function validateField(name: string, value: string): string | undefined {
+    const trimmed = value.trim();
+    switch (name) {
+      case "name":
+        if (!trimmed) return "Name is required";
+        if (trimmed.length > 200) return "Name is too long";
+        break;
+      case "email":
+        if (!trimmed) return "Email is required";
+        if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(trimmed)) {
+          return "Enter a valid email address";
+        }
+        break;
+      case "phone":
+        if (trimmed && !/^[+]?[\d\s\-()]{7,20}$/.test(trimmed)) {
+          return "Enter a valid phone number";
+        }
+        break;
+      case "gender":
+        if (!value) return "Gender is required";
+        break;
+      case "size":
+        if (!value) return "Size is required";
+        break;
+    }
+    return undefined;
+  }
+
   function validate(): FormErrors {
     const errs: FormErrors = {};
 
@@ -109,7 +137,6 @@ export default function WaitlistForm() {
       });
 
       if (error) {
-        // Unique constraint violation on email
         if (error.code === "23505") {
           setServerError("This email is already on the waitlist!");
           return;
@@ -129,10 +156,11 @@ export default function WaitlistForm() {
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-    // Clear field error on change
-    if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({ ...prev, [name]: undefined }));
-    }
+    
+    // Real-time inline validation feedback
+    const fieldError = validateField(name, value);
+    setErrors((prev) => ({ ...prev, [name]: fieldError }));
+
     if (serverError) setServerError(null);
   }
 
@@ -145,18 +173,18 @@ export default function WaitlistForm() {
         className="border-t border-black/10 bg-[#FFFFFF] px-6 py-32 md:px-12 lg:px-24"
       >
         <div className="mx-auto max-w-xl text-center">
-          <div className="waitlist-element rounded-2xl border border-black/10 bg-[#FAFAFA] p-12">
-            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[#0350F0]/10">
-              <svg className="h-8 w-8 text-[#0350F0]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <div className="waitlist-element rounded-2xl border-2 border-[#0350F0]/30 bg-[#FAFAFA] p-12 shadow-xl transition-all hover:border-[#0350F0]">
+            <div className="mx-auto mb-6 flex h-16 w-16 animate-bounce items-center justify-center rounded-full bg-[#0350F0]/10">
+              <svg className="h-8 w-8 text-[#0350F0]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h2 className="font-bebas text-4xl tracking-wide text-black/90">
+            <h2 className="font-inter text-4xl font-extrabold tracking-widest text-[#0350F0] animate-pulse">
               YOU&apos;RE IN
             </h2>
             <p className="mt-4 font-inter text-sm leading-relaxed text-black/60">
-              We&apos;ll notify you at <span className="font-medium text-black/80">{form.email.trim().toLowerCase()}</span> when
-              it&apos;s your turn. Stay tuned.
+              We&apos;ll notify you at <span className="font-semibold text-[#0350F0]">{form.email.trim().toLowerCase()}</span> when
+              it&apos;s your turn. Get ready to experience modular footwear.
             </p>
           </div>
         </div>
@@ -173,7 +201,7 @@ export default function WaitlistForm() {
       <div className="mx-auto max-w-xl">
         {/* Header */}
         <div className="waitlist-element mb-12 text-center">
-          <h2 className="font-bebas text-4xl tracking-wide text-black/90 md:text-5xl">
+          <h2 className="font-inter text-4xl tracking-wide text-black/90 md:text-5xl">
             JOIN THE WAITLIST
           </h2>
           <p className="mx-auto mt-4 max-w-md font-inter text-sm leading-relaxed text-black/60">
@@ -325,7 +353,7 @@ export default function WaitlistForm() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full border-2 border-[#0350F0] bg-[#0350F0] px-10 py-4 font-bebas text-xl tracking-widest text-white transition-all duration-300 hover:bg-transparent hover:text-[#0350F0] disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full border-2 border-[#0350F0] bg-[#0350F0] px-10 py-4 font-inter text-xl tracking-widest text-white transition-all duration-300 hover:bg-transparent hover:text-[#0350F0] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isLoading ? (
               <span className="inline-flex items-center gap-2">

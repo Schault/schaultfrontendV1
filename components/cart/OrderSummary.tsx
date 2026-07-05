@@ -69,7 +69,7 @@ export default function OrderSummary() {
 
   return (
     <div className="sticky top-24 border border-black/10 bg-white p-6">
-      <h2 className="font-bebas text-2xl text-center py-4 border-b border-black/10 text-black/90 tracking-widest">
+      <h2 className="font-inter text-2xl text-center py-4 border-b border-black/10 text-black/90 tracking-widest">
         ORDER SUMMARY
       </h2>
       
@@ -98,7 +98,7 @@ export default function OrderSummary() {
       <button 
         onClick={handleCheckout}
         disabled={isLoading}
-        className="w-full bg-[#0350F0] text-white font-bebas text-xl py-4 uppercase tracking-widest mt-6 hover:bg-[#A30000] transition-colors disabled:opacity-50"
+        className="w-full bg-[#0350F0] text-white font-inter text-xl py-4 uppercase tracking-widest mt-6 hover:bg-[#A30000] transition-colors disabled:opacity-50"
       >
         {isLoading ? "Processing..." : "Check Out"}
       </button>

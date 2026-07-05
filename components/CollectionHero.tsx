@@ -64,7 +64,7 @@ function PlaceholderCard({ item, index }: { item: PlaceholderItem; index: number
           )}
         </div>
         <div className="flex flex-1 flex-col p-5">
-          <h3 className="font-bebas text-xl tracking-wide text-black/90">
+          <h3 className="font-inter text-xl tracking-wide text-black/90">
             {item.name}
           </h3>
           <p className="mt-3 font-inter text-sm font-semibold text-black">
@@ -108,7 +108,7 @@ export default function CollectionHero() {
           className="mb-16"
         >
           <div className="mb-4 h-0.5 w-12 bg-[#0350F0]" aria-hidden />
-          <h1 className="font-bebas text-5xl tracking-[0.1em] text-black md:text-7xl lg:text-8xl">
+          <h1 className="font-inter text-5xl tracking-[0.1em] text-black md:text-7xl lg:text-8xl">
             OUR COLLECTION
           </h1>
           <p className="mt-4 max-w-xl font-inter text-base text-black/60 md:text-lg">
@@ -119,7 +119,7 @@ export default function CollectionHero() {
         {/* Shoes Collection */}
         <div className="mb-20">
           <div className="flex items-center gap-4 mb-8">
-            <h2 className="font-bebas text-4xl tracking-[0.05em] text-black/90 md:text-5xl">
+            <h2 className="font-inter text-4xl tracking-[0.05em] text-black/90 md:text-5xl">
               CARPE DIEM
             </h2>
             <div className="h-[1px] flex-1 bg-black/10" />
@@ -134,7 +134,7 @@ export default function CollectionHero() {
 
         {/* Soles Collection */}
         <div>
-          <h2 className="mb-8 font-bebas text-3xl tracking-wide text-black/90 md:text-4xl">
+          <h2 className="mb-8 font-inter text-3xl tracking-wide text-black/90 md:text-4xl">
             Soles
           </h2>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">

@@ -184,7 +184,7 @@ export default function CollaboratorsPage() {
               </div>
 
               {/* Headline */}
-              <h1 className="font-bebas text-5xl sm:text-6xl md:text-[72px] lg:text-[80px] text-black/90 leading-[1.02] tracking-wide mb-7 uppercase">
+              <h1 className="font-inter text-5xl sm:text-6xl md:text-[72px] lg:text-[80px] text-black/90 leading-[1.02] tracking-wide mb-7 uppercase">
                 Built Together.<br />
                 <span className="italic text-[#0350F0]">Better</span><br />
                 Together.
@@ -199,7 +199,7 @@ export default function CollaboratorsPage() {
             {/* Right - Dark panel with pills */}
             <div className="bg-black relative overflow-hidden flex flex-col items-start justify-end px-8 sm:px-12 py-10 md:py-14 gap-2.5">
               {/* Ghost text */}
-              <span className="absolute -top-3 -right-5 font-bebas text-[130px] text-white/[0.03] leading-none pointer-events-none select-none tracking-tight">
+              <span className="absolute -top-3 -right-5 font-inter text-[130px] text-white/[0.03] leading-none pointer-events-none select-none tracking-tight">
                 COLLAB
               </span>
 
@@ -215,7 +215,7 @@ export default function CollaboratorsPage() {
                 </div>
               ))}
 
-              <p className="font-bebas text-[28px] text-white mt-5 leading-snug tracking-wide">
+              <p className="font-inter text-[28px] text-white mt-5 leading-snug tracking-wide">
                 2 Strategic <span className="text-[#0350F0]">Collaborators</span><br />
                 & Supported By <span className="text-[#0350F0]">Liberty Shoes.</span>
               </p>
@@ -265,7 +265,7 @@ export default function CollaboratorsPage() {
                 />
                 <div className="absolute bottom-6 left-6 bg-white py-3 px-5 border-l-[3px] border-[#0350F0]">
                   <p className="font-inter text-[10px] font-semibold uppercase tracking-[0.18em] text-black/50">Collaborator</p>
-                  <p className="font-bebas text-xl text-black/90 tracking-wide">{collab.num}</p>
+                  <p className="font-inter text-xl text-black/90 tracking-wide">{collab.num}</p>
                 </div>
               </div>
 
@@ -274,8 +274,8 @@ export default function CollaboratorsPage() {
                 <p className="font-inter text-[11px] font-semibold uppercase tracking-[0.2em] text-[#0350F0] mb-3">
                   Collaborator {collab.num} · {collab.category}
                 </p>
-                <p className="font-bebas text-[90px] md:text-[100px] text-black/[0.07] leading-none -mb-3 tracking-tight">{collab.num}</p>
-                <h2 className="collab-animate font-bebas text-[40px] sm:text-[48px] md:text-[54px] text-black/90 leading-[1.05] tracking-wide mb-2">
+                <p className="font-inter text-[90px] md:text-[100px] text-black/[0.07] leading-none -mb-3 tracking-tight">{collab.num}</p>
+                <h2 className="collab-animate font-inter text-[40px] sm:text-[48px] md:text-[54px] text-black/90 leading-[1.05] tracking-wide mb-2">
                   {collab.name.split(" ").map((word, wi) => (
                     <React.Fragment key={wi}>
                       {wi > 0 && <br />}
@@ -323,7 +323,7 @@ export default function CollaboratorsPage() {
                 <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-12">
                   <div>
                     <p className="font-inter text-[11px] font-semibold uppercase tracking-[0.2em] text-[#0350F0] mb-3">Why We Collaborate</p>
-                    <h3 className="collab-animate font-bebas text-[32px] md:text-[40px] text-black/90 tracking-wide leading-snug">
+                    <h3 className="collab-animate font-inter text-[32px] md:text-[40px] text-black/90 tracking-wide leading-snug">
                       {collab.whyTitle.split(" ").map((word, wi) => {
                         // Italicize words that are typically emphasized
                         const emphasize = ["Every", "Value", "Backbone", "Innovation"];
@@ -367,7 +367,7 @@ export default function CollaboratorsPage() {
               />
               <div className="absolute bottom-6 left-6 bg-white py-3 px-5 border-l-[3px] border-[#0350F0]">
                 <p className="font-inter text-[10px] font-semibold uppercase tracking-[0.18em] text-black/50">Partner</p>
-                <p className="font-bebas text-xl text-black/90 tracking-wide">Supported By</p>
+                <p className="font-inter text-xl text-black/90 tracking-wide">Supported By</p>
               </div>
             </div>
 
@@ -376,7 +376,7 @@ export default function CollaboratorsPage() {
               <p className="font-inter text-[11px] font-semibold uppercase tracking-[0.2em] text-[#0350F0] mb-3">
                 Supported By · {SUPPORTED_BY.category}
               </p>
-              <h2 className="collab-animate font-bebas text-[40px] sm:text-[48px] md:text-[54px] text-black/90 leading-[1.05] tracking-wide mb-2">
+              <h2 className="collab-animate font-inter text-[40px] sm:text-[48px] md:text-[54px] text-black/90 leading-[1.05] tracking-wide mb-2">
                 {SUPPORTED_BY.name.split(" ").map((word, wi) => (
                   <React.Fragment key={wi}>
                     {wi > 0 && <br />}
@@ -426,7 +426,7 @@ export default function CollaboratorsPage() {
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#0350F0] via-[#0350F0] to-black" />
 
           <p className="font-inter text-[11px] font-semibold uppercase tracking-[0.22em] text-[#0350F0] mb-5">The Bigger Picture</p>
-          <h2 className="font-bebas text-[36px] sm:text-[48px] md:text-[64px] text-black/90 leading-[1.08] tracking-wide max-w-[900px] mx-auto mb-8">
+          <h2 className="font-inter text-[36px] sm:text-[48px] md:text-[64px] text-black/90 leading-[1.08] tracking-wide max-w-[900px] mx-auto mb-8">
             Collectively <span className="italic text-[#0350F0]">Committed.</span>
           </h2>
           <p className="font-inter text-[15px] text-black/55 max-w-[700px] mx-auto mb-12 leading-[1.85]">
@@ -464,7 +464,7 @@ export default function CollaboratorsPage() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#0350F0] rounded-full blur-[120px] opacity-15 group-hover:opacity-30 transition-opacity duration-700 pointer-events-none" />
 
           <div className="relative z-10">
-            <h2 className="font-bebas text-[40px] sm:text-[48px] md:text-[64px] tracking-wide text-white mb-6 uppercase">
+            <h2 className="font-inter text-[40px] sm:text-[48px] md:text-[64px] tracking-wide text-white mb-6 uppercase">
               WANT TO COLLABORATE?
             </h2>
             <p className="font-inter text-white/60 text-sm md:text-base max-w-xl mx-auto mb-10">
@@ -473,7 +473,7 @@ export default function CollaboratorsPage() {
             </p>
             <a
               href="mailto:partners@schault.com"
-              className="inline-block bg-white text-black font-bebas text-lg px-12 py-5 hover:bg-[#0350F0] hover:text-white transition-colors tracking-widest"
+              className="inline-block bg-white text-black font-inter text-lg px-12 py-5 hover:bg-[#0350F0] hover:text-white transition-colors tracking-widest"
             >
               GET IN TOUCH
             </a>

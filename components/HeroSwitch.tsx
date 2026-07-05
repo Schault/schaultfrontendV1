@@ -24,7 +24,7 @@ export default function HeroSwitch() {
   }, []);
 
   if (!mounted) {
-    return <div className="h-[100svh] w-full bg-white" aria-hidden />;
+    return <div className="h-[100svh] w-full bg-[#f1f1f1]" aria-hidden />;
   }
 
   if (!isDesktop) {

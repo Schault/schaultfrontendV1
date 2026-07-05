@@ -21,13 +21,17 @@ export default function ScrollOverlays() {
   return (
     <>
       <motion.div
-        className="scroll-overlay-text absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center md:px-12"
-        style={{ opacity: headline1Opacity }}
+        className="scroll-overlay-text absolute left-0 bottom-0 z-10 flex flex-col items-center justify-center px-6 text-center md:px-12"
+        style={{
+          opacity: headline1Opacity,
+          height: "180px",
+          width: "100%",
+        }}
       >
-        <h1 className="font-lejour text-[14vw] leading-none tracking-[0.17em] text-black md:text-7xl md:tracking-[0.2em] lg:text-8xl xl:text-9xl">
+        <h1 className="font-lejour text-[12vw] leading-none tracking-[0.17em] text-black md:text-5xl lg:text-6xl">
           SCHAULT.
         </h1>
-        <p className="mt-4 max-w-md font-inter text-base text-black/70 md:text-lg lg:text-xl">
+        <p className="mt-3 max-w-md font-inter text-xs text-black/70 md:text-sm lg:text-base">
           Replace parts. Not the entire shoe.
         </p>
       </motion.div>
@@ -37,7 +41,7 @@ export default function ScrollOverlays() {
         style={{ opacity: headline2Opacity }}
       >
         <div className="text-left">
-          <h2 className="font-bebas text-3xl tracking-wide text-black md:text-4xl lg:text-5xl">
+          <h2 className="font-inter text-3xl tracking-wide text-black md:text-4xl lg:text-5xl">
             Breathable Upper.
           </h2>
           <p className="mt-3 font-inter text-sm text-black/70 md:text-base lg:text-lg">
@@ -51,7 +55,7 @@ export default function ScrollOverlays() {
         style={{ opacity: headline3Opacity }}
       >
         <div className="ml-auto text-left md:text-right">
-          <h2 className="font-bebas text-3xl tracking-wide text-black md:text-4xl lg:text-5xl">
+          <h2 className="font-inter text-3xl tracking-wide text-black md:text-4xl lg:text-5xl">
             Durable Grip Sole.
           </h2>
           <p className="mt-3 font-inter text-sm text-black/70 md:text-base lg:text-lg">

@@ -110,7 +110,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               size: product.sizes[0]
             });
           }}
-          className="w-full bg-black text-white py-2 text-[10px] font-bebas tracking-[0.2em] transition-all hover:bg-[#0350F0] mt-4 uppercase"
+          className="w-full bg-black text-white py-2 text-[10px] font-inter tracking-[0.2em] transition-all hover:bg-[#0350F0] mt-4 uppercase"
         >
           QUICK ADD
         </button>

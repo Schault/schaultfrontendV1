@@ -35,7 +35,9 @@ const IDLE_SCROLL_TIMEOUT = 2000;
 
 // Vertical offset (in CSS pixels) to push the rendered shoe below the
 // fixed waitlist banner + navbar so they never crop the product.
-const TOP_OFFSET_PX = 200;
+const TOP_OFFSET_PX = 0;
+const NAVBAR_HEIGHT = 122; // strip (47px) + navbar (75px)
+const HERO_TEXT_HEIGHT = 180; // px for the bottom text container
 
 function getFramePath(i: number): string {
   return `${SEQUENCE_PATH}/${FRAME_PREFIX}${String(i + 1).padStart(3, "0")}.${FRAME_EXT}`;
@@ -86,7 +88,7 @@ export default function ShoeScroll({
     if (!canvas || typeof window === "undefined") return;
     const dpr = window.devicePixelRatio || 1;
     const w = window.innerWidth;
-    const h = window.innerHeight;
+    const h = window.innerHeight - NAVBAR_HEIGHT - HERO_TEXT_HEIGHT;
     canvas.width = w * dpr;
     canvas.height = h * dpr;
     canvas.style.width = w + "px";
@@ -127,7 +129,7 @@ export default function ShoeScroll({
     const logicalH = canvas.height / dpr;
 
     const usableH = Math.max(0, logicalH - TOP_OFFSET_PX);
-    const scale = Math.max(
+    const scale = Math.min(
       logicalW / img.naturalWidth,
       usableH / img.naturalHeight
     );
@@ -141,7 +143,7 @@ export default function ShoeScroll({
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
     ctx.clearRect(0, 0, logicalW, logicalH);
-    ctx.fillStyle = "#FFFFFF";
+    ctx.fillStyle = "#f1f1f1";
     ctx.fillRect(0, 0, logicalW, logicalH);
     ctx.drawImage(img, x, y, drawW, drawH);
 
@@ -320,7 +322,7 @@ export default function ShoeScroll({
             height: "100vh",
             width: "100%",
             overflow: "hidden",
-            backgroundColor: "#FFFFFF",
+            backgroundColor: "#f1f1f1",
           }}
         >
           <canvas
@@ -330,7 +332,7 @@ export default function ShoeScroll({
             }`}
             style={{
               position: "absolute",
-              top: 0,
+              top: `${NAVBAR_HEIGHT}px`,
               left: 0,
               display: "block",
             }}

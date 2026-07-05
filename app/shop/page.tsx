@@ -70,7 +70,7 @@ export default function ShopPage() {
       <div className="w-full hidden md:block mt-2">
         <div className="relative h-[280px] bg-black/5 flex items-center overflow-hidden mb-6 py-10">
           <div className="flex-1 pl-12 z-[2]">
-            <h1 className="font-bebas text-[48px] md:text-[56px] text-black/90 leading-[0.9] mb-6 tracking-wide">
+            <h1 className="font-inter text-[48px] md:text-[56px] text-black/90 leading-[0.9] mb-6 tracking-wide">
               NEW SEASON.<br />NEW ARRIVALS.
             </h1>
             <p className="font-inter text-[10px] text-black/50 uppercase tracking-widest mb-8">
@@ -78,7 +78,7 @@ export default function ShopPage() {
             </p>
             <button 
               onClick={() => document.getElementById("product-grid")?.scrollIntoView({ behavior: "smooth" })}
-              className="bg-[#0350F0] text-white font-bebas text-lg px-10 py-3 hover:translate-x-1 transition-all tracking-widest"
+              className="bg-[#0350F0] text-white font-inter text-lg px-10 py-3 hover:translate-x-1 transition-all tracking-widest"
             >
               SHOP NOW →
             </button>
@@ -155,7 +155,7 @@ export default function ShopPage() {
               className="fixed top-0 right-0 w-[85%] h-full bg-white z-[1001] shadow-2xl flex flex-col pt-16"
             >
               <div className="p-4 border-b border-black/10 flex items-center justify-between">
-                <h2 className="font-bebas text-xl tracking-wide">Filters</h2>
+                <h2 className="font-inter text-xl tracking-wide">Filters</h2>
                 <button 
                   onClick={() => setIsFilterDrawerOpen(false)}
                   className="font-inter text-xs text-schlaut-red font-bold"

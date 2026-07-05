@@ -18,11 +18,14 @@ export async function middleware(request: NextRequest) {
 
   const path = request.nextUrl.pathname;
   
+  const isAdminPath = path.startsWith("/admin") && !path.startsWith("/admin/login");
+
   const isProtectedPath =
     path.startsWith("/cart") ||
     path.startsWith("/checkout") ||
     path.startsWith("/orders") ||
-    path.startsWith("/profile");
+    path.startsWith("/profile") ||
+    isAdminPath;
 
   const isAuthPath = path.startsWith("/auth") && !path.startsWith("/auth/callback");
 
@@ -57,7 +60,21 @@ export async function middleware(request: NextRequest) {
 
 
   if (isProtectedPath && !user) {
-    return NextResponse.redirect(new URL("/auth", request.url));
+    const redirectTarget = isAdminPath ? "/admin/login" : "/auth";
+    return NextResponse.redirect(new URL(redirectTarget, request.url));
+  }
+
+  // Server-side admin role check — prevents bundle exposure to non-admin users
+  if (isAdminPath && user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+
+    if (profile?.role !== "admin") {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
   }
 
   if (isAuthPath && user) {

@@ -20,7 +20,7 @@ export function OrderTimeline({ timeline, currentStatus }: OrderTimelineProps) {
       <div className="flex items-center space-x-4 text-schlaut-red p-6 border border-black/10">
         <XCircle className="w-8 h-8" />
         <div>
-          <h3 className="font-bebas text-xl uppercase tracking-widest">Order Cancelled</h3>
+          <h3 className="font-inter text-xl uppercase tracking-widest">Order Cancelled</h3>
           <p className="text-sm font-inter">This order has been cancelled.</p>
         </div>
       </div>
@@ -55,7 +55,7 @@ export function OrderTimeline({ timeline, currentStatus }: OrderTimelineProps) {
                 </div>
                 
                 <div className="ml-4 md:ml-0 md:mt-4 text-left md:text-center flex-1">
-                  <p className={`font-bebas text-lg uppercase tracking-widest ${isCompleted ? 'text-black' : 'text-black/40'}`}>
+                  <p className={`font-inter text-lg uppercase tracking-widest ${isCompleted ? 'text-black' : 'text-black/40'}`}>
                     {step.label}
                   </p>
                   <div className="h-4">

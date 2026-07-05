@@ -28,7 +28,7 @@ export default function NewArrivals() {
   return (
     <section className="py-20 border-t border-black/10">
       <div className="flex justify-between items-baseline mb-12">
-        <h2 className="font-bebas text-[40px] md:text-[60px] text-black/90 tracking-tight leading-none uppercase">
+        <h2 className="font-inter text-[40px] md:text-[60px] text-black/90 tracking-tight leading-none uppercase">
           NEW ARRIVALS
         </h2>
         <Link 

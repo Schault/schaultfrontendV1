@@ -8,7 +8,7 @@ const CTAFooter: React.FC = () => {
       className="border-t border-black/10 bg-[#FFFFFF] px-6 py-32 md:px-12 lg:px-24"
     >
       <div className="mx-auto max-w-2xl text-center">
-        <p className="font-bebas text-3xl tracking-wide text-black/90 md:text-4xl">
+        <p className="font-inter text-3xl tracking-wide text-black/90 md:text-4xl">
           Built different. Worn responsibly.
         </p>
         <Link

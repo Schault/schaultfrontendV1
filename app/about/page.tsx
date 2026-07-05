@@ -182,7 +182,7 @@ export default function AboutPage() {
               </div>
 
               {/* Headline */}
-              <h1 className="about-hero-animate font-bebas text-5xl sm:text-6xl md:text-[80px] lg:text-[90px] text-black/90 leading-[0.95] tracking-wide mb-8 uppercase">
+              <h1 className="about-hero-animate font-inter text-5xl sm:text-6xl md:text-[80px] lg:text-[90px] text-black/90 leading-[0.95] tracking-wide mb-8 uppercase">
                 Rethinking<br />
                 <span className="italic text-[#052ca8]">Footwear</span><br />
                 Entirely.
@@ -201,22 +201,22 @@ export default function AboutPage() {
         <div className="about-divider border-y border-black/10 px-4 sm:px-6 md:px-12 lg:px-20">
           <div className="max-w-[1440px] mx-auto py-12 flex flex-wrap items-center justify-center gap-8 md:gap-16">
             <div className="text-center">
-              <p className="font-bebas text-4xl md:text-5xl text-black/90 tracking-wide">22<span className="text-[#0350F0]">B+</span></p>
+              <p className="font-inter text-4xl md:text-5xl text-black/90 tracking-wide">22<span className="text-[#0350F0]">B+</span></p>
               <p className="mt-1 font-inter text-[11px] font-semibold uppercase tracking-[0.18em] text-black/50">Shoes discarded yearly</p>
             </div>
             <div className="hidden sm:block w-[1px] h-14 bg-black/10" />
             <div className="text-center">
-              <p className="font-bebas text-4xl md:text-5xl text-[#0350F0] tracking-wide">1</p>
+              <p className="font-inter text-4xl md:text-5xl text-[#0350F0] tracking-wide">1</p>
               <p className="mt-1 font-inter text-[11px] font-semibold uppercase tracking-[0.18em] text-black/50">Patent Published</p>
             </div>
             <div className="hidden sm:block w-[1px] h-14 bg-black/10" />
             <div className="text-center">
-              <p className="font-bebas text-4xl md:text-5xl text-black/90 tracking-wide"><span className="text-[#0350F0]">0</span></p>
+              <p className="font-inter text-4xl md:text-5xl text-black/90 tracking-wide"><span className="text-[#0350F0]">0</span></p>
               <p className="mt-1 font-inter text-[11px] font-semibold uppercase tracking-[0.18em] text-black/50">Tools needed to swap soles</p>
             </div>
             <div className="hidden sm:block w-[1px] h-14 bg-black/10" />
             <div className="text-center">
-              <p className="font-bebas text-3xl md:text-4xl text-black/90 tracking-wide leading-tight">PU Casted</p>
+              <p className="font-inter text-3xl md:text-4xl text-black/90 tracking-wide leading-tight">PU Casted</p>
               <p className="mt-1 font-inter text-[11px] font-semibold uppercase tracking-[0.18em] text-black/50">Sole for flexibility &amp; durability</p>
             </div>
           </div>
@@ -244,7 +244,7 @@ export default function AboutPage() {
             {/* Origin Text */}
             <div className="about-story-col">
               <p className="font-inter text-xs uppercase tracking-widest text-[#0350F0] mb-4">The Origin</p>
-              <h2 className="font-bebas text-[40px] md:text-[56px] leading-none mb-6 text-black/90 tracking-wide">
+              <h2 className="font-inter text-[40px] md:text-[56px] leading-none mb-6 text-black/90 tracking-wide">
                 Born From<br />
                 <span className="italic text-[#0350F0]">Frustration.</span>
               </h2>
@@ -276,7 +276,7 @@ export default function AboutPage() {
             {/* Innovation Text */}
             <div>
               <p className="font-inter text-xs uppercase tracking-widest text-[#0350F0] mb-4">The Innovation</p>
-              <h2 className="font-bebas text-[40px] md:text-[56px] leading-none mb-6 text-white tracking-wide">
+              <h2 className="font-inter text-[40px] md:text-[56px] leading-none mb-6 text-white tracking-wide">
                 Patented<br />
                 <span className="italic text-[#0350F0]">Snap-Fit</span><br />
                 System.
@@ -331,7 +331,7 @@ export default function AboutPage() {
           <div className="about-longevity-top px-4 sm:px-6 md:px-12 lg:px-20 pt-24 md:pt-32 pb-12">
             <div className="max-w-[900px]">
               <p className="font-inter text-xs uppercase tracking-widest text-[#0350F0] mb-4">The Philosophy</p>
-              <h2 className="font-bebas text-[40px] md:text-[68px] leading-[1.05] mb-7 text-black/90 tracking-wide">
+              <h2 className="font-inter text-[40px] md:text-[68px] leading-[1.05] mb-7 text-black/90 tracking-wide">
                 Built for <span className="italic text-[#0350F0]">Longevity.</span><br />
                 Engineered for Change.
               </h2>
@@ -349,7 +349,7 @@ export default function AboutPage() {
               { num: "03", title: "Personalise", desc: "Mix uppers and soles for style, terrain, or occasion." },
             ].map((card) => (
               <div key={card.num} className="longevity-card p-8 md:p-10 border-l border-black/10 first:border-l-0 group hover:bg-white transition-colors duration-300">
-                <p className="font-bebas text-5xl text-[#0350F0] mb-3 tracking-wide">{card.num}</p>
+                <p className="font-inter text-5xl text-[#0350F0] mb-3 tracking-wide">{card.num}</p>
                 <p className="font-inter text-sm font-bold uppercase tracking-[0.06em] text-black/90 mb-2">{card.title}</p>
                 <p className="font-inter text-sm text-black/50 leading-relaxed">{card.desc}</p>
               </div>
@@ -371,7 +371,7 @@ export default function AboutPage() {
         <div className="px-4 sm:px-6 md:px-12 lg:px-20 py-16 border-b border-black/10">
           <div className="max-w-[1440px] mx-auto">
             <div className="border border-black/10 bg-black/[0.03] p-6 md:p-8 flex items-start gap-6 hover:border-[#0350F0] transition-colors group max-w-2xl">
-              <div className="h-12 w-12 shrink-0 border border-black/20 rounded-full flex items-center justify-center bg-white group-hover:bg-[#0350F0] group-hover:border-transparent group-hover:text-white transition-colors font-bebas text-lg">
+              <div className="h-12 w-12 shrink-0 border border-black/20 rounded-full flex items-center justify-center bg-white group-hover:bg-[#0350F0] group-hover:border-transparent group-hover:text-white transition-colors font-inter text-lg">
                 IP
               </div>
               <div>
@@ -398,12 +398,12 @@ export default function AboutPage() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#0350F0] rounded-full blur-[120px] opacity-20 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none" />
 
           <div className="relative z-10">
-            <h2 className="font-bebas text-[48px] md:text-[64px] tracking-wide mb-6">READY TO REBUILD?</h2>
+            <h2 className="font-inter text-[48px] md:text-[64px] tracking-wide mb-6">READY TO REBUILD?</h2>
             <p className="font-inter text-white/60 text-sm md:text-base max-w-xl mx-auto mb-10">
               Join the movement to fundamentally shift how we consume and wear fashion.
               Interchangeable parts, endless possibilities.
             </p>
-            <Link href="/shop" className="inline-block border border-white text-white font-bebas text-lg px-10 py-4 hover:bg-white hover:text-black transition-colors tracking-widest">
+            <Link href="/shop" className="inline-block border border-white text-white font-inter text-lg px-10 py-4 hover:bg-white hover:text-black transition-colors tracking-widest">
               EXPLORE THE SHOP
             </Link>
           </div>

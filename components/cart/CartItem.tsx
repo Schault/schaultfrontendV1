@@ -26,7 +26,7 @@ export default function CartItem({ item }: CartItemProps) {
       {/* Product Info */}
       <div className="flex-1 flex flex-col justify-between py-1">
         <div>
-          <h3 className="font-bebas text-xl md:text-3xl text-black/90 uppercase mb-0.5 tracking-tight line-clamp-1">
+          <h3 className="font-inter text-xl md:text-3xl text-black/90 uppercase mb-0.5 tracking-tight line-clamp-1">
             {item.name}
           </h3>
           <p className="font-inter text-base md:text-lg text-black/70 mb-2 md:mb-4">

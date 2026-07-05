@@ -42,7 +42,7 @@ export default function CheckoutPage() {
         </div>
 
         {/* Header */}
-        <h1 className="mb-12 font-bebas text-[48px] leading-[0.9] tracking-wide text-black/90 md:text-[56px]">
+        <h1 className="mb-12 font-inter text-[48px] leading-[0.9] tracking-wide text-black/90 md:text-[56px]">
           CHECKOUT
         </h1>
 
@@ -53,7 +53,7 @@ export default function CheckoutPage() {
               
               {/* Contact Information */}
               <section>
-                <h2 className="mb-6 font-bebas text-2xl tracking-wide text-black/90">Contact Information</h2>
+                <h2 className="mb-6 font-inter text-2xl tracking-wide text-black/90">Contact Information</h2>
                 <div className="space-y-4">
                   <div>
                     <label className="mb-2 block font-inter text-[10px] uppercase tracking-widest text-black/50">Email</label>
@@ -89,7 +89,7 @@ export default function CheckoutPage() {
 
               {/* Shipping Address */}
               <section>
-                <h2 className="mb-6 font-bebas text-2xl tracking-wide text-black/90">Shipping Address</h2>
+                <h2 className="mb-6 font-inter text-2xl tracking-wide text-black/90">Shipping Address</h2>
                 <div className="space-y-4">
                   <div>
                     <label className="mb-2 block font-inter text-[10px] uppercase tracking-widest text-black/50">Address Line 1</label>
@@ -133,7 +133,7 @@ export default function CheckoutPage() {
 
               {/* Payment Details */}
               <section>
-                <h2 className="mb-6 font-bebas text-2xl tracking-wide text-black/90">Payment Details</h2>
+                <h2 className="mb-6 font-inter text-2xl tracking-wide text-black/90">Payment Details</h2>
                 <div className="space-y-4">
                   <div>
                     <label className="mb-2 block font-inter text-[10px] uppercase tracking-widest text-black/50">Card Number</label>
@@ -171,7 +171,7 @@ export default function CheckoutPage() {
               <button 
                 type="submit" 
                 disabled={isProcessing || items.length === 0}
-                className="w-full bg-[#0350F0] px-10 py-5 font-bebas text-xl tracking-widest text-white transition-all hover:bg-black/90 disabled:cursor-not-allowed disabled:bg-black/20"
+                className="w-full bg-[#0350F0] px-10 py-5 font-inter text-xl tracking-widest text-white transition-all hover:bg-black/90 disabled:cursor-not-allowed disabled:bg-black/20"
               >
                 {isProcessing ? "PROCESSING..." : `PAY ₹${finalPrice.toLocaleString("en-IN")} →`}
               </button>
@@ -181,7 +181,7 @@ export default function CheckoutPage() {
           {/* Right Column: Order Summary */}
           <div className="w-full lg:w-[450px]">
             <div className="sticky top-32 border border-black/10 bg-black/5 p-8">
-              <h2 className="mb-8 font-bebas text-3xl tracking-wide text-black/90">Order Summary</h2>
+              <h2 className="mb-8 font-inter text-3xl tracking-wide text-black/90">Order Summary</h2>
               
               {items.length === 0 ? (
                 <div className="py-8 text-center font-inter text-sm text-black/50">
@@ -210,7 +210,7 @@ export default function CheckoutPage() {
                           </div>
                         </div>
                         <div className="flex flex-1 flex-col justify-center">
-                          <h3 className="font-bebas text-lg tracking-wide text-black/90 leading-tight">
+                          <h3 className="font-inter text-lg tracking-wide text-black/90 leading-tight">
                             {item.name}
                           </h3>
                           <p className="font-inter text-[10px] uppercase tracking-widest text-black/50 mt-1">
@@ -259,7 +259,7 @@ export default function CheckoutPage() {
                           }
                         }}
                         disabled={!couponInput}
-                        className="bg-black text-white px-6 font-bebas tracking-widest text-lg hover:bg-[#0350F0] disabled:bg-black/20 transition-all cursor-pointer"
+                        className="bg-black text-white px-6 font-inter tracking-widest text-lg hover:bg-[#0350F0] disabled:bg-black/20 transition-all cursor-pointer"
                       >
                         APPLY
                       </button>
@@ -295,7 +295,7 @@ export default function CheckoutPage() {
                       <span className="font-medium text-black/90">Free</span>
                     </div>
                     
-                    <div className="flex justify-between border-t border-black/10 pt-4 font-bebas text-3xl tracking-wide">
+                    <div className="flex justify-between border-t border-black/10 pt-4 font-inter text-3xl tracking-wide">
                       <span className="text-black/90">Total</span>
                       <span className="text-[#0350F0]">₹{finalPrice.toLocaleString("en-IN")}</span>
                     </div>

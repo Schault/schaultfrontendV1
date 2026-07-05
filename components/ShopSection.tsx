@@ -105,7 +105,7 @@ function ProductCard({
         </Link>
         <div className="flex flex-1 flex-col p-5">
           <Link href={`/product/${product.id}`} className="hover:text-[#0350F0] transition-colors">
-            <h3 className="font-bebas text-xl tracking-wide text-black/90">
+            <h3 className="font-inter text-xl tracking-wide text-black/90">
               {product.name}
             </h3>
           </Link>
@@ -146,7 +146,7 @@ export default function ShopSection({ collections }: { collections: ShopifyColle
         <div className="flex items-end justify-between mb-8 border-b-2 border-black pb-4">
           <div>
             <div className="mb-2 h-0.5 w-12 bg-[#0350F0]" aria-hidden />
-            <h2 className="font-bebas text-5xl tracking-wide text-black/90 md:text-7xl">
+            <h2 className="font-inter text-5xl tracking-wide text-black/90 md:text-7xl">
               CARPE DIEM
             </h2>
           </div>
@@ -165,7 +165,7 @@ export default function ShopSection({ collections }: { collections: ShopifyColle
           </div>
         )}
 
-        <h3 className="mt-16 mb-8 font-bebas text-3xl tracking-wide text-black/90">
+        <h3 className="mt-16 mb-8 font-inter text-3xl tracking-wide text-black/90">
           SHOES
         </h3>
 
@@ -184,7 +184,7 @@ export default function ShopSection({ collections }: { collections: ShopifyColle
           </Link>
         </div>
 
-        <h3 className="mt-16 mb-8 font-bebas text-3xl tracking-wide text-black/90">
+        <h3 className="mt-16 mb-8 font-inter text-3xl tracking-wide text-black/90">
           SOLES
         </h3>
 

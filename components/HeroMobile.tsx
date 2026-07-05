@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function HeroMobile() {
   const [videoVisible, setVideoVisible] = useState(true);
@@ -10,10 +11,13 @@ export default function HeroMobile() {
 
   return (
     <section className="relative h-[100svh] w-full overflow-hidden bg-black">
-      <img
+      <Image
         src={imgSrc}
         onError={() => setImgSrc("/images/fullshoe.jpg")}
         alt="SCHAULT modular sneaker"
+        fill
+        sizes="100vw"
+        priority
         className="absolute inset-0 h-full w-full object-cover object-center"
       />
 

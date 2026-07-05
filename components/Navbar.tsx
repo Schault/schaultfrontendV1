@@ -21,6 +21,7 @@ const NAV_LINKS = [
   { href: "/create-your-own-shoe", label: "CREATE YOUR OWN SHOE" },
   { href: "/about", label: "ABOUT US" },
   { href: "/collaborators", label: "COLLABORATORS" },
+  { href: "/blog", label: "BLOG" },
   { href: "/faq", label: "FAQ" },
 ];
 
@@ -157,7 +158,7 @@ export default function Navbar() {
           {/* LEFT: Logo Section */}
           <Link href="/" className="flex items-center gap-2">
             <Image
-              src="/assets/Schault_icon_bgr.png"
+              src="/assets/logo.webp"
               alt="Schault Logo"
               width={40}
               height={40}
@@ -249,7 +250,7 @@ export default function Navbar() {
                 onClick={() => setMobileOpen(false)}
               >
                 <Image
-                  src="/assets/Schault_icon.webp"
+                  src="/assets/logo.webp"
                   alt="Schault Logo"
                   width={40}
                   height={40}
