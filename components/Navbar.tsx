@@ -176,7 +176,7 @@ export default function Navbar() {
           </Link>
 
           {/* CENTER: Navigation Links (Desktop) */}
-          <div className="absolute left-1/2 hidden -translate-x-1/2 md:flex md:items-center md:gap-8">
+          <div className="absolute left-1/2 hidden -translate-x-1/2 md:flex md:items-center md:gap-4 xl:gap-8">
             {NAV_LINKS.map((link) => {
               if (link.submenu) {
                 const isSubmenuActive = link.submenu.some((sub) => pathname === sub.href);
@@ -189,7 +189,7 @@ export default function Navbar() {
                   >
                     <button
                       type="button"
-                      className={`flex items-center gap-1 font-inter text-sm font-medium tracking-wide transition-colors duration-200 ${
+                      className={`flex items-center gap-1 font-inter text-sm font-medium tracking-wide whitespace-nowrap transition-colors duration-200 ${
                         isSubmenuActive
                           ? "text-[#0350F0]"
                           : "text-black/70 hover:text-black/90"
@@ -255,7 +255,7 @@ export default function Navbar() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className={`relative font-inter text-sm font-medium tracking-wide transition-colors duration-200 ${
+                  className={`relative font-inter text-sm font-medium tracking-wide whitespace-nowrap transition-colors duration-200 ${
                     isActive
                       ? "text-[#0350F0]"
                       : "text-black/70 hover:text-black/90"
