@@ -391,94 +391,11 @@ export default function ShoeScroll({
                 />
               </div>
 
-              {/* Right Side Progress Indicator */}
-              <div className="absolute right-[-4vw] lg:right-[-6vw] flex flex-col items-center gap-6 z-20 select-none">
-                <button
-                  onClick={handlePrevStep}
-                  disabled={activeStep === 0}
-                  className="p-2 rounded-full border border-black/10 bg-[#FFFFFF] shadow-sm hover:border-[#2457FF]/40 text-[#0A0A0A] hover:text-[#2457FF] transition-all disabled:opacity-30 disabled:pointer-events-none"
-                  aria-label="Previous step"
-                >
-                  <ChevronUp size={14} className="stroke-[2.5]" />
-                </button>
 
-                <div className="flex flex-col items-center gap-4 py-2">
-                  {ANGLES.map((angle, idx) => {
-                    const isActive = activeStep === idx;
-                    return (
-                      <button
-                        key={angle.name}
-                        onClick={() => handleStepClick(idx)}
-                        className="group flex items-center gap-3.5 relative py-1"
-                      >
-                        <span
-                          className={`font-inter text-[11px] font-semibold tracking-wider transition-colors duration-300 ${
-                            isActive ? "text-[#2457FF]" : "text-[#9B9B9B] group-hover:text-[#0A0A0A]"
-                          }`}
-                        >
-                          {String(idx + 1).padStart(2, "0")}
-                        </span>
-                        <span
-                          className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                            isActive
-                              ? "bg-[#2457FF] scale-125"
-                              : "bg-[#9B9B9B]/40 group-hover:bg-[#0A0A0A]"
-                          }`}
-                        />
-                      </button>
-                    );
-                  })}
-                </div>
-
-                <button
-                  onClick={handleNextStep}
-                  disabled={activeStep === 5}
-                  className="p-2 rounded-full border border-black/10 bg-[#FFFFFF] shadow-sm hover:border-[#2457FF]/40 text-[#0A0A0A] hover:text-[#2457FF] transition-all disabled:opacity-30 disabled:pointer-events-none"
-                  aria-label="Next step"
-                >
-                  <ChevronDown size={14} className="stroke-[2.5]" />
-                </button>
-              </div>
             </div>
           </div>
 
-          {/* Product Angle Selector at the Bottom */}
-          <div className="w-full py-8 z-20 flex justify-center px-6 bg-gradient-to-t from-[#F6F6F4]/80 to-transparent">
-            <div className="flex items-center gap-4 overflow-x-auto max-w-full py-1.5 px-4 scrollbar-none select-none">
-              {ANGLES.map((angle, idx) => {
-                const isActive = activeStep === idx;
-                return (
-                  <motion.div
-                    key={angle.name}
-                    whileHover={{ scale: 1.04, y: -2 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => handleStepClick(idx)}
-                    className={`flex items-center gap-3 bg-[#FFFFFF] p-2.5 rounded-xl cursor-pointer shadow-sm min-w-[135px] border transition-all duration-300 ${
-                      isActive
-                        ? "border-[#2457FF] ring-2 ring-[#2457FF]/10"
-                        : "border-black/5 hover:border-black/10"
-                    }`}
-                  >
-                    <div className="w-10 h-10 rounded-lg bg-[#F6F6F4] flex items-center justify-center overflow-hidden flex-shrink-0">
-                      <img
-                        src={`${SEQUENCE_PATH}/${FRAME_PREFIX}${String(angle.frame + 1).padStart(3, "0")}.${FRAME_EXT}`}
-                        alt={angle.name}
-                        className="w-full h-full object-contain mix-blend-multiply"
-                      />
-                    </div>
-                    <div className="flex flex-col text-left">
-                      <span className="font-inter text-[10px] font-bold text-[#0A0A0A] uppercase tracking-wider">
-                        {angle.name}
-                      </span>
-                      <span className="font-inter text-[8px] text-[#9B9B9B] uppercase tracking-wide">
-                        Angle {String(idx + 1).padStart(2, "0")}
-                      </span>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
+
         </div>
       </div>
     </ScrollContext.Provider>
