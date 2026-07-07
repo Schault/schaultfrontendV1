@@ -11,7 +11,7 @@ import {
   useTransform,
   useMotionTemplate,
 } from "framer-motion";
-import { ShoppingCart, User } from "lucide-react";
+import { ShoppingCart, User, ChevronDown, Info, BookOpen, Newspaper, ArrowRight } from "lucide-react";
 import { LuMenu, LuX } from "react-icons/lu";
 import { useCart } from "./providers";
 
@@ -19,9 +19,15 @@ const NAV_LINKS = [
   { href: "/", label: "HOME" },
   { href: "/shop", label: "SHOP" },
   { href: "/create-your-own-shoe", label: "CREATE YOUR OWN SHOE" },
-  { href: "/about", label: "ABOUT US" },
+  {
+    label: "COMPANY",
+    submenu: [
+      { href: "/about", label: "About Us", desc: "Our story & patented modular technology" },
+      { href: "/blog", label: "Blog", desc: "Insights on design, tech & sustainability" },
+      { href: "/news", label: "News", desc: "Announcements & press releases" },
+    ],
+  },
   { href: "/collaborators", label: "COLLABORATORS" },
-  { href: "/blog", label: "BLOG" },
   { href: "/faq", label: "FAQ" },
 ];
 
@@ -30,6 +36,8 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const [activeLink, setActiveLink] = useState("Home");
+  const [companyHovered, setCompanyHovered] = useState(false);
+  const [mobileCompanyOpen, setMobileCompanyOpen] = useState(false);
   const { items, setIsCartOpen } = useCart();
   const cartItemCount = items.reduce((acc, item) => acc + item.quantity, 0);
   const [threshold, setThreshold] = useState(0);
@@ -170,6 +178,78 @@ export default function Navbar() {
           {/* CENTER: Navigation Links (Desktop) */}
           <div className="absolute left-1/2 hidden -translate-x-1/2 md:flex md:items-center md:gap-8">
             {NAV_LINKS.map((link) => {
+              if (link.submenu) {
+                const isSubmenuActive = link.submenu.some((sub) => pathname === sub.href);
+                return (
+                  <div
+                    key={link.label}
+                    className="relative py-2"
+                    onMouseEnter={() => setCompanyHovered(true)}
+                    onMouseLeave={() => setCompanyHovered(false)}
+                  >
+                    <button
+                      type="button"
+                      className={`flex items-center gap-1 font-inter text-sm font-medium tracking-wide transition-colors duration-200 ${
+                        isSubmenuActive
+                          ? "text-[#0350F0]"
+                          : "text-black/70 hover:text-black/90"
+                      }`}
+                    >
+                      {link.label}
+                      <ChevronDown
+                        size={14}
+                        className={`transition-transform duration-200 ${companyHovered ? "rotate-180" : ""}`}
+                      />
+                    </button>
+
+                    <AnimatePresence>
+                      {companyHovered && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 15, scale: 0.96 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                          className="absolute left-1/2 top-full z-[11000] -translate-x-1/2 mt-2 w-80 rounded-[24px] border border-black/5 bg-white/95 p-3.5 shadow-[0_20px_50px_rgba(0,0,0,0.08)] backdrop-blur-xl"
+                        >
+                          {/* Hover bridge to close any physical pixel gap between trigger button and menu card */}
+                          <div className="absolute top-[-12px] left-0 right-0 h-[12px] bg-transparent" />
+                          
+                          <div className="flex flex-col gap-1.5">
+                            {link.submenu.map((sub, index) => {
+                              const SubIcon = index === 0 ? Info : index === 1 ? BookOpen : Newspaper;
+                              return (
+                                <Link
+                                  key={sub.label}
+                                  href={sub.href}
+                                  className="group/item flex items-center justify-between rounded-2xl p-3 transition-all duration-300 hover:bg-black/[0.02] hover:translate-x-1"
+                                >
+                                  <div className="flex items-center gap-3.5">
+                                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#0350F0]/5 text-[#0350F0] transition-all duration-300 group-hover/item:bg-[#0350F0] group-hover/item:text-white group-hover/item:scale-105">
+                                      <SubIcon size={18} />
+                                    </div>
+                                    <div className="text-left">
+                                      <p className="font-inter text-sm font-semibold text-black/90 transition-colors duration-200 group-hover/item:text-[#0350F0]">
+                                        {sub.label}
+                                      </p>
+                                      <p className="font-inter text-xs text-black/50 leading-normal mt-0.5">
+                                        {sub.desc}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="opacity-0 -translate-x-2 transition-all duration-300 group-hover/item:opacity-100 group-hover/item:translate-x-0 pr-1 text-[#0350F0]">
+                                    <ArrowRight size={16} />
+                                  </div>
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              }
+
               const isActive = pathname === link.href;
               return (
                 <Link
@@ -270,14 +350,61 @@ export default function Navbar() {
               </button>
             </div>
 
-            <nav className="flex flex-1 flex-col justify-center gap-8 px-8 py-12">
+            <nav className="flex flex-1 flex-col justify-center gap-6 px-8 py-12 overflow-y-auto">
               {NAV_LINKS.map((link) => {
+                if (link.submenu) {
+                  const isSubmenuActive = link.submenu.some((sub) => pathname === sub.href);
+                  return (
+                    <div key={link.label}>
+                      <button
+                        type="button"
+                        onClick={() => setMobileCompanyOpen(!mobileCompanyOpen)}
+                        className={`flex w-full items-center justify-between font-inter text-lg font-medium tracking-wide transition-colors ${
+                          isSubmenuActive
+                            ? "text-[#0350F0]"
+                            : "text-black/80 hover:text-[#0350F0]"
+                        }`}
+                      >
+                        <span>{link.label}</span>
+                        <ChevronDown
+                          size={20}
+                          className={`transition-transform duration-300 ${mobileCompanyOpen ? "rotate-180" : ""}`}
+                        />
+                      </button>
+                      <AnimatePresence initial={false}>
+                        {mobileCompanyOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.25, ease: "easeInOut" }}
+                            className="overflow-hidden pl-4 flex flex-col gap-4 mt-4 border-l border-black/10 text-left"
+                          >
+                            {link.submenu.map((sub) => (
+                              <Link
+                                key={sub.label}
+                                href={sub.href}
+                                className={`font-inter text-base font-medium tracking-wide transition-colors ${
+                                  pathname === sub.href ? "text-[#0350F0]" : "text-black/60 hover:text-[#0350F0]"
+                                }`}
+                                onClick={() => setMobileOpen(false)}
+                              >
+                                {sub.label.toUpperCase()}
+                              </Link>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                }
+
                 const isActive = pathname === link.href;
                 return (
                   <Link
                     key={link.label}
                     href={link.href}
-                    className={`font-inter text-lg font-medium tracking-wide transition-colors ${
+                    className={`font-inter text-lg font-medium tracking-wide transition-colors text-left ${
                       isActive
                         ? "text-[#0350F0]"
                         : "text-black/80 hover:text-[#0350F0]"
