@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
 import { createClient } from "@/utils/supabase/server";
+import { createClient as createAdminClient } from "@supabase/supabase-js";
+
+const adminSupabase = createAdminClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 async function createDelhiveryShipment(orderId: string, total: number, address: {
   full_name: string; line1: string; line2?: string;
@@ -72,8 +78,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Create order in Supabase
-    const { data: order, error: orderError } = await supabase
+    // Create order in Supabase (admin client bypasses RLS — user identity already verified above)
+    const { data: order, error: orderError } = await adminSupabase
       .from("orders")
       .insert({
         user_id: user.id,
@@ -87,7 +93,7 @@ export async function POST(req: Request) {
 
     if (orderError || !order) {
       console.error("Order insert error:", orderError);
-      return NextResponse.json({ error: "Failed to save order" }, { status: 500 });
+      return NextResponse.json({ error: "Failed to save order", detail: orderError?.message }, { status: 500 });
     }
 
     // Create Delhivery shipment (non-fatal if it fails)
@@ -101,7 +107,7 @@ export async function POST(req: Request) {
     }
 
     if (waybill) {
-      await supabase
+      await adminSupabase
         .from("orders")
         .update({ waybill, status: "processing" })
         .eq("id", order.id);

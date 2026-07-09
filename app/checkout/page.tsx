@@ -119,7 +119,7 @@ export default function CheckoutPage() {
           const verifyData = await verifyRes.json();
 
           if (!verifyRes.ok || !verifyData.success) {
-            toast.error("Payment verification failed. Contact support.");
+            toast.error(verifyData.detail || verifyData.error || "Payment verification failed. Contact support.");
             setIsProcessing(false);
             return;
           }
