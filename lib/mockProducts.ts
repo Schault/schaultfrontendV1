@@ -2,6 +2,17 @@ import { Product } from "@/components/shop/ProductCard";
 
 export const MOCK_PRODUCTS: Product[] = [
   {
+    id: "test-1rs",
+    name: "Test Item",
+    price: 1,
+    originalPrice: 1,
+    image: "/images/shoes/Arctic Dawn/1.png",
+    gallery: ["/images/shoes/Arctic Dawn/1.png"],
+    category: "Shoe",
+    colors: [{ name: "Black", hex: "#000000" }],
+    sizes: ["8"]
+  },
+  {
     id: "1",
     name: "Arctic Dawn",
     price: 2499,
