@@ -90,10 +90,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Failed to save order" }, { status: 500 });
     }
 
-    // Create Delhivery shipment
-    const waybill = order_data?.shipping_address
-      ? await createDelhiveryShipment(order.id, order_data.total, order_data.shipping_address)
-      : null;
+    // Create Delhivery shipment (non-fatal if it fails)
+    let waybill: string | null = null;
+    try {
+      if (order_data?.shipping_address) {
+        waybill = await createDelhiveryShipment(order.id, order_data.total, order_data.shipping_address);
+      }
+    } catch (e) {
+      console.error("Delhivery shipment error:", e);
+    }
 
     if (waybill) {
       await supabase

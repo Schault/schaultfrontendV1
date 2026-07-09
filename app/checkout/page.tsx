@@ -120,6 +120,7 @@ export default function CheckoutPage() {
 
           if (!verifyRes.ok || !verifyData.success) {
             toast.error("Payment verification failed. Contact support.");
+            setIsProcessing(false);
             return;
           }
 
@@ -128,6 +129,7 @@ export default function CheckoutPage() {
           router.push(verifyData.order_id ? `/orders/${verifyData.order_id}` : "/orders");
         } catch {
           toast.error("Payment verification error. Contact support.");
+          setIsProcessing(false);
         }
       },
       modal: {
