@@ -46,9 +46,9 @@ async function createDelhiveryShipment(orderId: string, total: number, address: 
     method: "POST",
     headers: {
       "Authorization": `Token ${process.env.DELHIVERY_API_TOKEN}`,
-      "Content-Type": "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: payload,
+    body: `format=json&data=${encodeURIComponent(payload)}`,
   });
 
   const data = await res.json();
