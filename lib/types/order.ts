@@ -44,6 +44,7 @@ export interface OrderDetail {
   estimated_delivery: string | null;
   shipping_address: ShippingAddress | null;
   updated_at: string;
+  waybill: string | null;
   items: OrderItemDetail[];
   timeline: TimelineEntry[];
 }

@@ -53,7 +53,8 @@ export async function getOrderById(orderId: string): Promise<OrderDetail> {
       created_at,
       estimated_delivery,
       shipping_address,
-      updated_at
+      updated_at,
+      waybill
     `)
     .eq("id", orderId)
     .single();
@@ -123,6 +124,7 @@ export async function getOrderById(orderId: string): Promise<OrderDetail> {
     estimated_delivery: order.estimated_delivery,
     shipping_address: order.shipping_address,
     updated_at: order.updated_at,
+    waybill: order.waybill ?? null,
     items: formattedItems,
     timeline: historyData as TimelineEntry[] || [],
   };
