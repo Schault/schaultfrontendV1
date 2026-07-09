@@ -10,7 +10,6 @@ import {
   Users,
   Package,
   RotateCcw,
-  BarChart3,
   Settings,
   RefreshCcw,
 } from "lucide-react";
@@ -25,7 +24,7 @@ import DeliveryView from "./components/DeliveryView";
 import WaitlistView from "./components/WaitlistView";
 import InventoryView from "./components/InventoryView";
 import ReturnsView from "./components/ReturnsView";
-import AnalyticsView from "./components/AnalyticsView";
+
 import SettingsView from "./components/SettingsView";
 
 // Drawers & Modals
@@ -83,7 +82,6 @@ export default function AdminHubPage() {
           "waitlist",
           "inventory",
           "returns",
-          "analytics",
           "settings",
         ].includes(tab)
       ) {
@@ -172,7 +170,6 @@ export default function AdminHubPage() {
                 icon: RotateCcw,
                 badge: returns.filter((r) => r.status === "Pending").length,
               },
-              { id: "analytics", label: "ANALYTICS", icon: BarChart3 },
               { id: "settings", label: "SETTINGS", icon: Settings },
             ].map((link) => {
               const Icon = link.icon;
@@ -312,13 +309,6 @@ export default function AdminHubPage() {
                   setReturns={setReturns}
                   setEditReturnId={setEditReturnId}
                   orders={orders}
-                />
-              )}
-              {activeTab === "analytics" && (
-                <AnalyticsView
-                  orders={orders}
-                  waitlist={waitlist}
-                  inventory={inventory}
                 />
               )}
               {activeTab === "settings" && (
