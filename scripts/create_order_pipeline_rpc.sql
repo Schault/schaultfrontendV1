@@ -112,8 +112,7 @@ BEGIN
       product_image,
       product_sku,
       product_size,
-      product_color,
-      created_at
+      product_color
     ) VALUES (
       v_new_order_id,
       (v_item->>'variant_id')::UUID,
@@ -125,8 +124,7 @@ BEGIN
       v_item->>'product_image',
       v_item->>'product_sku',
       v_item->>'product_size',
-      v_item->>'product_color',
-      v_now
+      v_item->>'product_color'
     );
   END LOOP;
 

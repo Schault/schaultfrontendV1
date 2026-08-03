@@ -1,9 +1,16 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
+import Razorpay from "razorpay";
 import { createClient } from "@/utils/supabase/server";
 import { createOrderPipeline } from "@/lib/orders/create-order-pipeline";
+import { computeOrderPricing } from "@/lib/orders/pricing";
 import { uploadInvoice } from "@/lib/invoice/uploadInvoice";
 import { sendOrderConfirmation } from "@/lib/email/sendOrderConfirmation";
+
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID ?? process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+  key_secret: process.env.RAZORPAY_KEY_SECRET!,
+});
 
 export async function POST(req: Request) {
   try {
@@ -14,7 +21,7 @@ export async function POST(req: Request) {
       razorpay_signature,
       items,
       shipping_address,
-      total,
+      coupon,
     } = body;
 
     // 1. Verify Razorpay Signature
@@ -60,14 +67,32 @@ export async function POST(req: Request) {
 
     // 3. Delegate to Order Pipeline if items are provided
     if (items && Array.isArray(items) && items.length > 0) {
+      // Recompute prices from the database — never trust client-supplied amounts.
+      const { items: pricedItems, total } = await computeOrderPricing(
+        supabase,
+        items,
+        coupon
+      );
+
+      // Cross-check against what Razorpay actually charged, so a tampered cart
+      // (different items than create-order) cannot be recorded as paid.
+      const rzpOrder = await razorpay.orders.fetch(razorpay_order_id);
+      const expectedPaise = Math.round(total * 100);
+      if (Number(rzpOrder.amount) !== expectedPaise) {
+        return NextResponse.json(
+          { error: "Order total does not match the amount paid" },
+          { status: 400 }
+        );
+      }
+
       // Step A: Create Order & decrement stock atomically via PostgreSQL RPC
       const orderResult = await createOrderPipeline(supabase, {
         user_id: user.id,
         razorpay_order_id,
         razorpay_payment_id,
-        total: Number(total) || 0,
+        total,
         shipping_address: shipping_address || {},
-        items,
+        items: pricedItems,
       });
 
       // Step B: Upload Invoice PDF to Supabase Storage (non-blocking for payment response)

@@ -58,14 +58,35 @@ export default function CheckoutPage() {
       return;
     }
 
-    const amountInPaise = Math.round(finalPrice * 100);
+    if (items.some((i) => !i.variantId)) {
+      toast.error("Some items are unavailable. Please re-add them to your cart.");
+      setIsProcessing(false);
+      return;
+    }
+
+    // Prices are computed server-side from the DB; we only send variant + quantity.
+    const orderItems = items.map((i) => ({
+      variant_id: i.variantId,
+      quantity: i.quantity,
+      product_image: i.image,
+    }));
+
+    const shipping_address = {
+      full_name: `${firstName} ${lastName}`.trim(),
+      email,
+      line1,
+      line2,
+      city,
+      postal_code: postalCode,
+      country: "India",
+    };
 
     let rzpOrder: { order_id: string; amount: number; currency: string };
     try {
       const res = await fetch("/api/razorpay/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: amountInPaise }),
+        body: JSON.stringify({ items: orderItems, coupon: appliedCoupon }),
       });
       if (!res.ok) throw new Error("Order creation failed");
       rzpOrder = await res.json();
@@ -100,6 +121,9 @@ export default function CheckoutPage() {
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_order_id: response.razorpay_order_id,
               razorpay_signature: response.razorpay_signature,
+              items: orderItems,
+              coupon: appliedCoupon,
+              shipping_address,
             }),
           });
           const verifyData = await verifyRes.json();

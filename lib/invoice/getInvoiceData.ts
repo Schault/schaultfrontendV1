@@ -114,6 +114,8 @@ export async function getInvoiceData(
 
   const totalAmount = Number(order.total) || 0;
   const computedSubtotal = invoiceItems.reduce((sum, item) => sum + item.lineTotal, 0);
+  // Discount is the gap between line-item subtotal and the amount actually charged.
+  const discountAmount = computedSubtotal > totalAmount ? computedSubtotal - totalAmount : 0;
 
   return {
     invoiceNumber: order.invoice_number || `INV-${order.id.slice(0, 8).toUpperCase()}`,
@@ -127,7 +129,7 @@ export async function getInvoiceData(
     items: invoiceItems,
     subtotal: computedSubtotal > 0 ? computedSubtotal : totalAmount,
     shippingFee: 0,
-    discountAmount: 0,
+    discountAmount,
     taxAmount: 0,
     grandTotal: totalAmount > 0 ? totalAmount : computedSubtotal,
   };
