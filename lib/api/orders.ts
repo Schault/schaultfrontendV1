@@ -3,6 +3,7 @@ import { OrderDetail, OrderListItem, TimelineEntry, OrderItemDetail, OrderStatus
 
 export async function getMyOrders(): Promise<OrderListItem[]> {
   const supabase = createClient();
+  if (!supabase) return [];
   
   const { data: { user }, error: authError } = await supabase.auth.getUser();
   if (authError || !user) {
@@ -13,7 +14,9 @@ export async function getMyOrders(): Promise<OrderListItem[]> {
     .from("orders")
     .select(`
       id,
+      invoice_number,
       status,
+      payment_status,
       total,
       created_at,
       estimated_delivery,
@@ -27,7 +30,9 @@ export async function getMyOrders(): Promise<OrderListItem[]> {
 
   return (data || []).map((order: any) => ({
     id: order.id,
-    status: order.status,
+    invoice_number: order.invoice_number || null,
+    status: order.status as OrderStatus,
+    payment_status: (order.payment_status || "paid").toUpperCase(),
     total: order.total,
     created_at: order.created_at,
     estimated_delivery: order.estimated_delivery,
@@ -37,6 +42,7 @@ export async function getMyOrders(): Promise<OrderListItem[]> {
 
 export async function getOrderById(orderId: string): Promise<OrderDetail> {
   const supabase = createClient();
+  if (!supabase) throw new Error("Database configuration error");
   
   const { data: { user }, error: authError } = await supabase.auth.getUser();
   if (authError || !user) {
@@ -48,7 +54,11 @@ export async function getOrderById(orderId: string): Promise<OrderDetail> {
     .from("orders")
     .select(`
       id,
+      invoice_number,
+      invoice_url,
+      invoice_generated_at,
       status,
+      payment_status,
       total,
       created_at,
       estimated_delivery,
@@ -70,6 +80,11 @@ export async function getOrderById(orderId: string): Promise<OrderDetail> {
       quantity,
       unit_price,
       line_total,
+      product_name,
+      product_image,
+      product_sku,
+      product_size,
+      product_color,
       product_variants (
         size,
         color,
@@ -108,22 +123,27 @@ export async function getOrderById(orderId: string): Promise<OrderDetail> {
     quantity: item.quantity,
     unit_price: item.unit_price,
     line_total: item.line_total,
-    product_name: item.product_variants?.products?.name || "Unknown Product",
+    product_name: item.product_name || item.product_variants?.products?.name || "Unknown Product",
+    product_image: item.product_image || null,
     product_slug: item.product_variants?.products?.slug || "",
-    variant_size: item.product_variants?.size || "",
-    variant_color: item.product_variants?.color || null,
-    variant_sku: item.product_variants?.sku || "",
+    variant_size: item.product_size || item.product_variants?.size || "",
+    variant_color: item.product_color || item.product_variants?.color || null,
+    variant_sku: item.product_sku || item.product_variants?.sku || "",
   }));
 
   return {
     id: order.id,
+    invoice_number: order.invoice_number || null,
+    invoice_url: order.invoice_url || null,
+    invoice_generated_at: order.invoice_generated_at || null,
     status: order.status as OrderStatus,
+    payment_status: (order.payment_status || "paid").toUpperCase(),
     total: order.total,
     created_at: order.created_at,
     estimated_delivery: order.estimated_delivery,
     shipping_address: order.shipping_address,
     updated_at: order.updated_at,
     items: formattedItems,
-    timeline: historyData as TimelineEntry[] || [],
+    timeline: (historyData as TimelineEntry[]) || [],
   };
 }
