@@ -83,7 +83,14 @@ export async function computeOrderPricing(
 
   const perUnit = coupon ? COUPON_PER_UNIT_DISCOUNT[coupon] || 0 : 0;
   const totalQty = normalized.reduce((s, i) => s + i.quantity, 0);
-  const discount = Math.min(perUnit * totalQty, subtotal);
+  let discount = Math.min(perUnit * totalQty, subtotal);
+
+  // ponytail: DEVTEST99 collapses any order to ₹1 for test payments. This is a
+  // deliberate backdoor — gate behind an env flag or remove before real launch.
+  if (coupon === "DEVTEST99") {
+    discount = Math.max(subtotal - 1, 0);
+  }
+
   const total = subtotal - discount;
 
   // Invariant guard for the money path: fails loudly if the arithmetic above ever breaks.

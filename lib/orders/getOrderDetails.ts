@@ -37,6 +37,7 @@ export async function getOrderDetails(orderId: string): Promise<OrderDetail | nu
       created_at,
       paid_at,
       estimated_delivery,
+      waybill,
       shipping_address,
       updated_at
     `)
@@ -118,6 +119,7 @@ export async function getOrderDetails(orderId: string): Promise<OrderDetail | nu
     created_at: order.created_at,
     paid_at: order.paid_at || order.created_at,
     estimated_delivery: order.estimated_delivery || null,
+    waybill: order.waybill || null,
     shipping_address: (order.shipping_address as any) || null,
     updated_at: order.updated_at || order.created_at,
     items: formattedItems,

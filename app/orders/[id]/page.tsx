@@ -132,6 +132,25 @@ export default async function OrderDetailsPage({
                 ))}
               </div>
             </div>
+
+            {/* Tracking */}
+            {order.waybill && (
+              <div className="border border-black/10 bg-white p-6 shadow-sm">
+                <h2 className="font-inter text-xs font-bold uppercase tracking-widest text-zinc-400 border-b border-black/10 pb-3 mb-4">
+                  TRACKING
+                </h2>
+                <p className="font-inter text-xs text-black/50 uppercase tracking-widest mb-1">Waybill</p>
+                <p className="font-inter font-semibold text-black/90 mb-4">{order.waybill}</p>
+                <a
+                  href={`https://www.delhivery.com/track/package/${order.waybill}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-[#0350F0] text-white font-inter text-xs uppercase tracking-widest px-6 py-3 hover:bg-black/90 transition-colors"
+                >
+                  Track on Delhivery →
+                </a>
+              </div>
+            )}
           </div>
 
           {/* Right Side Column: Address, Payment & Price Summary */}
