@@ -100,11 +100,28 @@ export default async function OrderDetailPage({ params }: { params: { id: string
                 <div className="bg-white p-8 border border-black/10 shadow-sm">
                   <h2 className="font-inter text-2xl uppercase tracking-widest mb-4 border-b border-black/10 pb-4">Delivery Estimate</h2>
                   <p className="font-inter text-black/90 font-semibold">
-                    {order.estimated_delivery 
+                    {order.estimated_delivery
                       ? new Date(order.estimated_delivery).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
                       : "Pending"}
                   </p>
                 </div>
+
+                {/* Tracking */}
+                {order.waybill && (
+                  <div className="bg-white p-8 border border-black/10 shadow-sm">
+                    <h2 className="font-inter text-2xl uppercase tracking-widest mb-4 border-b border-black/10 pb-4">Tracking</h2>
+                    <p className="font-inter text-xs text-black/50 uppercase tracking-widest mb-1">Waybill</p>
+                    <p className="font-inter font-semibold text-black/90 mb-4">{order.waybill}</p>
+                    <a
+                      href={`https://www.delhivery.com/track/package/${order.waybill}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block bg-[#0350F0] text-white font-inter text-xs uppercase tracking-widest px-6 py-3 hover:bg-black/90 transition-colors"
+                    >
+                      Track on Delhivery →
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           </div>
