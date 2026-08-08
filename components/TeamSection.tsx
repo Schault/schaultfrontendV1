@@ -30,7 +30,6 @@ const teamData = {
       { name: "AUGNIK BANERJEE", role: "FOUNDING ENGINEER", image: "/images/augnik.jpeg" },
       { name: "MOHIT", role: "FRONTEND - IIT KANPUR", image: "/images/mohit.jpg" },
       { name: "HARSHIT", role: "BACKEND - IIT KANPUR", image: "/images/harshit.jpeg" },
-      { name: "DEEVASH", role: "BACKEND - IIT KANPUR", image: "/images/deevash.jpeg" },
     ],
   },
 };

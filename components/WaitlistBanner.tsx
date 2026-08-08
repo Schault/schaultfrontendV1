@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion, useScroll, useTransform, useMotionTemplate } from "framer-motion";
 
 const WaitlistBanner = () => {
-  const text = "Change your style, Join waitlist now";
+  const text = "Switch your style, Preorders are live !";
   const { scrollY } = useScroll();
   const [threshold, setThreshold] = useState(0);
 

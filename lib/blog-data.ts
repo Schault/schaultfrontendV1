@@ -17,105 +17,120 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
-    slug: "anatomy-of-modularity-engineering-snap-fit",
-    title: "The Anatomy of Modularity: Engineering the Snap-Fit System",
-    excerpt: "Discover the rigorous engineering and testing behind Schault's patented snap-fit interface that connects the upper, midsole, and outsole seamlessly.",
+    slug: "how-schaults-interlocking-sole-technology-works",
+    title: "How Schault's Interlocking Sole Technology Works: Replace Your Shoe Sole in Seconds",
+    excerpt: "Learn how Schault's innovative interlocking shoe mechanism lets you replace worn-out soles without tools, glue, or a cobbler. Save money, reduce waste, and extend the life of your footwear.",
     category: "Technology",
-    publishedAt: "May 15, 2026",
-    readTime: "6 min read",
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop",
+    publishedAt: "July 15, 2026",
+    readTime: "5 min read",
+    image: "/images/shoes/bluewhite.jpg",
     featured: true,
     author: {
-      name: "Pranav Mehra",
-      role: "Lead Systems Engineer",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop",
+      name: "Schault Engineering",
+      role: "Modular Footwear Team",
+      avatar: "/assets/logo.webp",
     },
     content: `
-      <p>Footwear hasn't fundamentally changed its assembly process in over a century. Since the dawn of industrialized shoe-making, components have been glued, stitched, and heat-welded together. While this makes for a stable construct, it creates a massive issue: when one part wears down—usually the outsole—the entire shoe is thrown away.</p>
+      <p>Footwear is one of the most frequently replaced products in our daily lives. In most cases, people throw away an entire pair of shoes even when only the sole or the upper is damaged. At Schault, we believe there is a smarter and more sustainable footwear solution: <strong>interchangeable shoes</strong> built around <strong>replaceable shoe soles</strong>.</p>
       
-      <h3>Breaking the Tradition</h3>
-      <p>At Schault, we set out with a simple yet challenging goal: design a high-performance shoe where the upper, midsole, and outsole can be snapped together and pulled apart at will, without compromising on security, comfort, or style. The answer lay in creating a patented snap-fit interlocking system.</p>
+      <p>Our patented <strong>modular footwear</strong> system uses an innovative <strong>interlocking shoe technology</strong> that allows users to separate and replace the sole and upper without any tools, adhesives, or professional assistance. It's a simple, effective approach to <strong>shoe sole replacement</strong> that keeps your favorite pair going for longer. Browse our full <a href="/shop" class="text-[#0350F0] underline font-semibold">Schault shoe collections</a> to see the interlocking system in action.</p>
       
-      <h3>The Snap-Fit Architecture</h3>
-      <p>The core of our modular system relies on precision-molded thermoplastic elastomer (TPE) pegs on the outsole that lock into corresponding receptor cavities in the midsole. To guarantee the shoe doesn't detach during intensive runs or sudden pivots, we designed a dual-stage locking mechanism:</p>
-      <ul>
-        <li><strong>Friction Lock:</strong> Initial engagement provides immediate lateral stability.</li>
-        <li><strong>Mechanical Snap:</strong> A secondary compression tab that safely anchors the upper to the sole unit once weight is applied.</li>
+      <h3>What Is Schault's Interlocking Mechanism?</h3>
+      <p>Schault shoes are designed with a specially engineered locking system that securely connects the upper and the sole. This mechanism keeps the shoe stable during everyday activities while allowing users to easily detach and replace components whenever needed.</p>
+      <p>Unlike traditional footwear that is permanently glued or stitched together, Schault shoes are built to be modular — giving you fully <strong>customizable shoes</strong> that adapt as your sole or upper wears down.</p>
+
+      <h3>How to Remove the Sole</h3>
+      <p>Removing the sole is simple and takes only a few seconds:</p>
+      <ol class="list-decimal pl-6 space-y-2 text-black/70 my-4">
+        <li>Hold the shoe firmly.</li>
+        <li>Start peeling the sole from the front section of the shoe.</li>
+        <li>Continue separating the sole gradually until it is completely detached.</li>
+      </ol>
+
+      <blockquote>
+        <strong>Important:</strong> Always begin from the front of the shoe. Do not attempt to peel the sole from the back, as the mechanism is designed to disengage from the front for smooth removal.
+      </blockquote>
+
+      <h3>No Tools. No Glue. No Cobbler.</h3>
+      <p>One of the biggest advantages of Schault footwear is convenience.</p>
+      <p>You don't need:</p>
+      <ul class="list-disc pl-6 space-y-2 text-black/70 my-4">
+        <li>Any tools</li>
+        <li>Adhesives or glue</li>
+        <li>A shoe repair shop</li>
+        <li>A cobbler (mochi)</li>
       </ul>
 
-      <blockquote>
-        "Our target was simple: the system must survive 1 million flex cycles under a 100kg load without showing signs of structural fatigue."
-      </blockquote>
+      <p>If your sole wears out after months of use, simply <a href="/shop" class="text-[#0350F0] underline font-semibold">order a new sole</a> and attach it to your existing upper. Similarly, if your upper gets damaged while the sole remains in good condition, you can keep and reuse it — that's the beauty of a <strong>reusable shoe upper</strong>.</p>
 
-      <h3>Rigorous Stress Testing</h3>
-      <p>To ensure consumer safety, our prototypes underwent rigorous lab testing. Using robotic actuators, we simulated running patterns, shearing forces, and temperature fluctuations. The snaps held strong through mud, sand, and heavy rain, proving that glue is no longer necessary to build a durable shoe.</p>
-      
-      <h3>The Road Ahead</h3>
-      <p>Modularity isn't just a design choice; it's a technical evolution. By isolating the individual components of footwear, we allow creators to customize their aesthetic and extend the lifespan of their favorite pair by up to three times. The future is modular, snap-by-snap.</p>
-    `,
-  },
-  {
-    slug: "circular-steps-reimagining-lifespan-of-footwear",
-    title: "Circular Steps: Reimagining the Lifespan of Footwear",
-    excerpt: "Footwear waste is a growing global crisis. Learn how Schault's fully circular model is tackling waste by turning old outsoles into new components.",
-    category: "Sustainability",
-    publishedAt: "May 10, 2026",
-    readTime: "5 min read",
-    image: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?q=80&w=1200&auto=format&fit=crop",
-    author: {
-      name: "Ananya Sen",
-      role: "Head of Sustainability",
-      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&auto=format&fit=crop",
-    },
-    content: `
-      <p>Every year, over 20 billion pairs of shoes are manufactured worldwide. The vast majority of these shoes are destined for landfills, where their synthetic components, toxic adhesives, and composite materials can take upwards of 400 years to decompose. The traditional linear model of "take, make, waste" is no longer viable.</p>
-      
-      <h3>The Problem with Glued Shoes</h3>
-      <p>Traditional recycling facilities struggle with footwear because separating materials that have been permanently glued together is nearly impossible. Leather, nylon, rubber, and polyurethane end up melted into a low-grade plastic mix with limited reuse value. That's why recyclability must be built directly into the blueprint of the shoe.</p>
+      <h3>Save Money by Replacing Only What You Need</h3>
+      <p>Traditional footwear forces customers to purchase an entirely new pair even when only one component is worn out.</p>
+      <p>With Schault's modular design:</p>
+      <ul class="list-disc pl-6 space-y-2 text-black/70 my-4">
+        <li>Replace only the <a href="/shop" class="text-[#0350F0] underline font-semibold">sole</a> when the sole wears out.</li>
+        <li>Keep using the component that is still in good condition.</li>
+      </ul>
+      <p>This significantly reduces the overall cost of footwear ownership and helps consumers get more value from every purchase.</p>
 
-      <h3>Designing for Circularity</h3>
-      <p>By eliminating glue from the assembly process entirely, Schault makes recycling simple. When your outsole eventually wears down after hundreds of kilometers, you can simply un-snap it and send it back to us in exchange for a discount on your next sole unit. </p>
-      
-      <p>Once received, the worn sole units are washed, shredded, and pelletized. Because the outsoles are made from pure, unadulterated thermoplastic rubber (TPR), the recycled pellets can be fed right back into our injection molding machines to create brand new sole units. This is a true closed-loop circular system.</p>
+      <h3>Build Your Own Shoes</h3>
+      <p>Because the upper and the sole are fully independent components, Schault's interlocking system opens the door to something traditional shoemaking can't offer: true <strong>build your own shoes</strong> customization. Instead of choosing a single pre-made pair, you can mix and match uppers and soles to create a combination that fits your style, activity, and comfort preferences.</p>
 
-      <blockquote>
-        "Our dream is a product lifecycle where zero material ever touches a landfill. We're proud to say we've reached 85% circular efficiency in our current production line."
-      </blockquote>
+      <p>With our <a href="/create-your-own-shoe" class="text-[#0350F0] underline font-semibold">Build Your Own Shoes</a> tool, you can:</p>
+      <ul class="list-disc pl-6 space-y-2 text-black/70 my-4">
+        <li>Select an upper in the color, material, or design you like.</li>
+        <li>Pair it with a sole built for your needs — everyday wear, running, or rugged use.</li>
+        <li>Swap either component later without rebuying the entire shoe.</li>
+      </ul>
+      <p>It's the same interlocking mechanism described above, just put in your hands from the very first purchase. Ready to design your own pair? <a href="/create-your-own-shoe" class="text-[#0350F0] underline font-semibold">Start building your shoes here</a>.</p>
 
-      <h3>Beyond the Product</h3>
-      <p>Circularity is more than a technical recycling loop; it requires a shift in consumer behavior. By showing the world that worn-out parts can be modularly refreshed, we are empowering individuals to value longevity over fast consumption. Every snap counts towards a cleaner planet.</p>
-    `,
-  },
-  {
-    slug: "science-behind-lycra-suede-mesh-integration",
-    title: "Science Behind Lycra, Suede, and Mesh Integration",
-    excerpt: "An inside look at how we combine flexible, structured, and breathable materials to construct an incredibly supportive upper.",
-    category: "Design",
-    publishedAt: "May 04, 2026",
-    readTime: "4 min read",
-    image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=1200&auto=format&fit=crop",
-    author: {
-      name: "Rohit Verma",
-      role: "Lead Materials Designer",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&auto=format&fit=crop",
-    },
-    content: `
-      <p>A shoe's upper serves as the bridge between your foot and the ground. It has to perform a highly delicate balancing act: provide structural stability so you don't roll your ankle, maintain extreme flexibility to match the natural articulation of your foot, and guarantee absolute breathability to regulate heat.</p>
-      
-      <h3>The Triple-Material Matrix</h3>
-      <p>To achieve this balance, we spent months sourcing and testing combinations. We eventually landed on a custom hybrid structure that integrates three highly specialized textiles:</p>
-      
-      <h4>1. High-Density Performance Mesh (Breathability)</h4>
-      <p>Placed strategically over the toe box and midfoot panels, this engineered mesh maximizes airflow. By utilizing a multi-layered weave, it prevents external dirt and moisture from entering while allowing heat and sweat vapor to escape freely.</p>
+      <h3>A Sustainable Solution for the Future</h3>
+      <p>The fashion and footwear industries generate millions of tonnes of waste every year. A major reason is that shoes are discarded long before all their components have reached the end of their life.</p>
+      <p>Schault's interchangeable design addresses this problem by extending product life and reducing unnecessary disposal — a core part of what makes <strong>sustainable footwear</strong> and <strong>circular footwear</strong> possible at scale.</p>
 
-      <h4>2. Velvet Suede Overlays (Structure)</h4>
-      <p>Aesthetically striking and structurally vital, our premium suede reinforces the high-impact zones: the toe cap, lace stays, and heel counter. This provides structural integrity to keep your foot locked in place, ensuring the shoe holds its shape over years of use.</p>
+      <h3>Environmental Benefits</h3>
+      <h4>Reduced Material Waste</h4>
+      <p>Instead of discarding an entire shoe, users replace only the worn component. This drastically lowers material consumption and waste generation.</p>
 
-      <h4>3. Skinfit Lycra-Nylon Lining (Flexibility & Comfort)</h4>
-      <p>The interior collar and tongue are wrapped in a highly elastic Lycra-Nylon blend. It stretches dynamically to fit any foot shape like a glove, minimizing hot spots and friction that cause blisters.</p>
+      <h4>Lower Carbon Footprint</h4>
+      <p>Manufacturing a complete new pair of shoes requires more raw materials, energy, and transportation. Replacing only a sole or upper reduces the overall environmental impact.</p>
 
-      <h3>Perfecting the Synergy</h3>
-      <p>The combination of these materials means the upper feels soft and broken-in from day one, while offering the rugged support of a professional trainer. Modularity starts from the inside out.</p>
+      <h4>Supports Circular Consumption</h4>
+      <p>By maximizing the usable life of every component, Schault promotes a more circular and responsible approach to footwear ownership — the foundation of truly <strong>eco-friendly shoes</strong>.</p>
+
+      <h3>Frequently Asked Questions</h3>
+      <div class="space-y-4 my-6">
+        <div>
+          <p class="font-bold text-black/90">Can I replace the sole myself?</p>
+          <p class="text-black/70 text-sm">Yes. The interlocking mechanism is designed for easy user replacement without any tools or professional assistance.</p>
+        </div>
+        <div>
+          <p class="font-bold text-black/90">Do I need glue to attach a new sole?</p>
+          <p class="text-black/70 text-sm">No. The sole securely locks into the upper using Schault's interlocking technology.</p>
+        </div>
+        <div>
+          <p class="font-bold text-black/90">Which side should I peel from while removing the sole?</p>
+          <p class="text-black/70 text-sm">Always start from the front of the shoe. This ensures smooth disengagement of the locking mechanism.</p>
+        </div>
+        <div>
+          <p class="font-bold text-black/90">Can I buy soles and uppers separately?</p>
+          <p class="text-black/70 text-sm">Yes. Schault allows customers to purchase compatible soles and uppers individually, depending on which component needs replacement.</p>
+        </div>
+        <div>
+          <p class="font-bold text-black/90">Why is modular footwear more sustainable?</p>
+          <p class="text-black/70 text-sm">Modular footwear reduces waste, lowers material consumption, extends product lifespan, and decreases the environmental impact associated with replacing entire shoes.</p>
+        </div>
+        <div>
+          <p class="font-bold text-black/90">Can I design and build my own Schault shoes?</p>
+          <p class="text-black/70 text-sm">Yes. Our Build Your Own Shoes tool lets you mix and match uppers and soles to create a fully custom pair suited to your style and needs.</p>
+        </div>
+      </div>
+
+      <h3>The Future of Footwear Is Modular</h3>
+      <p>At Schault, we are reimagining footwear through innovation, sustainability, and affordability. Our interlocking sole technology empowers consumers to customize, repair, and extend the life of their shoes in a way that traditional footwear simply cannot — one more step toward mainstream <strong>modular footwear</strong> and <strong>interchangeable shoes</strong> for everyone.</p>
+
+      <p>Why replace an entire shoe when you only need to replace one part?</p>
+      <p><strong>Switch your sole. Keep your style. Reduce waste.</strong> Ready to try it? <a href="/create-your-own-shoe" class="text-[#0350F0] underline font-semibold">Build your own shoes</a> or <a href="/shop" class="text-[#0350F0] underline font-semibold">shop our full collections</a>.</p>
+      <p class="font-bold text-black/80 mt-4">#SwitchYourStyle</p>
     `,
   },
 ];

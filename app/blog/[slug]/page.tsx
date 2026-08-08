@@ -112,40 +112,42 @@ export default function BlogPostReader({ params }: BlogPostPageProps) {
       </article>
 
       {/* Related Posts */}
-      <section className="px-6 md:px-16 max-w-7xl mx-auto py-16 border-t border-black/5">
-        <h2 className="font-inter text-xl md:text-2xl font-black text-black/95 mb-10 text-left uppercase tracking-tight">
-          KEEP READING
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-          {relatedPosts.map((related) => (
-            <Link
-              href={`/blog/${related.slug}`}
-              key={related.slug}
-              className="group flex flex-col justify-between"
-            >
-              <div>
-                <div className="aspect-[4/3] rounded-2xl overflow-hidden relative bg-black/5 shadow-sm">
-                  <Image
-                    src={related.image}
-                    alt={related.title}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full font-inter text-[9px] tracking-wider text-black font-semibold uppercase">
-                    {related.category}
+      {relatedPosts.length > 0 && (
+        <section className="px-6 md:px-16 max-w-7xl mx-auto py-16 border-t border-black/5">
+          <h2 className="font-inter text-xl md:text-2xl font-black text-black/95 mb-10 text-left uppercase tracking-tight">
+            KEEP READING
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+            {relatedPosts.map((related) => (
+              <Link
+                href={`/blog/${related.slug}`}
+                key={related.slug}
+                className="group flex flex-col justify-between"
+              >
+                <div>
+                  <div className="aspect-[4/3] rounded-2xl overflow-hidden relative bg-black/5 shadow-sm">
+                    <Image
+                      src={related.image}
+                      alt={related.title}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full font-inter text-[9px] tracking-wider text-black font-semibold uppercase">
+                      {related.category}
+                    </div>
                   </div>
+                  <h3 className="font-inter text-sm md:text-base font-bold text-black/90 mt-4 leading-snug group-hover:text-[#0350F0] transition-colors duration-300">
+                    {related.title}
+                  </h3>
                 </div>
-                <h3 className="font-inter text-sm md:text-base font-bold text-black/90 mt-4 leading-snug group-hover:text-[#0350F0] transition-colors duration-300">
-                  {related.title}
-                </h3>
-              </div>
-              <span className="font-inter text-[10px] text-black/40 mt-3 font-medium">
-                {related.publishedAt} · {related.readTime}
-              </span>
-            </Link>
-          ))}
-        </div>
-      </section>
+                <span className="font-inter text-[10px] text-black/40 mt-3 font-medium">
+                  {related.publishedAt} · {related.readTime}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       <Footer />
     </main>

@@ -29,10 +29,10 @@ export default function ScrollOverlays() {
         }}
       >
         <h1 className="font-lejour text-[12vw] leading-none tracking-[0.17em] text-black md:text-5xl lg:text-6xl">
-          SCHAULT.
+          SCHAULT
         </h1>
         <p className="mt-3 max-w-md font-inter text-xs text-black/70 md:text-sm lg:text-base">
-          Replace parts. Not the entire shoe.
+          Switch your style
         </p>
       </motion.div>
 
