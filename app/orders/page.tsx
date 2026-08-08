@@ -1,64 +1,40 @@
-import { getMyOrders } from "@/lib/api/orders";
-import { OrderStatusBadge } from "@/components/orders/OrderStatusBadge";
-import Link from "next/link";
-import Footer from "@/components/Footer";
+import React from "react";
+import { getOrders } from "@/lib/orders/getOrders";
+import { OrderCard } from "@/components/orders/OrderCard";
+import { EmptyOrders } from "@/components/orders/EmptyOrders";
+
+export const metadata = {
+  title: "My Orders | SCHAULT Modular Footwear",
+  description: "View and track your SCHAULT orders, status, and invoices.",
+};
 
 export default async function OrdersPage() {
-  const orders = await getMyOrders();
+  const orders = await getOrders();
 
   return (
-    <>
-      <main className="min-h-screen bg-white pt-32 pb-20 px-6 md:px-20">
-        <div className="max-w-[1000px] mx-auto">
-          <h1 className="font-inter text-4xl text-black/90 uppercase tracking-[0.1em] mb-12">
-            My Orders
+    <div className="min-h-screen bg-[#fafafa] py-12">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        {/* Page Header */}
+        <div className="border-b border-black/10 pb-6 mb-8">
+          <h1 className="font-inter text-2xl font-black uppercase tracking-[0.2em] text-black">
+            MY ORDERS
           </h1>
-
-          {orders.length === 0 ? (
-            <div className="text-center py-20 border border-black/10">
-              <h2 className="font-inter text-2xl mb-4">No orders yet</h2>
-              <Link
-                href="/shop"
-                className="font-inter text-xl text-schlaut-red border-b border-schlaut-red pb-1 hover:text-black hover:border-black transition-colors uppercase tracking-widest"
-              >
-                Start Shopping
-              </Link>
-            </div>
-          ) : (
-            <div className="space-y-6">
-              {orders.map((order) => (
-                <Link
-                  href={`/orders/${order.id}`}
-                  key={order.id}
-                  className="block border border-black/10 p-6 hover:shadow-lg transition-shadow bg-white group"
-                >
-                  <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
-                    <div>
-                      <p className="text-xs text-black/50 font-inter mb-1">
-                        Order #{order.id.split("-")[0].toUpperCase()}
-                      </p>
-                      <p className="font-inter font-semibold text-lg">
-                        ₹{order.total.toLocaleString("en-IN")}
-                      </p>
-                      <p className="text-sm text-black/60 font-inter mt-1">
-                        {order.item_count} item{order.item_count !== 1 && "s"} • Placed on {new Date(order.created_at).toLocaleDateString()}
-                      </p>
-                    </div>
-                    
-                    <div className="flex items-center justify-between md:flex-col md:items-end gap-3">
-                      <OrderStatusBadge status={order.status} />
-                      <span className="text-sm font-inter text-schlaut-red group-hover:underline">
-                        View Details →
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
+          <p className="mt-1 font-inter text-xs text-zinc-500 tracking-wider">
+            TRACK YOUR MODULAR FOOTWEAR DISPATCHES AND INVOICES
+          </p>
         </div>
-      </main>
-      <Footer />
-    </>
+
+        {/* Orders List or Empty State */}
+        {orders.length === 0 ? (
+          <EmptyOrders />
+        ) : (
+          <div className="space-y-4">
+            {orders.map((order) => (
+              <OrderCard key={order.id} order={order} />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

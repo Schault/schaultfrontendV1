@@ -1,136 +1,175 @@
-import { getOrderById } from "@/lib/api/orders";
-import { OrderTimeline } from "@/components/orders/OrderTimeline";
-import { OrderStatusBadge } from "@/components/orders/OrderStatusBadge";
+import React from "react";
 import Link from "next/link";
-import Footer from "@/components/Footer";
-import { ArrowLeft } from "lucide-react";
 import { notFound } from "next/navigation";
+import { getOrderDetails } from "@/lib/orders/getOrderDetails";
+import { OrderStatusBadge } from "@/components/orders/OrderStatusBadge";
+import { OrderStatusTimeline } from "@/components/orders/OrderStatusTimeline";
+import { OrderItemCard } from "@/components/orders/OrderItemCard";
+import { ShippingAddressCard } from "@/components/orders/ShippingAddressCard";
+import { PaymentInformationCard } from "@/components/orders/PaymentInformationCard";
+import { OrderSummary } from "@/components/orders/OrderSummary";
+import { DownloadInvoiceButton } from "@/components/orders/DownloadInvoiceButton";
+import { ArrowLeft, Calendar, FileText, ShoppingBag } from "lucide-react";
 
-export default async function OrderDetailPage({ params }: { params: { id: string } }) {
-  try {
-    const order = await getOrderById(params.id);
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const shortId = params.id ? params.id.split("-")[0].toUpperCase() : "";
+  return {
+    title: `Order ORD-${shortId} | SCHAULT`,
+    description: `Details and tracking for order ORD-${shortId}`,
+  };
+}
 
-    return (
-      <>
-        <main className="min-h-screen bg-[#fafafa] pt-32 pb-20 px-6 md:px-20">
-          <div className="max-w-[1000px] mx-auto">
-            {/* Header */}
-            <div className="mb-8 border-b border-black/10 pb-8 tracking-widest">
-              <Link 
-                href="/orders" 
-                className="inline-flex items-center text-sm font-inter text-black/50 hover:text-black mb-6 uppercase"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" /> Back to Orders
-              </Link>
-              
-              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div>
-                  <h1 className="font-inter text-4xl text-black/90 uppercase">
-                    Order #{order.id.split('-')[0].toUpperCase()}
-                  </h1>
-                  <p className="font-inter text-black/60 mt-2">
-                    Placed on {new Date(order.created_at).toLocaleString()}
-                  </p>
-                </div>
-                <OrderStatusBadge status={order.status} />
+export default async function OrderDetailsPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const orderId = params.id;
+  const order = await getOrderDetails(orderId);
+
+  // Security: Return 404 if order does not exist or user does not own it
+  if (!order) {
+    notFound();
+  }
+
+  const shortOrderId = order.id.split("-")[0].toUpperCase();
+  const formattedOrderDate = new Date(order.created_at).toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  const formattedPaidAt = order.paid_at
+    ? new Date(order.paid_at).toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      })
+    : null;
+
+  return (
+    <div className="min-h-screen bg-[#fafafa] py-12">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        {/* Back Link */}
+        <div className="mb-6">
+          <Link
+            href="/orders"
+            className="inline-flex items-center gap-2 font-inter text-xs font-bold uppercase tracking-wider text-zinc-500 hover:text-black transition-colors"
+          >
+            <ArrowLeft size={14} /> Back to Orders
+          </Link>
+        </div>
+
+        {/* Page Header */}
+        <div className="border border-black/10 bg-white p-6 md:p-8 shadow-sm mb-8">
+          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div>
+              <div className="flex flex-wrap items-center gap-3">
+                <h1 className="font-mono text-xl md:text-2xl font-black text-black">
+                  ORD-{shortOrderId}
+                </h1>
+                {order.invoice_number && (
+                  <span className="inline-flex items-center gap-1 font-mono text-xs text-zinc-600 bg-zinc-100 px-2.5 py-1 rounded">
+                    <FileText size={12} /> {order.invoice_number}
+                  </span>
+                )}
               </div>
-            </div>
 
-            {/* Timeline */}
-            <div className="bg-white p-8 border border-black/10 mb-8 shadow-sm">
-              <h2 className="font-inter text-2xl uppercase tracking-widest mb-2 border-b border-black/10 pb-4">Order Status</h2>
-              <OrderTimeline timeline={order.timeline} currentStatus={order.status} />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Items List */}
-              <div className="md:col-span-2 bg-white p-8 border border-black/10 shadow-sm">
-                <h2 className="font-inter text-2xl uppercase tracking-widest mb-6 border-b border-black/10 pb-4">Items</h2>
-                <div className="space-y-6">
-                  {order.items.map((item) => (
-                    <div key={item.id} className="flex gap-4">
-                      {/* Placeholder for item image */}
-                      <div className="w-24 h-24 bg-black/5 flex-shrink-0" />
-                      
-                      <div className="flex-1">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <h3 className="font-inter text-xl uppercase tracking-wider">{item.product_name}</h3>
-                            <p className="text-sm font-inter text-black/60 mt-1">
-                              Variant: {item.variant_size} {item.variant_color ? `/ ${item.variant_color}` : ''}
-                            </p>
-                            <p className="text-sm font-inter text-black/60">
-                              Qty: {item.quantity}
-                            </p>
-                          </div>
-                          <p className="font-inter font-semibold">
-                            ₹{item.line_total.toLocaleString("en-IN")}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="mt-8 pt-6 border-t border-black/10 flex justify-between items-center font-inter text-2xl tracking-widest">
-                  <span>Total</span>
-                  <span>₹{order.total.toLocaleString("en-IN")}</span>
-                </div>
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                <OrderStatusBadge status={order.status} type="status" />
+                <OrderStatusBadge status={order.payment_status} type="payment" />
               </div>
 
-              {/* Sidebar Info */}
-              <div className="space-y-8">
-                {/* Shipping Details */}
-                <div className="bg-white p-8 border border-black/10 shadow-sm">
-                  <h2 className="font-inter text-2xl uppercase tracking-widest mb-4 border-b border-black/10 pb-4">Shipping Info</h2>
-                  {order.shipping_address ? (
-                    <div className="font-inter text-sm text-black/80 space-y-1">
-                      <p className="font-semibold text-black">{order.shipping_address.full_name}</p>
-                      <p>{order.shipping_address.line1}</p>
-                      {order.shipping_address.line2 && <p>{order.shipping_address.line2}</p>}
-                      <p>{order.shipping_address.city}, {order.shipping_address.state} {order.shipping_address.postal_code}</p>
-                      {order.shipping_address.phone && <p className="mt-2 text-black/60">{order.shipping_address.phone}</p>}
-                    </div>
-                  ) : (
-                    <p className="font-inter text-sm text-black/50 italic">No shipping details provided.</p>
-                  )}
-                </div>
-
-                {/* Estimated Delivery */}
-                <div className="bg-white p-8 border border-black/10 shadow-sm">
-                  <h2 className="font-inter text-2xl uppercase tracking-widest mb-4 border-b border-black/10 pb-4">Delivery Estimate</h2>
-                  <p className="font-inter text-black/90 font-semibold">
-                    {order.estimated_delivery
-                      ? new Date(order.estimated_delivery).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
-                      : "Pending"}
-                  </p>
-                </div>
-
-                {/* Tracking */}
-                {order.waybill && (
-                  <div className="bg-white p-8 border border-black/10 shadow-sm">
-                    <h2 className="font-inter text-2xl uppercase tracking-widest mb-4 border-b border-black/10 pb-4">Tracking</h2>
-                    <p className="font-inter text-xs text-black/50 uppercase tracking-widest mb-1">Waybill</p>
-                    <p className="font-inter font-semibold text-black/90 mb-4">{order.waybill}</p>
-                    <a
-                      href={`https://www.delhivery.com/track/package/${order.waybill}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block bg-[#0350F0] text-white font-inter text-xs uppercase tracking-widest px-6 py-3 hover:bg-black/90 transition-colors"
-                    >
-                      Track on Delhivery →
-                    </a>
-                  </div>
+              <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-zinc-500 font-inter">
+                <span className="flex items-center gap-1.5">
+                  <Calendar size={12} className="text-zinc-400" />
+                  Placed: {formattedOrderDate}
+                </span>
+                {formattedPaidAt && (
+                  <>
+                    <span>•</span>
+                    <span>Paid: {formattedPaidAt}</span>
+                  </>
                 )}
               </div>
             </div>
+
+            <div className="flex items-center">
+              <DownloadInvoiceButton
+                orderId={order.id}
+                hasInvoiceUrl={Boolean(order.invoice_url)}
+              />
+            </div>
           </div>
-        </main>
-        <Footer />
-      </>
-    );
-  } catch (e) {
-    console.error(e);
-    notFound();
-  }
+        </div>
+
+        {/* Main Content Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Main Column: Timeline & Products */}
+          <div className="lg:col-span-2 space-y-8">
+            {/* Order Timeline */}
+            <div className="border border-black/10 bg-white p-6 shadow-sm">
+              <h2 className="font-inter text-xs font-bold uppercase tracking-widest text-zinc-400 border-b border-black/10 pb-3 mb-4">
+                ORDER STATUS TIMELINE
+              </h2>
+              <OrderStatusTimeline
+                timeline={order.timeline}
+                currentStatus={order.status}
+              />
+            </div>
+
+            {/* Snapshot Product Items */}
+            <div className="border border-black/10 bg-white p-6 shadow-sm">
+              <h2 className="font-inter text-xs font-bold uppercase tracking-widest text-zinc-400 border-b border-black/10 pb-3 mb-6 flex items-center gap-2">
+                <ShoppingBag size={14} /> ORDERED ITEMS ({order.items.length})
+              </h2>
+
+              <div className="space-y-4">
+                {order.items.map((item) => (
+                  <OrderItemCard key={item.id} item={item} />
+                ))}
+              </div>
+            </div>
+
+            {/* Tracking */}
+            {order.waybill && (
+              <div className="border border-black/10 bg-white p-6 shadow-sm">
+                <h2 className="font-inter text-xs font-bold uppercase tracking-widest text-zinc-400 border-b border-black/10 pb-3 mb-4">
+                  TRACKING
+                </h2>
+                <p className="font-inter text-xs text-black/50 uppercase tracking-widest mb-1">Waybill</p>
+                <p className="font-inter font-semibold text-black/90 mb-4">{order.waybill}</p>
+                <a
+                  href={`https://www.delhivery.com/track/package/${order.waybill}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-[#0350F0] text-white font-inter text-xs uppercase tracking-widest px-6 py-3 hover:bg-black/90 transition-colors"
+                >
+                  Track on Delhivery →
+                </a>
+              </div>
+            )}
+          </div>
+
+          {/* Right Side Column: Address, Payment & Price Summary */}
+          <div className="space-y-8">
+            <ShippingAddressCard address={order.shipping_address} />
+
+            <PaymentInformationCard
+              paymentStatus={order.payment_status}
+              paymentMethod={order.payment_method}
+              razorpayPaymentId={order.razorpay_payment_id}
+              razorpayOrderId={order.razorpay_order_id}
+              paidAt={order.paid_at}
+              invoiceNumber={order.invoice_number}
+            />
+
+            <OrderSummary total={order.total} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }

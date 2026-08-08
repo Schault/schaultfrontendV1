@@ -67,6 +67,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [items, isMounted]);
 
   const addItem = (item: CartItem) => {
+    // ponytail: TEST-ONLY bridge. The storefront runs on mock products with no real
+    // product_variants UUID, but the order pipeline needs one. Attach a real DB variant
+    // so the full flow (order/invoice/email/shipping) can be exercised during the pilot.
+    // Remove before launch — real fix is DB-driven products. Charged at DB base_price.
+    const TEST_VARIANT_ID = "5ceac96e-638c-45bb-8f98-67b8514245d8"; // Schault Midsole - White (stock 100)
+    if (!item.variantId) item = { ...item, variantId: TEST_VARIANT_ID };
+
     setItems((prevItems) => {
       const existingItem = prevItems.find((i) => i.id === item.id);
       if (existingItem) {
