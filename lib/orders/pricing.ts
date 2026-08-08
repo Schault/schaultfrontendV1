@@ -98,5 +98,21 @@ export async function computeOrderPricing(
     throw new Error("Pricing computation produced an invalid total");
   }
 
+  // order_items.line_total is a DB-generated column (unit_price * quantity), and a
+  // DB trigger requires orders.total == SUM(order_items.line_total). Fold the
+  // discount into unit_price here so that invariant holds when the RPC inserts rows.
+  if (perUnit > 0) {
+    items.forEach((item) => {
+      item.unit_price = Number((item.unit_price - perUnit).toFixed(2));
+      item.line_total = Number((item.unit_price * item.quantity).toFixed(2));
+    });
+  } else if (coupon === "DEVTEST99" && discount > 0) {
+    // ponytail: test-only coupon, dumps the whole discount onto the last line item.
+    // Fine for test payments; remove alongside the DEVTEST99 backdoor before launch.
+    const last = items[items.length - 1];
+    last.unit_price = Number(((last.line_total - discount) / last.quantity).toFixed(2));
+    last.line_total = Number((last.unit_price * last.quantity).toFixed(2));
+  }
+
   return { items, subtotal, discount, total };
 }

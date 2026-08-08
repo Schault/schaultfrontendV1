@@ -165,7 +165,9 @@ export async function POST(req: Request) {
       // Step C: Upload Invoice PDF to Supabase Storage (non-blocking for payment response)
       let invoiceResult: any = null;
       try {
-        invoiceResult = await uploadInvoice(supabase, orderResult.order_id);
+        // service-role: the private `invoices` bucket has no storage RLS policy,
+        // so the user client can't upload. Ownership is already established by the pipeline.
+        invoiceResult = await uploadInvoice(adminSupabase, orderResult.order_id);
       } catch (uploadErr) {
         console.error("[verify-payment] Invoice upload error (non-fatal):", uploadErr);
       }

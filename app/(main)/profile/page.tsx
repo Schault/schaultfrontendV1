@@ -1,7 +1,10 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { Package, Truck, CheckCircle2 } from "lucide-react";
+import Link from "next/link";
+import { getOrders } from "@/lib/orders/getOrders";
+import { OrderCard } from "@/components/orders/OrderCard";
+import { EmptyOrders } from "@/components/orders/EmptyOrders";
 
 export const dynamic = "force-dynamic";
 
@@ -14,6 +17,8 @@ export default async function ProfilePage() {
     }
 
     const name = user.user_metadata?.full_name || user.email?.split("@")[0] || "Shopper";
+    const orders = await getOrders();
+    const recentOrders = orders.slice(0, 3);
 
     async function signOut() {
         "use server";
@@ -43,9 +48,27 @@ export default async function ProfilePage() {
 
                 <section>
                     <div className="mb-2 h-0.5 w-8 bg-[#0350F0]" aria-hidden />
-                    <h2 className="font-inter text-3xl tracking-wide text-black/90 mb-8">Order History</h2>
+                    <div className="flex items-end justify-between mb-8">
+                        <h2 className="font-inter text-3xl tracking-wide text-black/90">Order History</h2>
+                        {orders.length > 0 && (
+                            <Link
+                                href="/orders"
+                                className="font-inter text-xs font-bold uppercase tracking-widest text-[#0350F0] hover:text-black transition-colors"
+                            >
+                                View All
+                            </Link>
+                        )}
+                    </div>
 
-                    <p className="font-inter text-black/60">No orders placed yet.</p>
+                    {recentOrders.length === 0 ? (
+                        <EmptyOrders />
+                    ) : (
+                        <div className="space-y-4">
+                            {recentOrders.map((order) => (
+                                <OrderCard key={order.id} order={order} />
+                            ))}
+                        </div>
+                    )}
                 </section>
             </div>
         </main>

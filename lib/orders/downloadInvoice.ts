@@ -1,4 +1,12 @@
 import { createClient } from "@/utils/supabase/server";
+import { createClient as createAdminClient } from "@supabase/supabase-js";
+
+// Service-role client for signing storage objects. Ownership is verified with the
+// user's session first; this only bypasses storage RLS to mint the signed URL.
+const adminSupabase = createAdminClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 export interface DownloadInvoiceResult {
   success: boolean;
@@ -49,8 +57,9 @@ export async function getSignedInvoiceUrl(orderId: string): Promise<DownloadInvo
   // Extract relative storage path (e.g., '2026/INV-2026-0001.pdf' from 'invoices/2026/INV-2026-0001.pdf')
   const cleanPath = order.invoice_url.replace(/^invoices\//, "");
 
-  // 2. Generate 24-hour signed URL from Supabase Storage
-  const { data: signedData, error: signedError } = await supabase.storage
+  // 2. Generate 24-hour signed URL from Supabase Storage (service-role: ownership
+  //    already verified above; the private bucket has no user-facing read policy)
+  const { data: signedData, error: signedError } = await adminSupabase.storage
     .from("invoices")
     .createSignedUrl(cleanPath, 86400); // 24 hours
 
