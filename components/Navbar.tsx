@@ -168,14 +168,14 @@ export default function Navbar() {
           </Link>
 
           {/* CENTER: Navigation Links (Desktop) */}
-          <div className="absolute left-1/2 hidden -translate-x-1/2 md:flex md:items-center md:gap-8">
+          <div className="absolute left-1/2 hidden -translate-x-1/2 whitespace-nowrap md:flex md:items-center md:gap-3 lg:gap-6 xl:gap-8">
             {NAV_LINKS.map((link) => {
               const isActive = pathname === link.href;
               return (
                 <Link
                   key={link.label}
                   href={link.href}
-                  className={`relative font-inter text-sm font-medium tracking-wide transition-colors duration-200 ${
+                  className={`relative whitespace-nowrap font-inter text-xs lg:text-sm font-medium tracking-wide transition-colors duration-200 ${
                     isActive
                       ? "text-[#0350F0]"
                       : "text-black/70 hover:text-black/90"

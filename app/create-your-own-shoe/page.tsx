@@ -151,7 +151,7 @@ export default function CreateYourOwnShoePage() {
                       : "bg-gray-50 text-black/50 hover:bg-white"
                   }`}
                 >
-                  Sole
+                  Sole <span className="text-[10px] lowercase text-amber-600 font-normal">(out of stock)</span>
                 </button>
               </div>
 

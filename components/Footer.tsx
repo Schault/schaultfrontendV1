@@ -62,9 +62,9 @@ export default function Footer() {
                 className="h-16 w-auto object-contain"
               />
               <p className="mt-4 font-inter text-sm text-black/50">
-                Replace parts. Not the entire shoe.
+                Switch your style
               </p>
-              <p className="mt-1 font-inter text-sm text-black/30">EST. 2024</p>
+              <p className="mt-1 font-inter text-sm text-black/30">EST. 2026</p>
 
               <div className="mt-6 flex gap-3">
                 <Link

@@ -13,21 +13,22 @@ type PlaceholderItem = {
   name: string;
   price: string;
   image: string;
+  isAvailable?: boolean;
 };
 
 // ── Data ────────────────────────────────────────────────────────────────────
 
 const SHOES: PlaceholderItem[] = [
-  { id: "shoe-1", name: "Arctic Dawn", price: "₹2,499", image: "/images/shoes/bluewhite.jpg" },
-  { id: "shoe-2", name: "Rust & Ash", price: "₹2,499", image: "/images/shoes/brownblack.jpg" },
-  { id: "shoe-3", name: "Navy Frost", price: "₹2,499", image: "/images/shoes/darkblue.jpg" },
-  { id: "shoe-4", name: "Heritage", price: "₹2,499", image: "/images/shoes/whitefull.jpg" },
-  { id: "shoe-5", name: "Ochre & Earth", price: "₹2,499", image: "/images/shoes/yellow.jpg" },
+  { id: "shoe-1", name: "Arctic Dawn", price: "₹2,499", image: "/images/shoes/bluewhite.jpg", isAvailable: true },
+  { id: "shoe-2", name: "Rust & Ash", price: "₹2,499", image: "/images/shoes/brownblack.jpg", isAvailable: true },
+  { id: "shoe-3", name: "Navy Frost", price: "₹2,499", image: "/images/shoes/darkblue.jpg", isAvailable: true },
+  { id: "shoe-4", name: "Heritage", price: "₹2,499", image: "/images/shoes/whitefull.jpg", isAvailable: true },
+  { id: "shoe-5", name: "Ochre & Earth", price: "₹2,499", image: "/images/shoes/yellow.jpg", isAvailable: true },
 ];
 
 const SOLES: PlaceholderItem[] = [
-  { id: "sole-1", name: "White Outsole", price: "₹799", image: "/images/sole_1.webp" },
-  { id: "sole-2", name: "Black Outsole", price: "₹799", image: "/images/sole_2.webp" },
+  { id: "sole-1", name: "White Outsole", price: "₹799", image: "/images/sole_1.webp", isAvailable: false },
+  { id: "sole-2", name: "Black Outsole", price: "₹799", image: "/images/sole_2.webp", isAvailable: false },
 ];
 
 // ── Placeholder Card ────────────────────────────────────────────────────────
@@ -35,6 +36,7 @@ const SOLES: PlaceholderItem[] = [
 function PlaceholderCard({ item, index }: { item: PlaceholderItem; index: number }) {
   const [imgError, setImgError] = useState(false);
   const { addItem } = useCart();
+  const isAvailable = item.isAvailable !== false;
 
   return (
     <motion.article
@@ -42,16 +44,23 @@ function PlaceholderCard({ item, index }: { item: PlaceholderItem; index: number
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.35, ease: "easeOut", delay: index * 0.05 }}
-      className="group flex flex-col bg-white transition-all duration-[250ms] ease-out hover:-translate-y-1 hover:shadow-sm"
+      className="group flex flex-col bg-white transition-all duration-[250ms] ease-out hover:-translate-y-1 hover:shadow-sm relative"
     >
       <div className="flex flex-col flex-1 h-full w-full outline-none">
         <div className="relative aspect-[4/3] w-full overflow-hidden bg-black/5">
+          {!isAvailable && (
+            <div className="absolute top-3 right-3 z-10 bg-black/80 px-2.5 py-1 text-[9px] font-bold uppercase tracking-widest text-white backdrop-blur-sm">
+              Out of Stock
+            </div>
+          )}
           {!imgError ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={item.image}
               alt={item.name}
-              className="h-full w-full object-contain transition-transform duration-250 group-hover:scale-[1.02] p-4"
+              className={`h-full w-full object-contain transition-transform duration-250 group-hover:scale-[1.02] p-4 ${
+                !isAvailable ? "opacity-50" : ""
+              }`}
               onError={() => setImgError(true)}
             />
           ) : (
@@ -70,24 +79,33 @@ function PlaceholderCard({ item, index }: { item: PlaceholderItem; index: number
           <p className="mt-3 font-inter text-sm font-semibold text-black">
             {item.price}
           </p>
-          <button 
-            onClick={(e) => {
-              e.preventDefault();
-              addItem({
-                id: item.id,
-                name: item.name,
-                price: parseInt(item.price.replace(/[^\d]/g, ""), 10) || 2499,
-                image: item.image,
-                quantity: 1,
-                color: "Default",
-                size: "US 9"
-              });
-              toast.success(`${item.name} added to cart!`);
-            }}
-            className="mt-6 w-full border border-black py-2.5 text-center font-inter text-[10px] uppercase tracking-widest transition-all duration-250 ease-out hover:border-[#0350F0] hover:bg-[#0350F0] hover:text-white"
-          >
-            Add to Cart
-          </button>
+          {isAvailable ? (
+            <button 
+              onClick={(e) => {
+                e.preventDefault();
+                addItem({
+                  id: item.id,
+                  name: item.name,
+                  price: parseInt(item.price.replace(/[^\d]/g, ""), 10) || 2499,
+                  image: item.image,
+                  quantity: 1,
+                  color: "Default",
+                  size: "US 9"
+                });
+                toast.success(`${item.name} added to cart!`);
+              }}
+              className="mt-6 w-full border border-black py-2.5 text-center font-inter text-[10px] uppercase tracking-widest transition-all duration-250 ease-out hover:border-[#0350F0] hover:bg-[#0350F0] hover:text-white"
+            >
+              Add to Cart
+            </button>
+          ) : (
+            <button 
+              disabled
+              className="mt-6 w-full cursor-not-allowed border border-black/20 bg-black/5 py-2.5 text-center font-inter text-[10px] uppercase tracking-widest text-black/40"
+            >
+              Out of Stock
+            </button>
+          )}
         </div>
       </div>
     </motion.article>
@@ -112,7 +130,7 @@ export default function CollectionHero() {
             OUR COLLECTION
           </h1>
           <p className="mt-4 max-w-xl font-inter text-base text-black/60 md:text-lg">
-            Replace parts. Not the entire shoe. Discover our fully modular lineup engineered for performance, style, and sustainability.
+            Switch your style. Discover our fully modular lineup engineered for performance, style, and sustainability.
           </p>
         </motion.div>
 

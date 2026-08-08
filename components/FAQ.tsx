@@ -14,7 +14,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Are the parts sold separately?",
-    a: "Yes. You can buy the upper, and outsole individually or as a complete set. Mix and match styles as you like.",
+    a: "Currently, complete shoe sets are available for purchase. Standalone uppers and outsoles will be available separately soon.",
   },
   {
     q: "Is SCHAULT sustainable?",
