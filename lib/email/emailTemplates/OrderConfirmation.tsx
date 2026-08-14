@@ -12,6 +12,7 @@ import {
   Link,
   Button,
   Hr,
+  Img,
 } from "@react-email/components";
 import { OrderConfirmationEmailProps } from "../emailTypes";
 
@@ -195,9 +196,21 @@ export const OrderConfirmationEmail: React.FC<OrderConfirmationEmailProps> = ({
             </Section>
           )}
 
+          {/* Signature */}
+          <Section style={mainStyles.signatureSection}>
+            <Text style={mainStyles.paragraph}>Warm regards,</Text>
+            <Text style={mainStyles.signatureName}>Team SCHAULT</Text>
+          </Section>
+
           {/* Footer */}
-          <Hr style={mainStyles.divider} />
+          <Section style={mainStyles.footerAccentBar} />
           <Section style={mainStyles.footerSection}>
+            <Img
+              src="https://www.schault.com/images/logo-expose-tran.png"
+              width="120"
+              alt="SCHAULT"
+              style={mainStyles.footerLogo}
+            />
             <Text style={mainStyles.footerHeading}>NEED HELP WITH YOUR ORDER?</Text>
             <Text style={mainStyles.footerText}>
               Email us at{" "}
@@ -446,6 +459,23 @@ const mainStyles = {
   dividerThin: {
     borderColor: "#e4e4e7",
     margin: "8px 0",
+  },
+  signatureSection: {
+    marginBottom: "20px",
+  },
+  signatureName: {
+    fontSize: "13px",
+    fontWeight: "bold",
+    color: "#09090b",
+    margin: "2px 0 0 0",
+  },
+  footerAccentBar: {
+    height: "3px",
+    backgroundColor: "#0350F0",
+    margin: "24px 0 20px 0",
+  },
+  footerLogo: {
+    margin: "0 auto 16px auto",
   },
   footerSection: {
     textAlign: "center" as const,
