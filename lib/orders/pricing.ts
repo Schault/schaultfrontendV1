@@ -83,9 +83,9 @@ export async function computeOrderPricing(
   const totalQty = normalized.reduce((s, i) => s + i.quantity, 0);
   let discount = Math.min(perUnit * totalQty, subtotal);
 
-  if (coupon === "SCHAULT-20") {
+  if (coupon === "SCHAULT20") {
     discount = Math.round(subtotal * 0.20);
-  } else if (coupon === "LOVE-30") {
+  } else if (coupon === "LOVE30") {
     discount = Math.round(subtotal * 0.30);
   } else if (coupon === "DEVTEST99") {
     discount = Math.max(subtotal - 1, 0);
@@ -101,12 +101,12 @@ export async function computeOrderPricing(
   // order_items.line_total is a DB-generated column (unit_price * quantity), and a
   // DB trigger requires orders.total == SUM(order_items.line_total). Fold the
   // discount into unit_price here so that invariant holds when the RPC inserts rows.
-  if (coupon === "SCHAULT-20") {
+  if (coupon === "SCHAULT20") {
     items.forEach((item) => {
       item.unit_price = Number((item.unit_price * 0.80).toFixed(2));
       item.line_total = Number((item.unit_price * item.quantity).toFixed(2));
     });
-  } else if (coupon === "LOVE-30") {
+  } else if (coupon === "LOVE30") {
     items.forEach((item) => {
       item.unit_price = Number((item.unit_price * 0.70).toFixed(2));
       item.line_total = Number((item.unit_price * item.quantity).toFixed(2));

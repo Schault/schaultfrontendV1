@@ -45,8 +45,8 @@ export default function CheckoutPage() {
 
   const itemTotalQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
   const discountAmount =
-    appliedCoupon === "SCHAULT-20" ? Math.round(totalPrice * 0.20) :
-    appliedCoupon === "LOVE-30" ? Math.round(totalPrice * 0.30) :
+    appliedCoupon === "SCHAULT20" ? Math.round(totalPrice * 0.20) :
+    appliedCoupon === "LOVE30" ? Math.round(totalPrice * 0.30) :
     appliedCoupon === "DEVTEST99" ? Math.max(totalPrice - 1, 0) :
     0;
   const shippingFee = 100;
@@ -382,8 +382,8 @@ export default function CheckoutPage() {
                         onClick={() => {
                           if (!couponInput) return;
                           if (
-                            couponInput === "SCHAULT-20" ||
-                            couponInput === "LOVE-30" ||
+                            couponInput === "SCHAULT20" ||
+                            couponInput === "LOVE30" ||
                             couponInput === "DEVTEST99"
                           ) {
                             setAppliedCoupon(couponInput);
