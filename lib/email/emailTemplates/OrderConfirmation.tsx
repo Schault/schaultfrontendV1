@@ -206,11 +206,12 @@ export const OrderConfirmationEmail: React.FC<OrderConfirmationEmailProps> = ({
           <Section style={mainStyles.footerAccentBar} />
           <Section style={mainStyles.footerSection}>
             <Img
-              src="https://www.schault.com/images/logo-expose-tran.png"
+              src="https://www.schault.com/assets/schault-logo-email.png"
               width="120"
               alt="SCHAULT"
               style={mainStyles.footerLogo}
             />
+            <Text style={mainStyles.footerTagline}>MODULAR FOOTWEAR SYSTEM</Text>
             <Text style={mainStyles.footerHeading}>NEED HELP WITH YOUR ORDER?</Text>
             <Text style={mainStyles.footerText}>
               Email us at{" "}
@@ -475,7 +476,13 @@ const mainStyles = {
     margin: "24px 0 20px 0",
   },
   footerLogo: {
-    margin: "0 auto 16px auto",
+    margin: "0 auto 8px auto",
+  },
+  footerTagline: {
+    fontSize: "9px",
+    letterSpacing: "2px",
+    color: "#71717a",
+    margin: "0 0 16px 0",
   },
   footerSection: {
     textAlign: "center" as const,
