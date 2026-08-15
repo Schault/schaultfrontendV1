@@ -54,8 +54,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         {expandedSections.price && (
           <div className="mt-4">
             <PriceRangeSlider 
-              min={1000} 
-              max={15000} 
+              min={0} 
+              max={20000} 
+              currentMin={activeFilters.price?.min}
+              currentMax={activeFilters.price?.max}
               onChange={(min, max) => onFilterChange({ ...activeFilters, price: { min, max } })}
             />
           </div>

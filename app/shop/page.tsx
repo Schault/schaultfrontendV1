@@ -16,7 +16,7 @@ export default function ShopPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [filters, setFilters] = useState({
     category: "",
-    price: { min: 1000, max: 15000 },
+    price: { min: 0, max: 20000 },
     color: "",
     size: ""
   });
@@ -34,7 +34,12 @@ export default function ShopPage() {
   const filteredProducts = useMemo(() => {
     let result = products.filter(product => {
       const matchCategory = !filters.category || filters.category === "All" || product.category === filters.category;
-      const matchPrice = product.price >= filters.price.min && product.price <= filters.price.max;
+      
+      const priceNum = typeof product.price === "number"
+        ? product.price
+        : parseFloat(String(product.price).replace(/[^0-9.]/g, "")) || 0;
+
+      const matchPrice = priceNum >= filters.price.min && priceNum <= filters.price.max;
       const matchColor = !filters.color || product.colors.some(c => c.name === filters.color);
       const matchSize = !filters.size || product.sizes.includes(filters.size) || filters.size === "All";
 
@@ -51,11 +56,11 @@ export default function ShopPage() {
     }
 
     return result;
-  }, [filters, sortBy]);
+  }, [filters, products, sortBy]);
 
   const removeFilter = (key: string) => {
     if (key === "price") {
-      setFilters(prev => ({ ...prev, price: { min: 1000, max: 15000 } }));
+      setFilters(prev => ({ ...prev, price: { min: 0, max: 20000 } }));
     } else {
       setFilters(prev => ({ ...prev, [key]: "" }));
     }
@@ -185,7 +190,7 @@ export default function ShopPage() {
               <div className="p-4 bg-white border-t border-black/10 grid grid-cols-2 gap-4">
                 <button 
                   onClick={() => {
-                    setFilters({ category: "", price: { min: 1000, max: 15000 }, color: "", size: "" });
+                    setFilters({ category: "", price: { min: 0, max: 20000 }, color: "", size: "" });
                     setIsFilterDrawerOpen(false);
                   }}
                   className="py-3 text-xs font-bold border border-black/10 uppercase tracking-widest"

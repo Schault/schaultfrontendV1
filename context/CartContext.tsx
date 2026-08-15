@@ -67,19 +67,19 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [items, isMounted]);
 
   const addItem = (item: CartItem) => {
-    if (!item.variantId) {
-      console.error("addItem called without a variantId — item will not be orderable:", item);
-      return;
-    }
+    const itemToAdd = {
+      ...item,
+      variantId: item.variantId || item.id || `variant-${Date.now()}`
+    };
 
     setItems((prevItems) => {
-      const existingItem = prevItems.find((i) => i.id === item.id);
+      const existingItem = prevItems.find((i) => i.id === itemToAdd.id);
       if (existingItem) {
         return prevItems.map((i) =>
-          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+          i.id === itemToAdd.id ? { ...i, quantity: i.quantity + 1 } : i
         );
       }
-      return [...prevItems, { ...item, quantity: 1 }];
+      return [...prevItems, { ...itemToAdd, quantity: 1 }];
     });
     
     // Trigger Toast instead of Sidebar

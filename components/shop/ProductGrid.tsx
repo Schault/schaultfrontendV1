@@ -68,11 +68,12 @@ const ProductGrid: React.FC<ProductGridProps> = ({
         {/* Active Filter Chips */}
         <div className="flex flex-wrap gap-2 pt-4">
           {Object.entries(activeFilters).map(([key, value]) => {
-            if (!value || (typeof value === "object" && !Object.values(value as any).some(v => v !== 0))) return null;
+            if (!value) return null;
             
             let label = "";
             if (key === "price") {
               const { min, max } = value as { min: number, max: number };
+              if (min <= 0 && max >= 20000) return null;
               label = `₹${min} - ₹${max}`;
             } else {
               label = value as string;

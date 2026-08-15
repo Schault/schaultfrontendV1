@@ -20,11 +20,11 @@ type PlaceholderItem = {
 // ── Data ────────────────────────────────────────────────────────────────────
 
 const SHOES: PlaceholderItem[] = [
-  { id: "shoe-1", name: "BlueBird", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/bluewhite.jpg", isAvailable: false },
-  { id: "shoe-2", name: "RedEye", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/brownblack.jpg", isAvailable: true },
-  { id: "shoe-3", name: "DayDream", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/darkblue.jpg", isAvailable: true },
-  { id: "shoe-4", name: "DayBreak", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/whitefull.jpg", isAvailable: true },
-  { id: "shoe-5", name: "WildRoot", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/yellow.jpg", isAvailable: false },
+  { id: "shoe-1", name: "BlueBird", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/BlueBird/1.png", isAvailable: false },
+  { id: "shoe-2", name: "RedEye", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/RedEye/1.png", isAvailable: true },
+  { id: "shoe-3", name: "DayDream", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/DayDream/1.png", isAvailable: true },
+  { id: "shoe-4", name: "DayBreak", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/DayBreak/1.png", isAvailable: true },
+  { id: "shoe-5", name: "WildRoot", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/WildRoot/1.png", isAvailable: false },
   { id: "shoe-6", name: "SunDaze", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/SunDaze/1.png", isAvailable: true },
 ];
 
@@ -99,12 +99,13 @@ function PlaceholderCard({ item, index }: { item: PlaceholderItem; index: number
                 e.preventDefault();
                 addItem({
                   id: item.id,
+                  variantId: item.id,
                   name: item.name,
                   price: parseInt(item.price.replace(/[^\d]/g, ""), 10) || 2999,
                   image: item.image,
                   quantity: 1,
                   color: "Default",
-                  size: "US 9"
+                  size: "UK 8"
                 });
                 toast.success(`${item.name} added to cart!`);
               }}

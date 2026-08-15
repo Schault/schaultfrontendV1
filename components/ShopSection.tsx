@@ -67,6 +67,7 @@ function ProductCard({
     
     addItem({
       id: `${product.id}-default`,
+      variantId: product.variantId || `${product.id}-variant`,
       shoeId: product.id,
       name: product.name,
       image: product.image,
