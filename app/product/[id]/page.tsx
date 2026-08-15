@@ -1,11 +1,12 @@
 "use client";
 
 import { useCart } from "@/context/CartContext";
-import { notFound, useRouter, useParams } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { useState, useMemo, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { MOCK_PRODUCTS } from "@/lib/mockProducts";
+import { getShopProducts } from "@/lib/api/products";
+import { Product } from "@/components/shop/ProductCard";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { createClient } from "@/utils/supabase/client";
@@ -17,11 +18,20 @@ export default function ProductPage() {
   const { addItem } = useCart();
   const router = useRouter();
   const supabase = createClient();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isAdding, setIsAdding] = useState(false);
   const [isBuying, setIsBuying] = useState(false);
+
+  useEffect(() => {
+    getShopProducts()
+      .then(setProducts)
+      .catch((err) => console.error("Failed to load products:", err))
+      .finally(() => setIsLoading(false));
+  }, []);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -31,15 +41,14 @@ export default function ProductPage() {
     }
   };
 
-  // Find product from mocked data
   const product = useMemo(() => {
-    const p = MOCK_PRODUCTS.find((p) => p.id === productId);
-    return p || null;
-  }, [productId]);
+    return products.find((p) => p.id === productId) || null;
+  }, [products, productId]);
 
-  if (!product) {
-    return notFound();
-  }
+  const selectedVariant = useMemo(() => {
+    if (!product || !selectedSize) return null;
+    return product.variants.find((v) => v.size === selectedSize) || null;
+  }, [product, selectedSize]);
 
   // Set default color & size
   useEffect(() => {
@@ -47,10 +56,20 @@ export default function ProductPage() {
       setSelectedColor(product.colors[0].name);
     }
     if (product && !selectedSize) {
-      const avail = product.availableSizes && product.availableSizes.length > 0 ? product.availableSizes[0] : (product.sizes.includes("8") ? "8" : product.sizes[0]);
+      const inStock = product.variants.find((v) => v.stock > 0);
+      const avail = inStock?.size || (product.sizes.includes("8") ? "8" : product.sizes[0]);
       if (avail) setSelectedSize(avail);
     }
   }, [product, selectedColor, selectedSize]);
+
+  if (isLoading) {
+    return <main className="min-h-screen bg-[#F1F3F6] pt-20 pb-12 flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-black/30" /></main>;
+  }
+
+  if (!product) {
+    router.push("/shop");
+    return null;
+  }
 
   const isAvailable = product.isAvailable !== false;
 
@@ -73,13 +92,18 @@ export default function ProductPage() {
       toast.error("Please select a size first!", { icon: "📏" });
       return;
     }
-    
+    if (!selectedVariant || selectedVariant.stock < 1) {
+      toast.error("This size is out of stock.", { icon: "📏" });
+      return;
+    }
+
     setIsAdding(true);
     try {
       if (!(await checkAuth())) return;
 
       addItem({
         id: `${product.id}-${selectedSize}-${selectedColor}`,
+        variantId: selectedVariant.variantId,
         name: product.name,
         price: product.price,
         image: product.image,
@@ -97,13 +121,18 @@ export default function ProductPage() {
       toast.error("Please select a size first!", { icon: "📏" });
       return;
     }
-    
+    if (!selectedVariant || selectedVariant.stock < 1) {
+      toast.error("This size is out of stock.", { icon: "📏" });
+      return;
+    }
+
     setIsBuying(true);
     try {
       if (!(await checkAuth())) return;
 
       addItem({
         id: `${product.id}-${selectedSize}-${selectedColor}`,
+        variantId: selectedVariant.variantId,
         name: product.name,
         price: product.price,
         image: product.image,
@@ -283,9 +312,7 @@ export default function ProductPage() {
                 </div>
                 <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
                   {product.sizes.map((size) => {
-                    const isAvailableSize = isAvailable && (
-                      product.availableSizes ? product.availableSizes.includes(size) : size === "8"
-                    );
+                    const isAvailableSize = (product.variants.find((v) => v.size === size)?.stock || 0) > 0;
                     return (
                       <button
                         key={size}

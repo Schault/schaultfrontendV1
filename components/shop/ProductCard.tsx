@@ -7,8 +7,15 @@ import toast from "react-hot-toast";
 import { Heart } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
+export interface ProductVariant {
+  variantId: string;
+  size: string;
+  stock: number;
+}
+
 export interface Product {
   id: string;
+  slug: string;
   name: string;
   price: number;
   originalPrice?: number;
@@ -17,7 +24,7 @@ export interface Product {
   category: string;
   colors: { name: string; hex: string }[];
   sizes: string[];
-  availableSizes?: string[];
+  variants: ProductVariant[];
   isAvailable?: boolean;
 }
 
@@ -109,14 +116,17 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <button
             onClick={(e) => {
               e.preventDefault();
+              const variant = product.variants.find((v) => v.stock > 0);
+              if (!variant) return;
               addItem({
-                id: product.id,
+                id: `${product.id}-${variant.size}`,
+                variantId: variant.variantId,
                 name: product.name,
                 price: product.price,
                 image: product.image,
                 quantity: 1,
                 color: product.colors[0]?.name,
-                size: (product.availableSizes && product.availableSizes[0]) || "8"
+                size: variant.size
               });
             }}
             className="w-full bg-black text-white py-2 text-[10px] font-inter tracking-[0.2em] transition-all hover:bg-[#0350F0] mt-4 uppercase"

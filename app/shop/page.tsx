@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import { ChevronRight, SlidersHorizontal, ArrowUpDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -9,9 +9,11 @@ import ProductGrid from "@/components/shop/ProductGrid";
 import CategorySection from "@/components/shop/CategorySection";
 import CatalogCTA from "@/components/shop/CatalogCTA";
 import { Product } from "@/components/shop/ProductCard";
-import { MOCK_PRODUCTS } from "@/lib/mockProducts";
+import { getShopProducts } from "@/lib/api/products";
 
 export default function ShopPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [filters, setFilters] = useState({
     category: "",
     price: { min: 1000, max: 15000 },
@@ -22,9 +24,15 @@ export default function ShopPage() {
   const [sortBy, setSortBy] = useState("popularity");
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
 
+  useEffect(() => {
+    getShopProducts()
+      .then(setProducts)
+      .catch((err) => console.error("Failed to load products:", err))
+      .finally(() => setIsLoading(false));
+  }, []);
 
   const filteredProducts = useMemo(() => {
-    let result = MOCK_PRODUCTS.filter(product => {
+    let result = products.filter(product => {
       const matchCategory = !filters.category || filters.category === "All" || product.category === filters.category;
       const matchPrice = product.price >= filters.price.min && product.price <= filters.price.max;
       const matchColor = !filters.color || product.colors.some(c => c.name === filters.color);
@@ -109,13 +117,17 @@ export default function ShopPage() {
 
           {/* Product Area */}
           <div id="product-grid" className="flex-1 bg-white p-4 md:p-6 rounded-sm shadow-sm min-w-0">
-            <ProductGrid
-              products={filteredProducts}
-              totalCount={MOCK_PRODUCTS.length}
-              activeFilters={filters}
-              onRemoveFilter={removeFilter}
-              onSortChange={setSortBy}
-            />
+            {isLoading ? (
+              <p className="py-20 text-center text-sm text-black/50">Loading products…</p>
+            ) : (
+              <ProductGrid
+                products={filteredProducts}
+                totalCount={products.length}
+                activeFilters={filters}
+                onRemoveFilter={removeFilter}
+                onSortChange={setSortBy}
+              />
+            )}
           </div>
         </div>
       </div>
