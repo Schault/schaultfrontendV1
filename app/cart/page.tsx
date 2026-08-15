@@ -4,7 +4,6 @@ import { useCart } from "@/components/providers";
 import { useRouter } from "next/navigation";
 import CartItem from "@/components/cart/CartItem";
 import OrderSummary from "@/components/cart/OrderSummary";
-import NewArrivals from "@/components/cart/NewArrivals";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -13,14 +12,6 @@ export default function CartPage() {
   const { items, totalPrice } = useCart();
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
-
-  const handleCheckout = () => {
-    if (items.length === 0) {
-      alert("Your cart is empty!");
-      return;
-    }
-    router.push("/checkout");
-  };
 
   useEffect(() => {
     setMounted(true);
@@ -81,11 +72,6 @@ export default function CartPage() {
               </div>
             </div>
           )}
-
-          {/* New Arrivals Section */}
-          <div className="mt-40">
-            <NewArrivals />
-          </div>
         </div>
 
         {/* Mobile Sticky Checkout Bar */}
@@ -94,7 +80,7 @@ export default function CartPage() {
             <div className="flex items-center justify-between mx-auto max-w-lg">
               <div className="flex flex-col">
                 <span className="font-inter text-[10px] text-black/40 uppercase tracking-widest">Total Amount</span>
-                <span className="font-inter text-2xl text-black">₹{(totalPrice + 24).toLocaleString("en-IN")}</span>
+                <span className="font-inter text-2xl text-black">₹{(totalPrice + 100).toLocaleString("en-IN")}</span>
               </div>
               <button 
                 onClick={() => {

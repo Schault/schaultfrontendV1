@@ -49,7 +49,8 @@ export default function CheckoutPage() {
     appliedCoupon === "LOVE-30" ? Math.round(totalPrice * 0.30) :
     appliedCoupon === "DEVTEST99" ? Math.max(totalPrice - 1, 0) :
     0;
-  const finalPrice = totalPrice - discountAmount;
+  const shippingFee = 100;
+  const finalPrice = appliedCoupon === "DEVTEST99" ? 1 : totalPrice - discountAmount + shippingFee;
 
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -426,7 +427,7 @@ export default function CheckoutPage() {
 
                     <div className="flex justify-between font-inter text-sm">
                       <span className="text-black/70">Shipping</span>
-                      <span className="font-medium text-black/90">Free</span>
+                      <span className="font-medium text-black/90">₹100</span>
                     </div>
 
                     <div className="flex justify-between border-t border-black/10 pt-4 font-inter text-3xl tracking-wide">
