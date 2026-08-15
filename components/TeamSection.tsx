@@ -103,7 +103,7 @@ function TeamSubSection({
       <h3 className="font-inter text-2xl tracking-widest text-black/90 text-center pb-4 mb-10 border-b border-black/5">
         {title}
       </h3>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-16">
+      <div className="flex flex-wrap justify-center gap-x-12 gap-y-12">
         {members.map((member, idx) => (
           <TeamMemberCard key={member.name} member={member} teamType={teamType} index={idx} />
         ))}

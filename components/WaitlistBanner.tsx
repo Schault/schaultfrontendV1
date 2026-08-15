@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion, useScroll, useTransform, useMotionTemplate } from "framer-motion";
 
 const WaitlistBanner = () => {
-  const text = "Switch your style, Preorders are live !";
+  const text = "Switch your style, Preorders are live ! Use Code SCHAULT20 to get 20% off";
   const { scrollY } = useScroll();
   const [threshold, setThreshold] = useState(0);
 
@@ -38,7 +38,7 @@ const WaitlistBanner = () => {
   );
   
   return (
-    <Link href="/#waitlist" className="block">
+    <Link href="/shop" className="block">
       <motion.div 
         style={{ top, opacity }}
         whileHover={{ backgroundColor: "#0246D9" }}

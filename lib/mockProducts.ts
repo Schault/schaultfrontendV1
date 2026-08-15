@@ -3,92 +3,122 @@ import { Product } from "@/components/shop/ProductCard";
 export const MOCK_PRODUCTS: Product[] = [
   {
     id: "1",
-    name: "Arctic Dawn",
-    price: 2499,
-    originalPrice: 4000,
-    image: "/images/shoes/Arctic Dawn/1.png",
+    name: "BlueBird",
+    price: 2999,
+    originalPrice: 3999,
+    image: "/images/shoes/BlueBird/1.png",
     gallery: [
-      "/images/shoes/Arctic Dawn/1.png",
-      "/images/shoes/Arctic Dawn/2.png",
-      "/images/shoes/Arctic Dawn/3.png",
-      "/images/shoes/Arctic Dawn/4.png"
+      "/images/shoes/BlueBird/1.png",
+      "/images/shoes/BlueBird/2.png",
+      "/images/shoes/BlueBird/3.png",
+      "/images/shoes/BlueBird/4.png"
     ],
     category: "Shoe",
     colors: [
       { name: "Blue / White", hex: "#4A90E2" }
     ],
-    sizes: ["4", "5", "6", "7", "8", "9", "10", "11"]
+    sizes: ["4", "5", "6", "7", "8", "9", "10", "11"],
+    availableSizes: [],
+    isAvailable: false
   },
   {
     id: "2",
-    name: "Rust & Ash",
-    price: 2499,
-    originalPrice: 4000,
-    image: "/images/shoes/Rust & Ash/1.png",
+    name: "RedEye",
+    price: 2999,
+    originalPrice: 3999,
+    image: "/images/shoes/RedEye/1.png",
     gallery: [
-      "/images/shoes/Rust & Ash/1.png",
-      "/images/shoes/Rust & Ash/2.png",
-      "/images/shoes/Rust & Ash/3.png",
-      "/images/shoes/Rust & Ash/4.png"
+      "/images/shoes/RedEye/1.png",
+      "/images/shoes/RedEye/2.png",
+      "/images/shoes/RedEye/3.png",
+      "/images/shoes/RedEye/4.png"
     ],
     category: "Shoe",
     colors: [
       { name: "Brown / Black", hex: "#8B4513" }
     ],
-    sizes: ["4", "5", "6", "7", "8", "9", "10", "11"]
+    sizes: ["4", "5", "6", "7", "8", "9", "10", "11"],
+    availableSizes: ["8"],
+    isAvailable: true
   },
   {
     id: "3",
-    name: "Navy Frost",
-    price: 2499,
-    originalPrice: 4000,
-    image: "/images/shoes/Navy Frost/1.png",
+    name: "DayDream",
+    price: 2999,
+    originalPrice: 3999,
+    image: "/images/shoes/DayDream/1.png",
     gallery: [
-      "/images/shoes/Navy Frost/1.png",
-      "/images/shoes/Navy Frost/2.png",
-      "/images/shoes/Navy Frost/3.png",
-      "/images/shoes/Navy Frost/4.png"
+      "/images/shoes/DayDream/1.png",
+      "/images/shoes/DayDream/2.png",
+      "/images/shoes/DayDream/3.png",
+      "/images/shoes/DayDream/4.png"
     ],
     category: "Shoe",
     colors: [
       { name: "Dark Blue", hex: "#00008B" }
     ],
-    sizes: ["4", "5", "6", "7", "8", "9", "10", "11"]
+    sizes: ["4", "5", "6", "7", "8", "9", "10", "11"],
+    availableSizes: ["8"],
+    isAvailable: true
   },
   {
     id: "4",
-    name: "Heritage",
-    price: 2499,
-    originalPrice: 4000,
-    image: "/images/shoes/Heritage/1.png",
+    name: "DayBreak",
+    price: 2999,
+    originalPrice: 3999,
+    image: "/images/shoes/DayBreak/1.png",
     gallery: [
-      "/images/shoes/Heritage/1.png",
-      "/images/shoes/Heritage/2.png",
-      "/images/shoes/Heritage/3.png",
-      "/images/shoes/Heritage/4.png"
+      "/images/shoes/DayBreak/1.png",
+      "/images/shoes/DayBreak/2.png",
+      "/images/shoes/DayBreak/3.png",
+      "/images/shoes/DayBreak/4.png"
     ],
     category: "Shoe",
     colors: [
       { name: "White", hex: "#FFFFFF" }
     ],
-    sizes: ["4", "5", "6", "7", "8", "9", "10", "11"]
+    sizes: ["4", "5", "6", "7", "8", "9", "10", "11"],
+    availableSizes: ["8"],
+    isAvailable: true
   },
   {
     id: "5",
-    name: "Ochre & Earth",
-    price: 2499,
-    originalPrice: 4000,
-    image: "/images/shoes/Ochre & Earth/1.png",
+    name: "WildRoot",
+    price: 2999,
+    originalPrice: 3999,
+    image: "/images/shoes/WildRoot/1.png",
     gallery: [
-      "/images/shoes/Ochre & Earth/1.png",
-      "/images/shoes/Ochre & Earth/2.png",
-      "/images/shoes/Ochre & Earth/3.png",
-      "/images/shoes/Ochre & Earth/4.png"
+      "/images/shoes/WildRoot/1.png",
+      "/images/shoes/WildRoot/2.png",
+      "/images/shoes/WildRoot/3.png",
+      "/images/shoes/WildRoot/4.png"
     ],
     category: "Shoe",
     colors: [
       { name: "Yellow", hex: "#FFD700" }
     ],
-    sizes: ["4", "5", "6", "7", "8", "9", "10", "11"]
+    sizes: ["4", "5", "6", "7", "8", "9", "10", "11"],
+    availableSizes: [],
+    isAvailable: false
+  },
+  {
+    id: "6",
+    name: "SunDaze",
+    price: 2999,
+    originalPrice: 3999,
+    image: "/images/shoes/SunDaze/1.png",
+    gallery: [
+      "/images/shoes/SunDaze/1.png",
+      "/images/shoes/SunDaze/2.png",
+      "/images/shoes/SunDaze/3.png",
+      "/images/shoes/SunDaze/4.png"
+    ],
+    category: "Shoe",
+    colors: [
+      { name: "Sun Yellow", hex: "#E67E22" }
+    ],
+    sizes: ["4", "5", "6", "7", "8", "9", "10", "11"],
+    availableSizes: ["8"],
+    isAvailable: true
   }
 ];

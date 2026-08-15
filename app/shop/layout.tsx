@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Shop Modular Sneakers | SCHAULT",
-  description: "Browse the SCHAULT collection of modular, sustainable sneakers. Choose from Ochre & Earth, Rust & Ash, Arctic Dawn and more. Endless combinations.",
+  description: "Browse the SCHAULT collection of modular, sustainable sneakers. Choose from SunDaze, WildRoot, RedEye, BlueBird, DayDream, DayBreak and more. Endless combinations.",
   alternates: {
     canonical: "/shop"
   },

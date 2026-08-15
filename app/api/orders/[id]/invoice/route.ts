@@ -3,10 +3,10 @@ import { getSignedInvoiceUrl } from "@/lib/orders/downloadInvoice";
 
 export async function GET(
   _request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const orderId = params.id;
+    const { id: orderId } = await params;
     const result = await getSignedInvoiceUrl(orderId);
 
     return NextResponse.json({

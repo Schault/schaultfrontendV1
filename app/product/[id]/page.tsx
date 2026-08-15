@@ -1,7 +1,7 @@
 "use client";
 
 import { useCart } from "@/context/CartContext";
-import { notFound, useRouter } from "next/navigation";
+import { notFound, useRouter, useParams } from "next/navigation";
 import { useState, useMemo, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -9,8 +9,11 @@ import { MOCK_PRODUCTS } from "@/lib/mockProducts";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { createClient } from "@/utils/supabase/client";
+import Footer from "@/components/Footer";
 
-export default function ProductPage({ params }: { params: { id: string } }) {
+export default function ProductPage() {
+  const params = useParams();
+  const productId = params?.id as string;
   const { addItem } = useCart();
   const router = useRouter();
   const supabase = createClient();
@@ -30,20 +33,26 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
   // Find product from mocked data
   const product = useMemo(() => {
-    const p = MOCK_PRODUCTS.find((p) => p.id === params.id);
+    const p = MOCK_PRODUCTS.find((p) => p.id === productId);
     return p || null;
-  }, [params.id]);
+  }, [productId]);
 
   if (!product) {
     return notFound();
   }
 
-  // Set default color
+  // Set default color & size
   useEffect(() => {
     if (product && !selectedColor && product.colors.length > 0) {
       setSelectedColor(product.colors[0].name);
     }
-  }, [product, selectedColor]);
+    if (product && !selectedSize) {
+      const avail = product.availableSizes && product.availableSizes.length > 0 ? product.availableSizes[0] : (product.sizes.includes("8") ? "8" : product.sizes[0]);
+      if (avail) setSelectedSize(avail);
+    }
+  }, [product, selectedColor, selectedSize]);
+
+  const isAvailable = product.isAvailable !== false;
 
   const discount = product.originalPrice 
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) 
@@ -178,29 +187,47 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             
             {/* Action Buttons (Desktop only - Mobile has fixed bottom bar) */}
             <div className="hidden lg:flex gap-4 mt-4 h-16">
-              <button
-                onClick={handleAddToCart}
-                disabled={isAdding}
-                className="flex-1 border-2 border-black/10 hover:border-black bg-white text-black font-inter text-2xl tracking-wider transition-all duration-300 flex items-center justify-center disabled:opacity-50"
-              >
-                {isAdding ? <Loader2 className="w-6 h-6 animate-spin" /> : "ADD TO CART"}
-              </button>
-              <button
-                onClick={handleBuyNow}
-                disabled={isBuying}
-                className="flex-1 bg-[#0350F0] text-white font-inter text-2xl tracking-wider transition-all hover:bg-black flex items-center justify-center disabled:opacity-50"
-              >
-                {isBuying ? <Loader2 className="w-6 h-6 animate-spin" /> : "BUY NOW"}
-              </button>
+              {isAvailable ? (
+                <>
+                  <button
+                    onClick={handleAddToCart}
+                    disabled={isAdding}
+                    className="flex-1 border-2 border-black/10 hover:border-black bg-white text-black font-inter text-2xl tracking-wider transition-all duration-300 flex items-center justify-center disabled:opacity-50"
+                  >
+                    {isAdding ? <Loader2 className="w-6 h-6 animate-spin" /> : "ADD TO CART"}
+                  </button>
+                  <button
+                    onClick={handleBuyNow}
+                    disabled={isBuying}
+                    className="flex-1 bg-[#0350F0] text-white font-inter text-2xl tracking-wider transition-all hover:bg-black flex items-center justify-center disabled:opacity-50"
+                  >
+                    {isBuying ? <Loader2 className="w-6 h-6 animate-spin" /> : "BUY NOW"}
+                  </button>
+                </>
+              ) : (
+                <button
+                  disabled
+                  className="w-full bg-black/10 text-black/40 font-inter text-2xl tracking-wider flex items-center justify-center cursor-not-allowed border border-black/10 uppercase"
+                >
+                  OUT OF STOCK
+                </button>
+              )}
             </div>
           </div>
 
           {/* RIGHT: Product Info */}
           <div className="w-full lg:w-[40%] flex flex-col pt-2 md:pt-0 bg-transparent lg:bg-white lg:p-8 lg:border lg:border-black/5 relative">
             
-            <h1 className="font-inter text-3xl sm:text-4xl lg:text-5xl tracking-wide text-black/95 leading-[1.1]">
-              {product.name}
-            </h1>
+            <div className="flex items-center gap-3 flex-wrap">
+              <h1 className="font-inter text-3xl sm:text-4xl lg:text-5xl tracking-wide text-black/95 leading-[1.1]">
+                {product.name}
+              </h1>
+              {!isAvailable && (
+                <span className="bg-black/80 text-white font-inter text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 backdrop-blur-sm">
+                  Out of Stock
+                </span>
+              )}
+            </div>
             <p className="mt-2 text-sm text-black/50 tracking-wide uppercase">{product.category}</p>
 
             <div className="mt-6 flex flex-wrap items-baseline gap-3 pb-6 border-b border-black/10">
@@ -250,24 +277,30 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               <div className="mt-8">
                 <div className="flex justify-between items-baseline mb-3">
                   <h3 className="font-inter text-sm text-black/50 uppercase tracking-widest font-semibold">
-                    Size
+                    Size <span className="text-black/80 capitalize font-normal">- UK {selectedSize || "8"}</span>
                   </h3>
                   <button onClick={() => toast("Size chart coming soon!", { icon: "📏" })} className="text-xs text-black/50 font-semibold hover:text-[#0350F0] transition-colors hover:underline">Size Chart</button>
                 </div>
                 <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
                   {product.sizes.map((size) => {
+                    const isAvailableSize = isAvailable && (
+                      product.availableSizes ? product.availableSizes.includes(size) : size === "8"
+                    );
                     return (
                       <button
                         key={size}
-                        onClick={() => setSelectedSize(size)}
+                        disabled={!isAvailableSize}
+                        onClick={() => isAvailableSize && setSelectedSize(size)}
                         className={`
-                          pt-2 pb-1.5 font-inter text-lg border transition-all duration-200 ease-out flex items-center justify-center relative overflow-hidden
-                          ${selectedSize === size
+                          pt-2 pb-1.5 font-inter text-base border transition-all duration-200 ease-out flex items-center justify-center relative overflow-hidden
+                          ${!isAvailableSize
+                              ? "border-black/10 bg-black/[0.03] text-black/30 cursor-not-allowed line-through"
+                              : selectedSize === size
                               ? "border-black bg-black text-white"
                               : "border-black/20 bg-white text-black hover:border-black/60"
                           }`}
                       >
-                        <span>{size}</span>
+                        <span>UK {size}</span>
                       </button>
                     );
                   })}
@@ -288,7 +321,11 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               <ul className="mt-6 space-y-3 font-inter text-sm text-black/80">
                 <li className="flex gap-4">
                   <span className="text-black/50 w-24">Material</span>
-                  <span className="flex-1 font-medium">Durable Synthetic & Recycled Canvas</span>
+                  <span className="flex-1 font-medium">
+                    {product.name.toLowerCase().includes("sundaze") || product.id === "6"
+                      ? "Certified leather and breathable upper"
+                      : "Certified leather and breathable mesh upper"}
+                  </span>
                 </li>
                 <li className="flex gap-4">
                   <span className="text-black/50 w-24">Fit</span>
@@ -299,6 +336,10 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   <span className="flex-1 font-medium">Machine washable upper, wipe clean sole.</span>
                 </li>
               </ul>
+              
+              <p className="mt-6 pt-4 border-t border-black/5 font-inter text-xs text-black/40 italic">
+                *Note: Product design and colors may slightly vary from the images shown.
+              </p>
             </div>
 
             {/* Buffer space for mobile sticky bar */}
@@ -309,22 +350,39 @@ export default function ProductPage({ params }: { params: { id: string } }) {
       </div>
 
       {/* Mobile Sticky CTA */}
-      <div className="lg:hidden fixed bottom-0 left-0 w-full h-16 bg-white grid grid-cols-2 border-t border-black/10 z-[100] shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
-        <button
-          onClick={handleAddToCart}
-          disabled={isAdding}
-          className="flex items-center justify-center font-inter text-xl text-black tracking-widest border-r border-black/10 bg-white active:bg-black/5 transition-colors disabled:opacity-50"
-        >
-          {isAdding ? <Loader2 className="w-5 h-5 animate-spin" /> : "ADD TO CART"}
-        </button>
-        <button
-          onClick={handleBuyNow}
-          disabled={isBuying}
-          className="flex items-center justify-center font-inter text-xl text-white tracking-widest bg-[#0350F0] active:bg-black transition-colors disabled:opacity-50"
-        >
-          {isBuying ? <Loader2 className="w-5 h-5 animate-spin" /> : "BUY NOW"}
-        </button>
+      {isAvailable ? (
+        <div className="lg:hidden fixed bottom-0 left-0 w-full h-16 bg-white grid grid-cols-2 border-t border-black/10 z-[100] shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+          <button
+            onClick={handleAddToCart}
+            disabled={isAdding}
+            className="flex items-center justify-center font-inter text-xl text-black tracking-widest border-r border-black/10 bg-white active:bg-black/5 transition-colors disabled:opacity-50"
+          >
+            {isAdding ? <Loader2 className="w-5 h-5 animate-spin" /> : "ADD TO CART"}
+          </button>
+          <button
+            onClick={handleBuyNow}
+            disabled={isBuying}
+            className="flex items-center justify-center font-inter text-xl text-white tracking-widest bg-[#0350F0] active:bg-black transition-colors disabled:opacity-50"
+          >
+            {isBuying ? <Loader2 className="w-5 h-5 animate-spin" /> : "BUY NOW"}
+          </button>
+        </div>
+      ) : (
+        <div className="lg:hidden fixed bottom-0 left-0 w-full h-16 bg-black/5 flex items-center justify-center border-t border-black/10 z-[100]">
+          <button
+            disabled
+            className="w-full h-full text-black/40 font-inter text-lg tracking-widest uppercase cursor-not-allowed"
+          >
+            OUT OF STOCK
+          </button>
+        </div>
+      )}
+
+      {/* Rock Bottom Disclaimer & Footer */}
+      <div className="w-full text-left py-6 border-t border-black/5 bg-gray-50/50 font-inter text-xs text-black/50 italic px-6 md:px-16 max-w-7xl mx-auto">
+        *Note: Product design and colors may slightly vary from the images shown.
       </div>
+      <Footer />
 
     </main>
   );

@@ -3,10 +3,11 @@ import { getProductByHandle } from "@/lib/shopify";
 
 export async function GET(
     _request: Request,
-    { params }: { params: { handle: string } },
+    { params }: { params: Promise<{ handle: string }> },
 ) {
+    const { handle } = await params;
     try {
-        const product = await getProductByHandle(params.handle);
+        const product = await getProductByHandle(handle);
 
         if (!product) {
             return NextResponse.json(null, { status: 200 });
@@ -14,7 +15,7 @@ export async function GET(
 
         return NextResponse.json(product, { status: 200 });
     } catch (error) {
-        console.error(`[API /products/${params.handle}] Error:`, error);
+        console.error(`[API /products/${handle}] Error:`, error);
         return NextResponse.json(null, { status: 200 });
     }
 }

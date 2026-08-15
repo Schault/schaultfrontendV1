@@ -45,7 +45,8 @@ export default function CheckoutPage() {
 
   const itemTotalQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
   const discountAmount =
-    appliedCoupon === "L20-MCMF" ? itemTotalQuantity * 500 :
+    appliedCoupon === "SCHAULT-20" ? Math.round(totalPrice * 0.20) :
+    appliedCoupon === "LOVE-30" ? Math.round(totalPrice * 0.30) :
     appliedCoupon === "DEVTEST99" ? Math.max(totalPrice - 1, 0) :
     0;
   const finalPrice = totalPrice - discountAmount;
@@ -379,7 +380,11 @@ export default function CheckoutPage() {
                         type="button"
                         onClick={() => {
                           if (!couponInput) return;
-                          if (couponInput === "L20-MCMF" || couponInput === "DEVTEST99") {
+                          if (
+                            couponInput === "SCHAULT-20" ||
+                            couponInput === "LOVE-30" ||
+                            couponInput === "DEVTEST99"
+                          ) {
                             setAppliedCoupon(couponInput);
                             setCouponError("");
                             setCouponInput("");

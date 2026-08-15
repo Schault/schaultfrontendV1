@@ -2,19 +2,14 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { notFound } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { BLOG_POSTS } from "@/lib/blog-data";
 import Footer from "@/components/Footer";
 
-interface BlogPostPageProps {
-  params: {
-    slug: string;
-  };
-}
-
-export default function BlogPostReader({ params }: BlogPostPageProps) {
-  const { slug } = params;
+export default function BlogPostReader() {
+  const params = useParams();
+  const slug = params?.slug as string;
 
   const post = BLOG_POSTS.find((p) => p.slug === slug);
 
@@ -106,6 +101,7 @@ export default function BlogPostReader({ params }: BlogPostPageProps) {
             [&>h3]:font-inter [&>h3]:text-xl [&>h3]:md:text-2xl [&>h3]:font-extrabold [&>h3]:text-black/90 [&>h3]:pt-8 [&>h3]:pb-2
             [&>h4]:font-inter [&>h4]:text-base [&>h4]:md:text-lg [&>h4]:font-bold [&>h4]:text-black/80 [&>h4]:pt-6 [&>h4]:pb-1
             [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:space-y-2 [&>ul]:text-black/70
+            [&>img]:w-full [&>img]:rounded-2xl [&>img]:my-6 [&>img]:shadow-sm [&>img]:border [&>img]:border-black/5
             [&>blockquote]:border-l-4 [&>blockquote]:border-[#0350F0] [&>blockquote]:pl-6 [&>blockquote]:italic [&>blockquote]:text-black/50 [&>blockquote]:py-2 [&>blockquote]:font-inter [&>blockquote]:my-6 [&>blockquote]:text-base"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />

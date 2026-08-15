@@ -11,8 +11,9 @@ import { OrderSummary } from "@/components/orders/OrderSummary";
 import { DownloadInvoiceButton } from "@/components/orders/DownloadInvoiceButton";
 import { ArrowLeft, Calendar, FileText, ShoppingBag } from "lucide-react";
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
-  const shortId = params.id ? params.id.split("-")[0].toUpperCase() : "";
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
+  const shortId = resolvedParams.id ? resolvedParams.id.split("-")[0].toUpperCase() : "";
   return {
     title: `Order ORD-${shortId} | SCHAULT`,
     description: `Details and tracking for order ORD-${shortId}`,
@@ -22,9 +23,10 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 export default async function OrderDetailsPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const orderId = params.id;
+  const resolvedParams = await params;
+  const orderId = resolvedParams.id;
   const order = await getOrderDetails(orderId);
 
   // Security: Return 404 if order does not exist or user does not own it

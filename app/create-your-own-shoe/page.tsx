@@ -9,38 +9,45 @@ type ModelOption = {
   name: string;
   path: string;
   image?: string;
+  isAvailable?: boolean;
 };
 
 const UPPER_MODELS: ModelOption[] = [
   {
-    name: "Ochre & Earth",
+    name: "WildRoot",
     path: "/assets/models/customizer/upper/Ocre_and_Olive-lowres.glb",
-    image : '',
+    image: "/images/shoes/WildRoot/1.png",
+    isAvailable: false,
   },
   {
-    name: "Navy Frost",
+    name: "DayDream",
     path: "/assets/models/customizer/upper/White_and_Blue-lowres.glb",
-    image : '',
+    image: "/images/shoes/DayDream/1.png",
+    isAvailable: true,
   },
   {
-    name: "Heritage",
+    name: "DayBreak",
     path: "/assets/models/customizer/upper/White_and_Yellow-lowres.glb",
-    image : '',
+    image: "/images/shoes/DayBreak/1.png",
+    isAvailable: true,
   },
   {
-    name: "Rust & Ash",
+    name: "RedEye",
     path: "/assets/models/customizer/upper/Red_and_Black-lowres.glb",
-    image : '',
+    image: "/images/shoes/RedEye/1.png",
+    isAvailable: true,
   },
   {
-    name: "Arctic Dawn",
+    name: "BlueBird",
     path: "/assets/models/customizer/upper/Blue_Sun-lowres.glb",
-    image : '',
+    image: "/images/shoes/BlueBird/1.png",
+    isAvailable: false,
   },
   {
-    name: "Full Leather",
-    path: "/assets/models/customizer/upper/Full_leather-lowres.glb",
-    image : '',
+    name: "SunDaze",
+    path: "/assets/models/customizer/upper/Blue_Sun-lowres.glb",
+    image: "/images/shoes/SunDaze/1.png",
+    isAvailable: true,
   },
 ];
 
@@ -80,8 +87,8 @@ const SOLE_MODELS: ModelOption[] = [
 type SelectionTab = "upper" | "sole";
 
 export default function CreateYourOwnShoePage() {
-  const [currentUpperPath, setCurrentUpperPath] = useState(UPPER_MODELS[0]?.path ?? "");
-  const [currentSolePath, setCurrentSolePath] = useState(SOLE_MODELS[0]?.path ?? "");
+  const [selectedUpper, setSelectedUpper] = useState<ModelOption>(UPPER_MODELS[0]);
+  const [selectedSole, setSelectedSole] = useState<ModelOption>(SOLE_MODELS[0]);
   const [isSwitchingModel, setIsSwitchingModel] = useState(false);
   const [activeTab, setActiveTab] = useState<SelectionTab>("upper");
 
@@ -124,8 +131,8 @@ export default function CreateYourOwnShoePage() {
               </div>
               <div className="h-[420px] w-full border border-black/10 bg-[#0f2d1b]">
                 <ThreeModelViewer
-                  upperPath={currentUpperPath}
-                  solePath={currentSolePath}
+                  upperPath={selectedUpper.path}
+                  solePath={selectedSole.path}
                   onLoadingChange={setIsSwitchingModel}
                 />
               </div>
@@ -160,13 +167,13 @@ export default function CreateYourOwnShoePage() {
                   <div className="grid grid-cols-3 gap-4">
                     {UPPER_MODELS.map((model) => (
                       <button
-                        key={model.path}
+                        key={model.name}
                         disabled={isSwitchingModel}
-                        onClick={() => setCurrentUpperPath(model.path)}
+                        onClick={() => setSelectedUpper(model)}
                         className={`group flex flex-col items-center gap-2 rounded-lg border-2 p-3 transition ${
                           isSwitchingModel ? "cursor-not-allowed opacity-60" : "cursor-pointer"
                         } ${
-                          currentUpperPath === model.path
+                          selectedUpper.name === model.name
                             ? "border-[#0350F0] bg-[#0350F0]/5"
                             : "border-black/10 hover:border-[#0350F0]/40"
                         }`}
@@ -178,7 +185,12 @@ export default function CreateYourOwnShoePage() {
                             <span className="font-inter text-3xl font-bold text-black/30">{model.name.charAt(0)}</span>
                           )}
                         </div>
-                        <span className="text-center font-inter text-xs font-medium text-black/80">{model.name}</span>
+                        <span className="text-center font-inter text-xs font-medium text-black/80 flex flex-col items-center">
+                          {model.name}
+                          {model.isAvailable === false && (
+                            <span className="text-[10px] lowercase text-amber-600 font-normal">(out of stock)</span>
+                          )}
+                        </span>
                       </button>
                     ))}
                   </div>
@@ -188,13 +200,13 @@ export default function CreateYourOwnShoePage() {
                   <div className="grid grid-cols-3 gap-4">
                     {SOLE_MODELS.map((model) => (
                       <button
-                        key={model.path}
+                        key={model.name}
                         disabled={isSwitchingModel}
-                        onClick={() => setCurrentSolePath(model.path)}
+                        onClick={() => setSelectedSole(model)}
                         className={`group flex flex-col items-center gap-2 rounded-lg border-2 p-3 transition ${
                           isSwitchingModel ? "cursor-not-allowed opacity-60" : "cursor-pointer"
                         } ${
-                          currentSolePath === model.path
+                          selectedSole.name === model.name
                             ? "border-[#0B8F4D] bg-[#0B8F4D]/10"
                             : "border-black/10 hover:border-[#0B8F4D]/40"
                         }`}

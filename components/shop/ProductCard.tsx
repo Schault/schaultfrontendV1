@@ -17,6 +17,8 @@ export interface Product {
   category: string;
   colors: { name: string; hex: string }[];
   sizes: string[];
+  availableSizes?: string[];
+  isAvailable?: boolean;
 }
 
 interface ProductCardProps {
@@ -26,6 +28,7 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { addItem } = useCart();
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const isAvailable = product.isAvailable !== false;
   const discount = product.originalPrice 
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) 
     : 0;
@@ -34,12 +37,17 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     <div className="group flex flex-col bg-white border border-black/[0.03] hover:shadow-lg transition-shadow duration-300 h-full relative">
       {/* Image Container */}
       <Link href={`/product/${product.id}`} className="relative aspect-square bg-white overflow-hidden block">
+        {!isAvailable && (
+          <div className="absolute top-2.5 left-2.5 z-10 bg-black/80 px-2 py-1 text-[9px] font-bold uppercase tracking-widest text-white backdrop-blur-sm">
+            Out of Stock
+          </div>
+        )}
         <div className="absolute inset-4">
           <Image
             src={product.image}
             alt={product.name}
             fill
-            className="object-contain transition-transform duration-700 group-hover:scale-105"
+            className={`object-contain transition-transform duration-700 group-hover:scale-105 ${!isAvailable ? "opacity-50" : ""}`}
           />
         </div>
         
@@ -96,24 +104,33 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* Schault Aesthetic Branding - Subtle bar */}
         <div className="h-0.5 w-6 bg-[#0350F0] opacity-0 group-hover:opacity-100 group-hover:w-12 transition-all duration-300" />
 
-        {/* Add to Cart - Flipkart often has this on hover or in footer. We'll keep it as a sleek button */}
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            addItem({
-              id: product.id,
-              name: product.name,
-              price: product.price,
-              image: product.image,
-              quantity: 1,
-              color: product.colors[0]?.name,
-              size: product.sizes[0]
-            });
-          }}
-          className="w-full bg-black text-white py-2 text-[10px] font-inter tracking-[0.2em] transition-all hover:bg-[#0350F0] mt-4 uppercase"
-        >
-          QUICK ADD
-        </button>
+        {/* Add to Cart */}
+        {isAvailable ? (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              addItem({
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                image: product.image,
+                quantity: 1,
+                color: product.colors[0]?.name,
+                size: (product.availableSizes && product.availableSizes[0]) || "8"
+              });
+            }}
+            className="w-full bg-black text-white py-2 text-[10px] font-inter tracking-[0.2em] transition-all hover:bg-[#0350F0] mt-4 uppercase"
+          >
+            QUICK ADD
+          </button>
+        ) : (
+          <button
+            disabled
+            className="w-full bg-black/10 text-black/40 py-2 text-[10px] font-inter tracking-[0.2em] mt-4 uppercase cursor-not-allowed border border-black/10"
+          >
+            OUT OF STOCK
+          </button>
+        )}
       </div>
     </div>
   );

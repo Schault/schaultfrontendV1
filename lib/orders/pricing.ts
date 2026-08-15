@@ -3,9 +3,7 @@ import { CreateOrderItemInput } from "./create-order-pipeline";
 
 // Coupons: flat discount (INR) applied per unit quantity. Keep in sync with the
 // checkout UI. ponytail: hardcoded map, move to a `coupons` table if marketing needs more.
-export const COUPON_PER_UNIT_DISCOUNT: Record<string, number> = {
-  "L20-MCMF": 500,
-};
+export const COUPON_PER_UNIT_DISCOUNT: Record<string, number> = {};
 
 export interface RawCartItem {
   variant_id: string;
@@ -85,9 +83,11 @@ export async function computeOrderPricing(
   const totalQty = normalized.reduce((s, i) => s + i.quantity, 0);
   let discount = Math.min(perUnit * totalQty, subtotal);
 
-  // ponytail: DEVTEST99 collapses any order to ₹1 for test payments. This is a
-  // deliberate backdoor — gate behind an env flag or remove before real launch.
-  if (coupon === "DEVTEST99") {
+  if (coupon === "SCHAULT-20") {
+    discount = Math.round(subtotal * 0.20);
+  } else if (coupon === "LOVE-30") {
+    discount = Math.round(subtotal * 0.30);
+  } else if (coupon === "DEVTEST99") {
     discount = Math.max(subtotal - 1, 0);
   }
 
@@ -101,7 +101,17 @@ export async function computeOrderPricing(
   // order_items.line_total is a DB-generated column (unit_price * quantity), and a
   // DB trigger requires orders.total == SUM(order_items.line_total). Fold the
   // discount into unit_price here so that invariant holds when the RPC inserts rows.
-  if (perUnit > 0) {
+  if (coupon === "SCHAULT-20") {
+    items.forEach((item) => {
+      item.unit_price = Number((item.unit_price * 0.80).toFixed(2));
+      item.line_total = Number((item.unit_price * item.quantity).toFixed(2));
+    });
+  } else if (coupon === "LOVE-30") {
+    items.forEach((item) => {
+      item.unit_price = Number((item.unit_price * 0.70).toFixed(2));
+      item.line_total = Number((item.unit_price * item.quantity).toFixed(2));
+    });
+  } else if (perUnit > 0) {
     items.forEach((item) => {
       item.unit_price = Number((item.unit_price - perUnit).toFixed(2));
       item.line_total = Number((item.unit_price * item.quantity).toFixed(2));

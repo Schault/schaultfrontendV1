@@ -12,6 +12,7 @@ type PlaceholderItem = {
   id: string;
   name: string;
   price: string;
+  originalPrice?: string;
   image: string;
   isAvailable?: boolean;
 };
@@ -19,11 +20,12 @@ type PlaceholderItem = {
 // ── Data ────────────────────────────────────────────────────────────────────
 
 const SHOES: PlaceholderItem[] = [
-  { id: "shoe-1", name: "Arctic Dawn", price: "₹2,499", image: "/images/shoes/bluewhite.jpg", isAvailable: true },
-  { id: "shoe-2", name: "Rust & Ash", price: "₹2,499", image: "/images/shoes/brownblack.jpg", isAvailable: true },
-  { id: "shoe-3", name: "Navy Frost", price: "₹2,499", image: "/images/shoes/darkblue.jpg", isAvailable: true },
-  { id: "shoe-4", name: "Heritage", price: "₹2,499", image: "/images/shoes/whitefull.jpg", isAvailable: true },
-  { id: "shoe-5", name: "Ochre & Earth", price: "₹2,499", image: "/images/shoes/yellow.jpg", isAvailable: true },
+  { id: "shoe-1", name: "BlueBird", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/bluewhite.jpg", isAvailable: false },
+  { id: "shoe-2", name: "RedEye", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/brownblack.jpg", isAvailable: true },
+  { id: "shoe-3", name: "DayDream", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/darkblue.jpg", isAvailable: true },
+  { id: "shoe-4", name: "DayBreak", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/whitefull.jpg", isAvailable: true },
+  { id: "shoe-5", name: "WildRoot", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/yellow.jpg", isAvailable: false },
+  { id: "shoe-6", name: "SunDaze", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/SunDaze/1.png", isAvailable: true },
 ];
 
 const SOLES: PlaceholderItem[] = [
@@ -76,9 +78,21 @@ function PlaceholderCard({ item, index }: { item: PlaceholderItem; index: number
           <h3 className="font-inter text-xl tracking-wide text-black/90">
             {item.name}
           </h3>
-          <p className="mt-3 font-inter text-sm font-semibold text-black">
-            {item.price}
-          </p>
+          <div className="mt-3 flex flex-wrap items-baseline gap-2">
+            <span className="font-inter text-base font-bold text-black">
+              {item.price}
+            </span>
+            {item.originalPrice && (
+              <>
+                <span className="font-inter text-xs text-black/40 line-through">
+                  {item.originalPrice}
+                </span>
+                <span className="font-inter text-xs font-bold text-green-600">
+                  25% off
+                </span>
+              </>
+            )}
+          </div>
           {isAvailable ? (
             <button 
               onClick={(e) => {
@@ -86,7 +100,7 @@ function PlaceholderCard({ item, index }: { item: PlaceholderItem; index: number
                 addItem({
                   id: item.id,
                   name: item.name,
-                  price: parseInt(item.price.replace(/[^\d]/g, ""), 10) || 2499,
+                  price: parseInt(item.price.replace(/[^\d]/g, ""), 10) || 2999,
                   image: item.image,
                   quantity: 1,
                   color: "Default",
