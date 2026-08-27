@@ -24,11 +24,11 @@ type PlaceholderItem = {
 // as of the DB seed). Matched by product name to the real `products` table.
 
 const SHOES: PlaceholderItem[] = [
-  { id: "shoe-1", variantId: "c4a6f5d7-8fb4-4bee-ace1-acb941b99879", size: "8", name: "BlueBird", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/BlueBird/1.png", isAvailable: true },
+  { id: "shoe-1", variantId: "c4a6f5d7-8fb4-4bee-ace1-acb941b99879", size: "8", name: "BlueBird", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/BlueBird/1.png", isAvailable: false },
   { id: "shoe-2", variantId: "247af8f0-dc12-4dac-a06e-82b2ebab8a63", size: "8", name: "RedEye", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/RedEye/1.png", isAvailable: true },
   { id: "shoe-3", variantId: "deebd89a-fe8e-4d7b-9adf-2a83aaeae488", size: "8", name: "DayDream", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/DayDream/1.png", isAvailable: true },
   { id: "shoe-4", variantId: "ad578da3-71ec-40b3-ac40-1f3f1e8538a0", size: "8", name: "DayBreak", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/DayBreak/1.png", isAvailable: true },
-  { id: "shoe-5", variantId: "69851479-af0d-4c5a-983c-176cc1574ad6", size: "8", name: "WildRoot", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/WildRoot/1.png", isAvailable: true },
+  { id: "shoe-5", variantId: "69851479-af0d-4c5a-983c-176cc1574ad6", size: "8", name: "WildRoot", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/WildRoot/1.png", isAvailable: false },
   { id: "shoe-6", variantId: "6d0ba961-afb0-4e8d-9982-ca14aa78bbe1", size: "8", name: "SunDaze", price: "₹2,999", originalPrice: "₹3,999", image: "/images/shoes/SunDaze/1.png", isAvailable: true },
 ];
 
