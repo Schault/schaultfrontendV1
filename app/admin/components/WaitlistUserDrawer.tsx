@@ -11,19 +11,24 @@ interface WaitlistUserDrawerProps {
   waitlist: any[];
   setWaitlist: React.Dispatch<React.SetStateAction<any[]>>;
   onClose: () => void;
+  updateWaitlistUserStatus?: (userId: number | string, status: string) => Promise<boolean>;
 }
 
-export default function WaitlistUserDrawer({ user, waitlist, setWaitlist, onClose }: WaitlistUserDrawerProps) {
+export default function WaitlistUserDrawer({ user, waitlist, setWaitlist, onClose, updateWaitlistUserStatus }: WaitlistUserDrawerProps) {
   const [notifyState, setNotifyState] = useState(user.notified_status);
 
-  const handleSaveUser = () => {
-    setWaitlist(prev => prev.map(w => {
-      if (w.id === user.id) {
-        return { ...w, notified_status: notifyState };
-      }
-      return w;
-    }));
-    toast.success(`WAITLIST LOG MODIFIED FOR ${user.name.toUpperCase()}`);
+  const handleSaveUser = async () => {
+    if (updateWaitlistUserStatus && notifyState !== user.notified_status) {
+      await updateWaitlistUserStatus(user.id, notifyState);
+    } else {
+      setWaitlist(prev => prev.map(w => {
+        if (w.id === user.id) {
+          return { ...w, notified_status: notifyState };
+        }
+        return w;
+      }));
+      toast.success(`WAITLIST LOG MODIFIED FOR ${user.name.toUpperCase()}`);
+    }
     onClose();
   };
 
@@ -88,15 +93,15 @@ export default function WaitlistUserDrawer({ user, waitlist, setWaitlist, onClos
               </div>
             </div>
 
-            {/* Custom shoe configuration mock */}
+            {/* Subscriber information */}
             <div className="border border-[#e4e4e7] p-4 bg-zinc-50 shadow-sm">
-              <span className="text-[9px] font-black text-zinc-500 block uppercase tracking-widest font-mono mb-3">CUSTOMIZER CANON BUILD</span>
+              <span className="text-[9px] font-black text-zinc-500 block uppercase tracking-widest font-mono mb-3">SUBSCRIBER SPECIFICATION</span>
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 bg-zinc-100 border border-[#e4e4e7] flex items-center justify-center font-mono font-bold text-xs text-zinc-500">
                   SH-X
                 </div>
                 <div className="font-mono text-[10px]">
-                  <span className="text-black block font-sans font-bold text-xs">Arctic Outsole x Cobalt Stealth Upper</span>
+                  <span className="text-black block font-sans font-bold text-xs">{user.name}</span>
                   <span className="text-zinc-500 block uppercase mt-0.5">SIZE: {user.size} • SYSTEM: MODULAR v1.0</span>
                 </div>
               </div>

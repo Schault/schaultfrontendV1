@@ -32,12 +32,28 @@ export function useAdminData() {
         `
         id,
         status,
+        payment_status,
         total,
         created_at,
+        waybill,
+        shipping_address,
+        estimated_delivery,
+        invoice_number,
+        invoice_url,
+        paid_at,
+        razorpay_order_id,
+        razorpay_payment_id,
         profiles ( full_name, id ),
         order_items (
+          id,
           quantity,
           unit_price,
+          line_total,
+          product_name,
+          product_image,
+          product_sku,
+          product_size,
+          product_color,
           product_variants (
             size,
             color,
@@ -55,35 +71,70 @@ export function useAdminData() {
       return;
     }
 
-    const formattedOrders = (data || []).map((order: any) => ({
-      id: order.id,
-      customer: {
-        name: order.profiles?.full_name || "Unknown",
-        email: "",
-        phone: "",
-        address: "",
-      },
-      total: order.total,
-      payment_status: "Paid",
-      fulfillment_status: mapStatusToFrontend(order.status),
-      created_at: order.created_at,
-      notes: "",
-      products: (order.order_items || []).map((item: any) => ({
-        name: item.product_variants?.products?.name || "Unknown Product",
-        size: item.product_variants?.size || "",
-        color: item.product_variants?.color || "",
-        price: item.unit_price,
-        quantity: item.quantity,
-      })),
-      tracking: {
-        courier: "Pending",
-        awb: "",
-        location: "Awaiting assignment",
-        eta: "",
-        attempts: 0,
-        status: "Pending",
-      },
-    }));
+    const formattedOrders = (data || []).map((order: any) => {
+      const addr =
+        typeof order.shipping_address === "object" && order.shipping_address !== null
+          ? order.shipping_address
+          : {};
+
+      const customerName =
+        order.profiles?.full_name || addr.full_name || addr.name || "Customer";
+      const customerEmail = addr.email || "";
+      const customerPhone = addr.phone || "";
+      const fullAddressStr =
+        typeof order.shipping_address === "string"
+          ? order.shipping_address
+          : [addr.address, addr.city, addr.state, addr.postal_code || addr.zip]
+              .filter(Boolean)
+              .join(", ");
+
+      const rawPaymentStatus = order.payment_status || "paid";
+      const formattedPaymentStatus =
+        rawPaymentStatus.charAt(0).toUpperCase() +
+        rawPaymentStatus.slice(1).toLowerCase();
+
+      return {
+        id: order.id,
+        customer: {
+          name: customerName,
+          email: customerEmail,
+          phone: customerPhone,
+          address: fullAddressStr || "N/A",
+        },
+        total: order.total,
+        payment_status: formattedPaymentStatus,
+        fulfillment_status: mapStatusToFrontend(order.status),
+        created_at: order.created_at,
+        notes: "",
+        waybill: order.waybill || "",
+        estimated_delivery: order.estimated_delivery || "",
+        invoice_number: order.invoice_number || "",
+        invoice_url: order.invoice_url || "",
+        products: (order.order_items || []).map((item: any) => ({
+          name:
+            item.product_name ||
+            item.product_variants?.products?.name ||
+            "SCHAULT Modular Product",
+          size: item.product_size || item.product_variants?.size || "Standard",
+          color: item.product_color || item.product_variants?.color || "",
+          price: item.unit_price,
+          quantity: item.quantity,
+        })),
+        tracking: {
+          courier: "Delhivery",
+          awb: order.waybill || "",
+          location: order.waybill
+            ? `AWB ${order.waybill} assigned`
+            : "Awaiting assignment",
+          eta: order.estimated_delivery || "",
+          attempts: 0,
+          status:
+            order.status === "shipped" || order.status === "out_for_delivery"
+              ? "On Time"
+              : "Pending",
+        },
+      };
+    });
 
     setOrders(formattedOrders);
   }, []);
@@ -138,7 +189,7 @@ export function useAdminData() {
   }, []);
 
   // ==========================================
-  // ORDER STATUS UPDATE VIA EDGE FUNCTION
+  // ORDER STATUS UPDATE (DIRECT SUPABASE DB)
   // ==========================================
 
   const updateOrderStatus = useCallback(
@@ -146,21 +197,26 @@ export function useAdminData() {
       const supabase = createClient();
       const backendStatus = mapStatusToBackend(newStatus);
 
-      const { data, error } = await supabase.functions.invoke(
-        "update-order-status",
-        {
-          body: {
-            order_id: orderId,
-            new_status: backendStatus,
-            note: note,
-          },
-        }
-      );
+      const { error: dbError } = await supabase
+        .from("orders")
+        .update({
+          status: backendStatus,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", orderId);
 
-      if (error) {
-        console.error("updateOrderStatus error:", error);
+      if (dbError) {
+        console.error("Direct updateOrderStatus error:", dbError);
         toast.error("FAILED TO UPDATE ORDER STATUS. PLEASE TRY AGAIN.");
         return false;
+      }
+
+      if (note) {
+        await supabase.from("order_status_history").insert({
+          order_id: orderId,
+          status: backendStatus,
+          note: note,
+        });
       }
 
       toast.success("ORDER STATUS UPDATED SUCCESSFULLY");
@@ -168,6 +224,64 @@ export function useAdminData() {
       return true;
     },
     [fetchOrders]
+  );
+
+  // ==========================================
+  // UPDATE EXTRA ORDER DETAILS (PAYMENT, WAYBILL)
+  // ==========================================
+
+  const updateOrderDetails = useCallback(
+    async (
+      orderId: string,
+      updates: { payment_status?: string; waybill?: string; estimated_delivery?: string }
+    ) => {
+      const supabase = createClient();
+      const payload: any = { updated_at: new Date().toISOString() };
+      if (updates.payment_status) payload.payment_status = updates.payment_status.toLowerCase();
+      if (updates.waybill !== undefined) payload.waybill = updates.waybill;
+      if (updates.estimated_delivery !== undefined) payload.estimated_delivery = updates.estimated_delivery;
+
+      const { error } = await supabase
+        .from("orders")
+        .update(payload)
+        .eq("id", orderId);
+
+      if (error) {
+        console.error("updateOrderDetails error:", error);
+        toast.error("FAILED TO PERSIST ORDER DETAILS.");
+        return false;
+      }
+
+      toast.success("ORDER DETAILS PERSISTED TO BACKEND");
+      await fetchOrders();
+      return true;
+    },
+    [fetchOrders]
+  );
+
+  // ==========================================
+  // WAITLIST USER STATUS UPDATE
+  // ==========================================
+
+  const updateWaitlistUserStatus = useCallback(
+    async (userId: number | string, status: string) => {
+      const supabase = createClient();
+      const { error } = await supabase
+        .from("waitlist_users")
+        .update({ notified_status: status })
+        .eq("id", userId);
+
+      if (error) {
+        console.error("updateWaitlistUserStatus error:", error);
+        toast.error("FAILED TO UPDATE WAITLIST USER STATUS.");
+        return false;
+      }
+
+      toast.success(`WAITLIST STATUS UPDATED TO ${status.toUpperCase()}`);
+      await fetchWaitlist();
+      return true;
+    },
+    [fetchWaitlist]
   );
 
   // ==========================================
@@ -320,6 +434,8 @@ export function useAdminData() {
     fetchInventory,
     fetchWaitlist,
     updateOrderStatus,
+    updateOrderDetails,
+    updateWaitlistUserStatus,
     updateStockQuantity,
 
     // Computed
@@ -328,3 +444,4 @@ export function useAdminData() {
     todayWaitlistCount,
   };
 }
+

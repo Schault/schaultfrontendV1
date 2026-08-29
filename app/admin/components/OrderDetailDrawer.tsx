@@ -13,9 +13,10 @@ interface OrderDetailDrawerProps {
   setOrders: React.Dispatch<React.SetStateAction<any[]>>;
   onClose: () => void;
   updateOrderStatus?: (orderId: string, newStatus: string, note?: string) => Promise<boolean>;
+  updateOrderDetails?: (orderId: string, updates: { payment_status?: string; waybill?: string; estimated_delivery?: string }) => Promise<boolean>;
 }
 
-export default function OrderDetailDrawer({ orderId, orders, setOrders, onClose, updateOrderStatus }: OrderDetailDrawerProps) {
+export default function OrderDetailDrawer({ orderId, orders, setOrders, onClose, updateOrderStatus, updateOrderDetails }: OrderDetailDrawerProps) {
   const order = useMemo(() => {
     return orders.find(o => o.id === orderId);
   }, [orders, orderId]);
@@ -27,18 +28,28 @@ export default function OrderDetailDrawer({ orderId, orders, setOrders, onClose,
 
   // Save detailed manual override changes
   const handleSaveDetails = async () => {
-    // If fulfillment status changed, persist to database via edge function
+    setIsSaving(true);
+    let success = true;
+
+    // If fulfillment status changed, persist to database
     if (updateOrderStatus && fulfillmentState !== order?.fulfillment_status) {
-      setIsSaving(true);
-      const success = await updateOrderStatus(orderId, fulfillmentState, internalNotes.trim() || undefined);
-      setIsSaving(false);
-      if (!success) return; // Error toast is handled inside updateOrderStatus
-    } else {
-      // Only local fields changed (notes, payment) — update local state
+      const res = await updateOrderStatus(orderId, fulfillmentState, internalNotes.trim() || undefined);
+      if (!res) success = false;
+    }
+
+    // If payment status changed, persist to database
+    if (success && updateOrderDetails && paymentState !== order?.payment_status) {
+      const res = await updateOrderDetails(orderId, { payment_status: paymentState });
+      if (!res) success = false;
+    }
+
+    // Local fallback update if direct helpers not provided
+    if (success && !updateOrderStatus && !updateOrderDetails) {
       setOrders(prev => prev.map(o => {
         if (o.id === orderId) {
           return {
             ...o,
+            fulfillment_status: fulfillmentState,
             payment_status: paymentState,
             notes: internalNotes.trim(),
           };
@@ -47,7 +58,11 @@ export default function OrderDetailDrawer({ orderId, orders, setOrders, onClose,
       }));
       toast.success(`ORDER OVERRIDES COMMITTED FOR ${orderId}`);
     }
-    onClose();
+
+    setIsSaving(false);
+    if (success) {
+      onClose();
+    }
   };
 
   if (!order) return null;

@@ -62,6 +62,8 @@ export default function AdminHubPage() {
     settings,
     setSettings,
     updateOrderStatus,
+    updateOrderDetails,
+    updateWaitlistUserStatus,
     updateStockQuantity,
     dashboardStats,
     lowStockItems,
@@ -286,6 +288,8 @@ export default function AdminHubPage() {
                   orders={orders}
                   setOrders={setOrders}
                   setSelectedOrderId={setSelectedOrderId}
+                  updateOrderStatus={updateOrderStatus}
+                  updateOrderDetails={updateOrderDetails}
                 />
               )}
               {activeTab === "waitlist" && (
@@ -293,6 +297,7 @@ export default function AdminHubPage() {
                   waitlist={waitlist}
                   setWaitlist={setWaitlist}
                   setSelectedWaitlistUser={setSelectedWaitlistUser}
+                  updateWaitlistUserStatus={updateWaitlistUserStatus}
                 />
               )}
               {activeTab === "inventory" && (
@@ -334,6 +339,7 @@ export default function AdminHubPage() {
             setOrders={setOrders}
             onClose={() => setSelectedOrderId(null)}
             updateOrderStatus={updateOrderStatus}
+            updateOrderDetails={updateOrderDetails}
           />
         )}
       </AnimatePresence>
@@ -345,6 +351,7 @@ export default function AdminHubPage() {
             waitlist={waitlist}
             setWaitlist={setWaitlist}
             onClose={() => setSelectedWaitlistUser(null)}
+            updateWaitlistUserStatus={updateWaitlistUserStatus}
           />
         )}
       </AnimatePresence>
