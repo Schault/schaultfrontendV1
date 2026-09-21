@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { FaSync } from "react-icons/fa";
 import ShoeViewerSkeleton from "./ShoeViewerSkeleton";
@@ -11,43 +12,66 @@ interface ThreeModelViewerProps {
   onLoadingChange: (isLoading: boolean) => void;
 }
 
-// Global model cache to prevent reloading the same models
-const modelCache = new Map<string, THREE.Group>();
+// Global Promise cache for deduplicating in-flight and completed requests
+const promiseCache = new Map<string, Promise<THREE.Group>>();
 
-// Preload manager to track and preload models
-const preloadManager = {
-  preloadedPaths: new Set<string>(),
-  preloadModel: async (path: string) => {
-    if (preloadManager.preloadedPaths.has(path) || modelCache.has(path)) {
-      return;
-    }
-    preloadManager.preloadedPaths.add(path);
-    try {
-      const loader = new GLTFLoader();
-      const gltf = await loader.loadAsync(path);
-      modelCache.set(path, gltf.scene);
-    } catch (error) {
-      console.error(`Failed to preload model: ${path}`, error);
-      preloadManager.preloadedPaths.delete(path);
-    }
-  },
-};
+// Shared GLTF & Draco loader singleton
+let sharedLoader: GLTFLoader | null = null;
 
-// Helper function to clone a Three.js object deeply
+function getLoader(): GLTFLoader {
+  if (!sharedLoader) {
+    sharedLoader = new GLTFLoader();
+    if (typeof window !== "undefined") {
+      const dracoLoader = new DRACOLoader();
+      dracoLoader.setDecoderPath("https://www.gstatic.com/draco/versioned/decoders/1.5.7/");
+      dracoLoader.setDecoderConfig({ type: "js" });
+      sharedLoader.setDRACOLoader(dracoLoader);
+    }
+  }
+  return sharedLoader;
+}
+
+// Preload a single model on-demand (e.g. on card hover)
+export function preloadModel(path: string): Promise<THREE.Group> {
+  if (promiseCache.has(path)) {
+    return promiseCache.get(path)!;
+  }
+  const loader = getLoader();
+  const promise = new Promise<THREE.Group>((resolve, reject) => {
+    loader.load(
+      path,
+      (gltf) => {
+        resolve(gltf.scene);
+      },
+      undefined,
+      (error) => {
+        promiseCache.delete(path);
+        console.error(`Failed to load model: ${path}`, error);
+        reject(error);
+      }
+    );
+  });
+  promiseCache.set(path, promise);
+  return promise;
+}
+
+// Memory-optimized deep cloning helper:
+// Crucial: We reuse mesh.geometry instead of duplicating 54MB of vertex buffers on the main thread!
 const cloneThreeObject = (object: THREE.Object3D): THREE.Object3D => {
   if (object instanceof THREE.Mesh) {
     const mesh = object.clone();
-    mesh.geometry = object.geometry.clone();
+    // Share BufferGeometry to avoid freezing the CPU thread and exhausting RAM
+    mesh.geometry = object.geometry;
     if (Array.isArray(object.material)) {
-      mesh.material = object.material.map(material => material.clone());
+      mesh.material = object.material.map((material) => material.clone());
     } else {
       mesh.material = object.material.clone();
     }
     return mesh;
   }
-  
+
   const cloned = object.clone();
-  object.children.forEach(child => {
+  object.children.forEach((child) => {
     cloned.add(cloneThreeObject(child));
   });
   return cloned;
@@ -60,6 +84,8 @@ export default function ThreeModelViewer({
 }: ThreeModelViewerProps) {
   const mountRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
+  const [statusMessage, setStatusMessage] = useState("INITIALIZING 3D ENGINE");
   const autoRotateRef = useRef(true);
 
   // Refs to store Three.js objects for access in event handlers/cleanup
@@ -68,35 +94,18 @@ export default function ThreeModelViewer({
   const groupRef = useRef<THREE.Group>();
   const initialCameraPosRef = useRef<THREE.Vector3>();
 
-  // Preload all models on component mount
-  useEffect(() => {
-    // Get all model paths from the page context
-    const allModelPaths = [
-      "/assets/models/customizer/upper/Ocre_and_Olive-lowres.glb",
-      "/assets/models/customizer/upper/White_and_Blue-lowres.glb",
-      "/assets/models/customizer/upper/White_and_Yellow-lowres.glb",
-      "/assets/models/customizer/upper/Red_and_Black-lowres.glb",
-      "/assets/models/customizer/upper/Blue_Sun-lowres.glb",
-      "/assets/models/customizer/sole/sole_black.glb",
-      "/assets/models/customizer/sole/sole_white.glb",
-    ];
-
-    // Preload all models in the background (non-blocking)
-    allModelPaths.forEach((path) => {
-      preloadManager.preloadModel(path);
-    });
-  }, []);
-
   useEffect(() => {
     if (!mountRef.current) return;
     setIsLoading(true);
+    setProgress(5);
+    setStatusMessage("REQUESTING 3D ASSETS");
     onLoadingChange(true);
 
     const currentMount = mountRef.current;
 
     // 1. Scene Setup
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0f2d1b); // Dark green background
+    scene.background = new THREE.Color(0x0f2d1b);
 
     // 2. Camera
     const camera = new THREE.PerspectiveCamera(
@@ -109,14 +118,14 @@ export default function ThreeModelViewer({
     cameraRef.current = camera;
 
     // 3. Renderer
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
     renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     currentMount.appendChild(renderer.domElement);
 
     // 4. Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 2.0); // Increased intensity
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.0);
     scene.add(ambientLight);
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
     directionalLight.position.set(5, 10, 7.5);
@@ -125,51 +134,88 @@ export default function ThreeModelViewer({
     directionalLight2.position.set(-5, -10, -7.5);
     scene.add(directionalLight2);
 
-
     // 5. Controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.enablePan = false; // Disable panning to keep shoe centered
-    controls.autoRotate = false; // We handle auto-rotation manually
-    controls.enableZoom = true; // Allow zooming
-    controls.enableRotate = true; // Allow rotation
+    controls.enablePan = false;
+    controls.autoRotate = false;
+    controls.enableZoom = true;
+    controls.enableRotate = true;
     controlsRef.current = controls;
 
-    // Stop auto-rotation on user interaction
     const onUserInteract = () => {
       autoRotateRef.current = false;
     };
     controls.addEventListener("start", onUserInteract);
 
-    // 6. Model Loading with Cache
-    // Clear previous models
+    // 6. Progressive Model Loading
     if (groupRef.current) {
       scene.remove(groupRef.current);
     }
 
-    const loader = new GLTFLoader();
-    
-    // Function to load or get from cache
-    const loadModel = async (path: string): Promise<THREE.Group> => {
-      // Check if model is already cached
-      if (modelCache.has(path)) {
-        const cachedModel = modelCache.get(path)!;
-        return cloneThreeObject(cachedModel) as THREE.Group;
-      }
-      
-      // Load the model
-      const gltf = await loader.loadAsync(path);
-      const model = gltf.scene;
-      
-      // Store in cache for future use
-      modelCache.set(path, model);
-      
-      return cloneThreeObject(model) as THREE.Group;
+    // Track download progress for Upper and Sole
+    const progressTracker = {
+      upper: { loaded: 0, total: 15 * 1024 * 1024 },
+      sole: { loaded: 0, total: 54 * 1024 * 1024 },
     };
 
-    Promise.all([loadModel(upperPath), loadModel(solePath)])
+    const updateCombinedProgress = () => {
+      const totalEstimated = progressTracker.upper.total + progressTracker.sole.total;
+      const loaded = progressTracker.upper.loaded + progressTracker.sole.loaded;
+      const pct = Math.min(Math.round((loaded / totalEstimated) * 100), 92);
+      setProgress((prev) => Math.max(prev, pct));
+      if (pct > 15 && pct < 85) {
+        setStatusMessage(`STREAMING 3D GEOMETRY (${pct}%)`);
+      } else if (pct >= 85) {
+        setStatusMessage("PARSING SHADERS & MATERIALS");
+      }
+    };
+
+    const loadWithProgress = (path: string, type: "upper" | "sole"): Promise<THREE.Group> => {
+      // Check if already in cache
+      if (promiseCache.has(path)) {
+        progressTracker[type].loaded = progressTracker[type].total;
+        updateCombinedProgress();
+        return promiseCache.get(path)!.then((model) => cloneThreeObject(model) as THREE.Group);
+      }
+
+      const loader = getLoader();
+      const promise = new Promise<THREE.Group>((resolve, reject) => {
+        loader.load(
+          path,
+          (gltf) => {
+            progressTracker[type].loaded = progressTracker[type].total;
+            updateCombinedProgress();
+            resolve(gltf.scene);
+          },
+          (xhr) => {
+            if (xhr.lengthComputable && xhr.total > 0) {
+              progressTracker[type].loaded = xhr.loaded;
+              progressTracker[type].total = xhr.total;
+            } else {
+              progressTracker[type].loaded = xhr.loaded;
+            }
+            updateCombinedProgress();
+          },
+          (error) => {
+            promiseCache.delete(path);
+            console.error(`Error loading model ${path}:`, error);
+            reject(error);
+          }
+        );
+      });
+
+      promiseCache.set(path, promise);
+      return promise.then((model) => cloneThreeObject(model) as THREE.Group);
+    };
+
+    // Load ONLY the active pair (Upper + Sole)
+    Promise.all([loadWithProgress(upperPath, "upper"), loadWithProgress(solePath, "sole")])
       .then(([upperModel, soleModel]) => {
+        setProgress(98);
+        setStatusMessage("ASSEMBLING MODULAR MESH");
+
         const group = new THREE.Group();
         group.add(upperModel);
         group.add(soleModel);
@@ -190,17 +236,53 @@ export default function ThreeModelViewer({
         const cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
 
         camera.position.set(0, cameraZ * 1.5, cameraZ * 0.5);
-        initialCameraPosRef.current = camera.position.clone(); // Save initial position
+        initialCameraPosRef.current = camera.position.clone();
         controls.target.set(0, 0, 0);
         controls.update();
 
         scene.add(group);
+        setProgress(100);
         setIsLoading(false);
         onLoadingChange(false);
-        autoRotateRef.current = true; // Resume auto-rotation for new model
+        autoRotateRef.current = true;
+
+        // Idle warmup: After active pair is rendered, sequentially prefetch remaining models during idle time
+        if (typeof window !== "undefined") {
+          const warmupRemaining = () => {
+            const backgroundModels = [
+              "/assets/models/customizer/sole/sole_white.glb",
+              "/assets/models/customizer/upper/White_and_Blue-lowres.glb",
+              "/assets/models/customizer/upper/White_and_Yellow-lowres.glb",
+            ].filter((p) => p !== upperPath && p !== solePath && !promiseCache.has(p));
+
+            let idx = 0;
+            const prefetchNext = () => {
+              if (idx < backgroundModels.length) {
+                preloadModel(backgroundModels[idx])
+                  .catch(() => {})
+                  .finally(() => {
+                    idx++;
+                    if ("requestIdleCallback" in window) {
+                      (window as Window & { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(prefetchNext);
+                    } else {
+                      setTimeout(prefetchNext, 2000);
+                    }
+                  });
+              }
+            };
+            prefetchNext();
+          };
+
+          if ("requestIdleCallback" in window) {
+            (window as Window & { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(warmupRemaining);
+          } else {
+            setTimeout(warmupRemaining, 3000);
+          }
+        }
       })
       .catch((error) => {
         console.error("An error happened while loading models:", error);
+        setStatusMessage("FAILED TO LOAD 3D ASSETS");
         setIsLoading(false);
         onLoadingChange(false);
       });
@@ -209,11 +291,9 @@ export default function ThreeModelViewer({
     let animationFrameId: number;
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      
       if (autoRotateRef.current && groupRef.current) {
         groupRef.current.rotation.y += 0.005;
       }
-
       controls.update();
       renderer.render(scene, camera);
     };
@@ -237,11 +317,10 @@ export default function ThreeModelViewer({
         currentMount.removeChild(renderer.domElement);
       }
       renderer.dispose();
-      scene.traverse(object => {
+      scene.traverse((object) => {
         if (object instanceof THREE.Mesh) {
-          object.geometry.dispose();
           if (Array.isArray(object.material)) {
-            object.material.forEach(material => material.dispose());
+            object.material.forEach((material) => material.dispose());
           } else {
             object.material.dispose();
           }
@@ -249,7 +328,8 @@ export default function ThreeModelViewer({
       });
       scene.clear();
     };
-  }, [upperPath, solePath, onLoadingChange]); // Rerun effect when models change
+  }, [upperPath, solePath, onLoadingChange]);
+
 
   const handleResetView = () => {
     if (controlsRef.current && cameraRef.current && initialCameraPosRef.current && groupRef.current) {
@@ -282,7 +362,7 @@ export default function ThreeModelViewer({
           isLoading ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >
-        <ShoeViewerSkeleton />
+        <ShoeViewerSkeleton progress={progress} statusMessage={statusMessage} />
       </div>
 
       {!isLoading && (

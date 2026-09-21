@@ -2,9 +2,16 @@ import React from "react";
 
 interface ShoeViewerSkeletonProps {
   className?: string;
+  progress?: number;
+  statusMessage?: string;
 }
 
-export default function ShoeViewerSkeleton({ className = "" }: ShoeViewerSkeletonProps) {
+export default function ShoeViewerSkeleton({
+  className = "",
+  progress,
+  statusMessage = "SYNCHRONIZING MESH",
+}: ShoeViewerSkeletonProps) {
+
   return (
     <div
       className={`absolute inset-0 z-10 flex flex-col justify-between overflow-hidden bg-gradient-to-b from-[#143a23] via-[#0f2d1b] to-[#0b2214] select-none ${className}`}
@@ -155,17 +162,25 @@ export default function ShoeViewerSkeleton({ className = "" }: ShoeViewerSkeleto
         <div className="mb-2 flex items-center justify-between font-inter text-[10px] text-white/60">
           <span className="flex items-center gap-1.5 font-mono text-emerald-300/90">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            SYNCHRONIZING MESH
+            {statusMessage}
           </span>
-          <span className="font-mono text-white/40">INTERACTIVE ON LOAD</span>
+          <span className="font-mono text-emerald-300/80 font-medium">
+            {typeof progress === "number" && progress > 0 ? `${Math.min(Math.round(progress), 99)}%` : "INTERACTIVE ON LOAD"}
+          </span>
         </div>
 
-        {/* Shimmering Progress Track */}
+        {/* Shimmering Dynamic Progress Track */}
         <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-          <div className="absolute inset-0 -translate-x-full animate-shimmer-sweep bg-gradient-to-r from-transparent via-emerald-400 to-transparent" />
-          <div className="h-full w-2/3 rounded-full bg-emerald-500/60 animate-pulse" />
+          <div className="absolute inset-0 -translate-x-full animate-shimmer-sweep bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent" />
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-400 transition-all duration-300 ease-out"
+            style={{
+              width: typeof progress === "number" && progress > 0 ? `${Math.min(Math.max(progress, 8), 100)}%` : "40%",
+            }}
+          />
         </div>
       </div>
+
     </div>
   );
 }

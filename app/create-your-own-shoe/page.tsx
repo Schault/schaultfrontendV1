@@ -1,7 +1,7 @@
 "use client";
 
 import Footer from "@/components/Footer";
-import ThreeModelViewer from "@/components/ThreeModelViewer";
+import ThreeModelViewer, { preloadModel } from "@/components/ThreeModelViewer";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -169,6 +169,7 @@ export default function CreateYourOwnShoePage() {
                       <button
                         key={model.name}
                         disabled={isSwitchingModel}
+                        onMouseEnter={() => preloadModel(model.path)}
                         onClick={() => setSelectedUpper(model)}
                         className={`group flex flex-col items-center gap-2 rounded-lg border-2 p-3 transition ${
                           isSwitchingModel ? "cursor-not-allowed opacity-60" : "cursor-pointer"
@@ -202,6 +203,7 @@ export default function CreateYourOwnShoePage() {
                       <button
                         key={model.name}
                         disabled={isSwitchingModel}
+                        onMouseEnter={() => preloadModel(model.path)}
                         onClick={() => setSelectedSole(model)}
                         className={`group flex flex-col items-center gap-2 rounded-lg border-2 p-3 transition ${
                           isSwitchingModel ? "cursor-not-allowed opacity-60" : "cursor-pointer"
@@ -223,6 +225,7 @@ export default function CreateYourOwnShoePage() {
                     ))}
                   </div>
                 )}
+
               </div>
             </div>
           </section>
