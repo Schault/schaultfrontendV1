@@ -3,6 +3,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { FaSync } from "react-icons/fa";
+import ShoeViewerSkeleton from "./ShoeViewerSkeleton";
 
 interface ThreeModelViewerProps {
   upperPath: string;
@@ -275,19 +276,25 @@ export default function ThreeModelViewer({
   };
 
   return (
-    <div ref={mountRef} className="relative h-full w-full">
-      {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-          <p className="font-inter text-sm font-medium text-white">Loading Model...</p>
-        </div>
-      )}
-      <button
-        onClick={handleResetView}
-        className="absolute top-3 right-3 z-10 rounded-full bg-white/10 p-3 text-white/80 backdrop-blur-sm transition hover:bg-white/20 hover:text-white"
-        aria-label="Reset View"
+    <div ref={mountRef} className="relative h-full w-full overflow-hidden">
+      <div
+        className={`transition-opacity duration-500 ease-in-out ${
+          isLoading ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
       >
-        <FaSync />
-      </button>
+        <ShoeViewerSkeleton />
+      </div>
+
+      {!isLoading && (
+        <button
+          onClick={handleResetView}
+          className="absolute top-3 right-3 z-20 rounded-full bg-white/10 p-3 text-white/80 backdrop-blur-sm transition hover:bg-white/20 hover:text-white shadow-sm"
+          aria-label="Reset View"
+        >
+          <FaSync />
+        </button>
+      )}
     </div>
   );
 }
+
