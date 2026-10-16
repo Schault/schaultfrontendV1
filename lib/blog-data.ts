@@ -247,7 +247,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "Editorial",
     publishedAt: "September 10, 2026",
     readTime: "4 min read",
-    image: "/images/times-of-india-article.jpg",
+    image: "/images/dpiit-certificate.png",
     featured: false,
     author: {
       name: "Harsh Maheshwari",
@@ -313,7 +313,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "Editorial",
     publishedAt: "May 15, 2026",
     readTime: "3 min read",
-    image: "/images/dpiit-certificate.png",
+    image: "/images/times-of-india-article.jpg",
     featured: false,
     author: {
       name: "Harsh Maheshwari",

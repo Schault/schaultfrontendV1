@@ -65,7 +65,7 @@ const SOLE_MODELS: ModelOption[] = [
   {
     name: "Coffee",
     path: "/assets/models/customizer/sole/Lower_Coffee.glb",
-    image : '',
+    image : '/images/sole_coffee.png',
   },
   // {
   //   name: "Dark Blue",
@@ -80,7 +80,7 @@ const SOLE_MODELS: ModelOption[] = [
   {
     name: "Olive",
     path: "/assets/models/customizer/sole/Lower_Olive.glb",
-    image : '',
+    image : '/images/sole_olive.png',
   },
 ];
 
