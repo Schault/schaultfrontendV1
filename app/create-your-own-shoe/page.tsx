@@ -55,12 +55,12 @@ const SOLE_MODELS: ModelOption[] = [
   {
     name: "Sole Black",
     path: "/assets/models/customizer/sole/sole_black.glb",
-    image : '/images/sole_2.webp',
+    image : '/images/sole_black.png',
   },
   {
     name: "Sole White",
     path: "/assets/models/customizer/sole/sole_white.glb",
-    image : '/images/sole_1.webp',
+    image : '/images/sole_white.png',
   },
   {
     name: "Coffee",
