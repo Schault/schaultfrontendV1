@@ -33,6 +33,7 @@ export default function CheckoutPage() {
   const { items, totalPrice, clearCart } = useCart();
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isConfirming, setIsConfirming] = useState(false);
   const [couponInput, setCouponInput] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
   const [couponError, setCouponError] = useState("");
@@ -104,6 +105,7 @@ export default function CheckoutPage() {
           items: orderItems,
           coupon: appliedCoupon,
           customer: { name: shipping_address.full_name, email, phone },
+          shipping_address,
         }),
       });
       const data = await res.json();
@@ -126,21 +128,18 @@ export default function CheckoutPage() {
       return;
     }
 
+    setIsConfirming(true);
     try {
       const verifyRes = await fetch("/api/payments/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          order_id: pgOrder.order_id,
-          items: orderItems,
-          coupon: appliedCoupon,
-          shipping_address,
-        }),
+        body: JSON.stringify({ order_id: pgOrder.order_id }),
       });
       const verifyData = await verifyRes.json();
 
       if (!verifyRes.ok || !verifyData.success) {
         toast.error(verifyData.detail || verifyData.error || "Payment verification failed. Contact support.");
+        setIsConfirming(false);
         setIsProcessing(false);
         return;
       }
@@ -150,12 +149,26 @@ export default function CheckoutPage() {
       router.push(verifyData.order_id ? `/orders/${verifyData.order_id}` : "/orders");
     } catch {
       toast.error("Payment verification error. Contact support.");
+      setIsConfirming(false);
       setIsProcessing(false);
     }
   };
 
   return (
     <main className="min-h-screen bg-white pt-24 pb-24">
+      {isConfirming && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-white/95 px-6 text-center"
+        >
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-black/10 border-t-[#0350F0]" />
+          <p className="font-inter text-2xl tracking-wide text-black/90">Payment received</p>
+          <p className="font-inter text-sm text-black/60">
+            Confirming your order. Please don&apos;t close or refresh this page.
+          </p>
+        </div>
+      )}
       <div className="mx-auto max-w-[1440px] px-6 md:px-12">
         {/* Breadcrumb */}
         <div className="mb-6 flex items-center gap-2 font-inter text-[10px] uppercase tracking-widest text-black/50">

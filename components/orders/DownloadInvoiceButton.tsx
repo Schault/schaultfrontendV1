@@ -6,21 +6,16 @@ import toast from "react-hot-toast";
 
 interface DownloadInvoiceButtonProps {
   orderId: string;
-  hasInvoiceUrl?: boolean;
 }
 
+// Always asks the server: the invoice is generated in the background right after
+// payment, so a page rendered at checkout time can't know whether it exists yet.
 export const DownloadInvoiceButton: React.FC<DownloadInvoiceButtonProps> = ({
   orderId,
-  hasInvoiceUrl = true,
 }) => {
   const [loading, setLoading] = useState(false);
 
   const handleDownload = async () => {
-    if (!hasInvoiceUrl) {
-      toast.error("Invoice PDF is not available for this order yet.");
-      return;
-    }
-
     setLoading(true);
 
     try {
@@ -45,7 +40,7 @@ export const DownloadInvoiceButton: React.FC<DownloadInvoiceButtonProps> = ({
   return (
     <button
       onClick={handleDownload}
-      disabled={loading || !hasInvoiceUrl}
+      disabled={loading}
       className="inline-flex items-center justify-center gap-2 border border-black/20 bg-white px-5 py-2.5 font-inter text-xs font-bold uppercase tracking-widest text-black/90 shadow-sm transition-all hover:border-black hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
     >
       {loading ? (

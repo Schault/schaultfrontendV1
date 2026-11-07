@@ -99,10 +99,7 @@ export default async function OrderDetailsPage({
             </div>
 
             <div className="flex items-center">
-              <DownloadInvoiceButton
-                orderId={order.id}
-                hasInvoiceUrl={Boolean(order.invoice_url)}
-              />
+              <DownloadInvoiceButton orderId={order.id} />
             </div>
           </div>
         </div>

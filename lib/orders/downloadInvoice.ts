@@ -51,7 +51,7 @@ export async function getSignedInvoiceUrl(orderId: string): Promise<DownloadInvo
   }
 
   if (!order.invoice_url) {
-    throw new Error("Invoice PDF has not been generated for this order yet");
+    throw new Error("Invoice is still being generated. Please try again in a few seconds.");
   }
 
   // Extract relative storage path (e.g., '2026/INV-2026-0001.pdf' from 'invoices/2026/INV-2026-0001.pdf')

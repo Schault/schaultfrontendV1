@@ -3,13 +3,17 @@ import crypto from "crypto";
 import { createClient } from "@/utils/supabase/server";
 import { computeOrderPricing } from "@/lib/orders/pricing";
 import { cashfree, CASHFREE_MODE } from "@/lib/payments/gateway";
+import { adminSupabase } from "@/lib/orders/finalize-payment";
 
 export async function POST(req: Request) {
   try {
-    const { items, coupon, customer } = await req.json();
+    const { items, coupon, customer, shipping_address } = await req.json();
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
+    }
+    if (!shipping_address?.line1 || !shipping_address?.postal_code) {
+      return NextResponse.json({ error: "Shipping address is required" }, { status: 400 });
     }
 
     const supabase = createClient();
@@ -31,7 +35,7 @@ export async function POST(req: Request) {
     }
 
     // Price is computed from the database — the client never dictates the amount.
-    const { total } = await computeOrderPricing(supabase, items, coupon);
+    const { items: pricedItems, total } = await computeOrderPricing(supabase, items, coupon);
     if (total < 1) {
       return NextResponse.json(
         { error: "Order total must be at least 1 INR" },
@@ -65,6 +69,19 @@ export async function POST(req: Request) {
         },
       }
     );
+
+    // Snapshot the priced cart so verify and the webhook can build the order server-side.
+    const { error: pendingError } = await adminSupabase.from("pending_payments").insert({
+      gateway_order_id: order.order_id,
+      gateway: "cashfree",
+      user_id: user.id,
+      items: pricedItems,
+      total,
+      shipping_address,
+    });
+    if (pendingError) {
+      throw new Error(`Failed to save pending payment: ${pendingError.message}`);
+    }
 
     return NextResponse.json({
       order_id: order.order_id,
