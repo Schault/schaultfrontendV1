@@ -5,17 +5,17 @@ import { CreditCard } from "lucide-react";
 interface PaymentInformationCardProps {
   paymentStatus: string;
   paymentMethod?: string;
-  razorpayPaymentId?: string | null;
-  razorpayOrderId?: string | null;
+  gatewayPaymentId?: string | null;
+  gatewayOrderId?: string | null;
   paidAt?: string | null;
   invoiceNumber?: string | null;
 }
 
 export const PaymentInformationCard: React.FC<PaymentInformationCardProps> = ({
   paymentStatus,
-  paymentMethod = "Razorpay (Online Payment)",
-  razorpayPaymentId,
-  razorpayOrderId,
+  paymentMethod = "Online Payment",
+  gatewayPaymentId,
+  gatewayOrderId,
   paidAt,
   invoiceNumber,
 }) => {
@@ -53,17 +53,17 @@ export const PaymentInformationCard: React.FC<PaymentInformationCardProps> = ({
           </div>
         )}
 
-        {razorpayPaymentId && (
+        {gatewayPaymentId && (
           <div className="flex justify-between text-zinc-600">
-            <span className="text-zinc-500">Razorpay Payment ID</span>
-            <span className="font-mono text-[11px] text-black">{razorpayPaymentId}</span>
+            <span className="text-zinc-500">Payment ID</span>
+            <span className="font-mono text-[11px] text-black">{gatewayPaymentId}</span>
           </div>
         )}
 
-        {razorpayOrderId && (
+        {gatewayOrderId && (
           <div className="flex justify-between text-zinc-600">
-            <span className="text-zinc-500">Razorpay Order ID</span>
-            <span className="font-mono text-[11px] text-black">{razorpayOrderId}</span>
+            <span className="text-zinc-500">Gateway Order ID</span>
+            <span className="font-mono text-[11px] text-black">{gatewayOrderId}</span>
           </div>
         )}
 

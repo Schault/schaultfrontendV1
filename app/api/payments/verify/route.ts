@@ -1,17 +1,11 @@
 import { NextResponse } from "next/server";
-import crypto from "crypto";
-import Razorpay from "razorpay";
 import { createClient } from "@/utils/supabase/server";
 import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { createOrderPipeline } from "@/lib/orders/create-order-pipeline";
 import { computeOrderPricing } from "@/lib/orders/pricing";
 import { uploadInvoice } from "@/lib/invoice/uploadInvoice";
 import { sendOrderConfirmation } from "@/lib/email/sendOrderConfirmation";
-
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID ?? process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-  key_secret: process.env.RAZORPAY_KEY_SECRET!,
-});
+import { cashfree } from "@/lib/payments/gateway";
 
 const adminSupabase = createAdminClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -70,30 +64,13 @@ async function createDelhiveryShipment(orderId: string, total: number, address: 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const {
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature,
-      items,
-      shipping_address,
-      coupon,
-    } = body;
+    const { order_id: gatewayOrderId, items, shipping_address, coupon } = body;
 
-    // 1. Verify Razorpay Signature
-    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+    if (!gatewayOrderId) {
       return NextResponse.json({ error: "Missing payment verification fields" }, { status: 400 });
     }
 
-    const expectedSignature = crypto
-      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET!)
-      .update(`${razorpay_order_id}|${razorpay_payment_id}`)
-      .digest("hex");
-
-    if (expectedSignature !== razorpay_signature) {
-      return NextResponse.json({ error: "Invalid payment signature" }, { status: 400 });
-    }
-
-    // 2. Authenticate User
+    // 1. Authenticate User
     const supabase = createClient();
     if (!supabase) {
       return NextResponse.json(
@@ -114,6 +91,30 @@ export async function POST(req: Request) {
       );
     }
 
+    // 2. Verify payment server-side with Cashfree — the client callback is never trusted.
+    const path = `/orders/${encodeURIComponent(gatewayOrderId)}`;
+    const cfOrder = await cashfree<{
+      order_status: string;
+      order_amount: number;
+      customer_details?: { customer_id?: string };
+    }>(path);
+
+    if (cfOrder.customer_details?.customer_id !== user.id) {
+      return NextResponse.json({ error: "Order does not belong to this user" }, { status: 403 });
+    }
+    if (cfOrder.order_status !== "PAID") {
+      return NextResponse.json({ error: "Payment not completed" }, { status: 400 });
+    }
+
+    const payments = await cashfree<{ cf_payment_id: string | number; payment_status: string }[]>(
+      `${path}/payments`
+    );
+    const successPayment = payments.find((p) => p.payment_status === "SUCCESS");
+    if (!successPayment) {
+      return NextResponse.json({ error: "No successful payment found" }, { status: 400 });
+    }
+    const gatewayPaymentId = String(successPayment.cf_payment_id);
+
     // 3. Delegate to Order Pipeline if items are provided
     if (items && Array.isArray(items) && items.length > 0) {
       // Recompute prices from the database — never trust client-supplied amounts.
@@ -123,11 +124,9 @@ export async function POST(req: Request) {
         coupon
       );
 
-      // Cross-check against what Razorpay actually charged, so a tampered cart
+      // Cross-check against what Cashfree actually charged, so a tampered cart
       // (different items than create-order) cannot be recorded as paid.
-      const rzpOrder = await razorpay.orders.fetch(razorpay_order_id);
-      const expectedPaise = Math.round(total * 100);
-      if (Number(rzpOrder.amount) !== expectedPaise) {
+      if (Math.round(Number(cfOrder.order_amount) * 100) !== Math.round(total * 100)) {
         return NextResponse.json(
           { error: "Order total does not match the amount paid" },
           { status: 400 }
@@ -137,8 +136,9 @@ export async function POST(req: Request) {
       // Step A: Create Order & decrement stock atomically via PostgreSQL RPC
       const orderResult = await createOrderPipeline(supabase, {
         user_id: user.id,
-        razorpay_order_id,
-        razorpay_payment_id,
+        gateway: "cashfree",
+        gateway_order_id: gatewayOrderId,
+        gateway_payment_id: gatewayPaymentId,
         total,
         shipping_address: shipping_address || {},
         items: pricedItems,
@@ -181,7 +181,7 @@ export async function POST(req: Request) {
 
       return NextResponse.json({
         success: true,
-        payment_id: razorpay_payment_id,
+        payment_id: gatewayPaymentId,
         order_id: orderResult.order_id,
         order: {
           id: orderResult.order_id,
@@ -197,10 +197,10 @@ export async function POST(req: Request) {
     // Fallback response if only signature verification was requested
     return NextResponse.json({
       success: true,
-      payment_id: razorpay_payment_id,
+      payment_id: gatewayPaymentId,
     });
   } catch (err: any) {
-    console.error("Razorpay verify-payment error:", err);
+    console.error("Payment verify error:", err);
     return NextResponse.json(
       { error: err?.message || "Verification failed" },
       { status: 500 }

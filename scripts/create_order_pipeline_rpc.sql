@@ -1,13 +1,15 @@
 -- ============================================================================
 -- PostgreSQL RPC Function: create_order_pipeline_rpc
 -- Purpose: Complete, atomic transactional order creation pipeline after
---          successful Razorpay payment verification.
+--          successful payment verification (gateway-agnostic).
+-- Requires: add_generic_payment_gateway_columns.sql
 -- ============================================================================
 
 CREATE OR REPLACE FUNCTION create_order_pipeline_rpc(
   p_user_id UUID,
-  p_razorpay_order_id TEXT,
-  p_razorpay_payment_id TEXT,
+  p_gateway TEXT,
+  p_gateway_order_id TEXT,
+  p_gateway_payment_id TEXT,
   p_total NUMERIC,
   p_shipping_address JSONB,
   p_items JSONB
@@ -25,11 +27,12 @@ DECLARE
   v_rows_affected INT;
   v_now TIMESTAMPTZ;
 BEGIN
-  -- 1. Idempotency Check: return existing order if razorpay_order_id already exists
+  -- 1. Idempotency Check: return existing order if this gateway order already exists
   SELECT id, invoice_number, payment_status, status, created_at, total
   INTO v_existing_order
   FROM orders
-  WHERE razorpay_order_id = p_razorpay_order_id;
+  WHERE payment_gateway = p_gateway
+    AND gateway_order_id = p_gateway_order_id;
 
   IF FOUND THEN
     RETURN jsonb_build_object(
@@ -74,8 +77,9 @@ BEGIN
     total,
     shipping_address,
     item_count,
-    razorpay_order_id,
-    razorpay_payment_id,
+    payment_gateway,
+    gateway_order_id,
+    gateway_payment_id,
     payment_status,
     status,
     paid_at,
@@ -87,8 +91,9 @@ BEGIN
     p_total,
     p_shipping_address,
     v_item_count,
-    p_razorpay_order_id,
-    p_razorpay_payment_id,
+    p_gateway,
+    p_gateway_order_id,
+    p_gateway_payment_id,
     'paid',
     'confirmed',
     v_now,
@@ -137,7 +142,7 @@ BEGIN
     v_new_order_id,
     'confirmed',
     p_user_id,
-    'Order confirmed via Razorpay payment verification',
+    'Order confirmed via ' || p_gateway || ' payment verification',
     v_now
   );
 

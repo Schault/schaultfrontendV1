@@ -9,15 +9,20 @@ import toast from "react-hot-toast";
 
 declare global {
   interface Window {
-    Razorpay: new (options: Record<string, unknown>) => { open(): void };
+    Cashfree?: (options: { mode: string }) => {
+      checkout(options: { paymentSessionId: string; redirectTarget: string }): Promise<{
+        error?: { message?: string };
+        paymentDetails?: unknown;
+      }>;
+    };
   }
 }
 
-function loadRazorpayScript(): Promise<boolean> {
+function loadCashfreeScript(): Promise<boolean> {
   return new Promise((resolve) => {
-    if (window.Razorpay) { resolve(true); return; }
+    if (window.Cashfree) { resolve(true); return; }
     const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.src = "https://sdk.cashfree.com/js/v3/cashfree.js";
     script.onload = () => resolve(true);
     script.onerror = () => resolve(false);
     document.body.appendChild(script);
@@ -58,7 +63,7 @@ export default function CheckoutPage() {
 
     setIsProcessing(true);
 
-    const loaded = await loadRazorpayScript();
+    const loaded = await loadCashfreeScript();
     if (!loaded) {
       toast.error("Failed to load payment gateway. Check your connection.");
       setIsProcessing(false);
@@ -90,76 +95,63 @@ export default function CheckoutPage() {
       country: "India",
     };
 
-    let rzpOrder: { order_id: string; amount: number; currency: string };
+    let pgOrder: { order_id: string; payment_session_id: string; mode: string };
     try {
-      const res = await fetch("/api/razorpay/create-order", {
+      const res = await fetch("/api/payments/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items: orderItems, coupon: appliedCoupon }),
+        body: JSON.stringify({
+          items: orderItems,
+          coupon: appliedCoupon,
+          customer: { name: shipping_address.full_name, email, phone },
+        }),
       });
-      if (!res.ok) throw new Error("Order creation failed");
-      rzpOrder = await res.json();
-    } catch {
-      toast.error("Could not initiate payment. Please try again.");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Order creation failed");
+      pgOrder = data;
+    } catch (err: any) {
+      toast.error(err?.message || "Could not initiate payment. Please try again.");
       setIsProcessing(false);
       return;
     }
 
-    const options = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-      amount: rzpOrder.amount,
-      currency: rzpOrder.currency,
-      order_id: rzpOrder.order_id,
-      name: "Schault",
-      description: "Order Payment",
-      prefill: {
-        name: `${firstName} ${lastName}`.trim(),
-        email,
-      },
-      theme: { color: "#0350F0" },
-      handler: async (response: {
-        razorpay_payment_id: string;
-        razorpay_order_id: string;
-        razorpay_signature: string;
-      }) => {
-        try {
-          const verifyRes = await fetch("/api/razorpay/verify-payment", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_signature: response.razorpay_signature,
-              items: orderItems,
-              coupon: appliedCoupon,
-              shipping_address,
-            }),
-          });
-          const verifyData = await verifyRes.json();
+    const result = await window
+      .Cashfree!({ mode: pgOrder.mode })
+      .checkout({ paymentSessionId: pgOrder.payment_session_id, redirectTarget: "_modal" });
 
-          if (!verifyRes.ok || !verifyData.success) {
-            toast.error(verifyData.detail || verifyData.error || "Payment verification failed. Contact support.");
-            setIsProcessing(false);
-            return;
-          }
+    // Popup closed or payment failed before completion.
+    if (result.error) {
+      toast.error(result.error.message || "Payment was not completed.");
+      setIsProcessing(false);
+      return;
+    }
 
-          clearCart();
-          toast.success("Payment successful! Order placed.");
-          router.push(verifyData.order_id ? `/orders/${verifyData.order_id}` : "/orders");
-        } catch {
-          toast.error("Payment verification error. Contact support.");
-          setIsProcessing(false);
-        }
-      },
-      modal: {
-        ondismiss: () => {
-          setIsProcessing(false);
-        },
-      },
-    };
+    try {
+      const verifyRes = await fetch("/api/payments/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          order_id: pgOrder.order_id,
+          items: orderItems,
+          coupon: appliedCoupon,
+          shipping_address,
+        }),
+      });
+      const verifyData = await verifyRes.json();
 
-    const rzp = new window.Razorpay(options);
-    rzp.open();
+      if (!verifyRes.ok || !verifyData.success) {
+        toast.error(verifyData.detail || verifyData.error || "Payment verification failed. Contact support.");
+        setIsProcessing(false);
+        return;
+      }
+
+      clearCart();
+      toast.success("Payment successful! Order placed.");
+      router.push(verifyData.order_id ? `/orders/${verifyData.order_id}` : "/orders");
+    } catch {
+      toast.error("Payment verification error. Contact support.");
+      setIsProcessing(false);
+    }
   };
 
   return (

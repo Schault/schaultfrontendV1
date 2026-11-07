@@ -14,8 +14,9 @@ export interface CreateOrderItemInput {
 
 export interface CreateOrderPipelineInput {
   user_id: string;
-  razorpay_order_id: string;
-  razorpay_payment_id: string;
+  gateway: string;
+  gateway_order_id: string;
+  gateway_payment_id: string;
   total: number;
   shipping_address: Record<string, unknown>;
   items: CreateOrderItemInput[];
@@ -47,14 +48,15 @@ export async function createOrderPipeline(
     throw new Error("Order items cannot be empty");
   }
 
-  if (!input.razorpay_order_id || !input.razorpay_payment_id) {
-    throw new Error("Razorpay order ID and payment ID are required");
+  if (!input.gateway || !input.gateway_order_id || !input.gateway_payment_id) {
+    throw new Error("Payment gateway, order ID and payment ID are required");
   }
 
   const { data, error } = await supabase.rpc("create_order_pipeline_rpc", {
     p_user_id: input.user_id,
-    p_razorpay_order_id: input.razorpay_order_id,
-    p_razorpay_payment_id: input.razorpay_payment_id,
+    p_gateway: input.gateway,
+    p_gateway_order_id: input.gateway_order_id,
+    p_gateway_payment_id: input.gateway_payment_id,
     p_total: input.total,
     p_shipping_address: input.shipping_address,
     p_items: input.items,
