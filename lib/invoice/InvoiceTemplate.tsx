@@ -1,19 +1,34 @@
 import React from "react";
+import path from "path";
 import {
   Document,
   Page,
   Text,
   View,
   StyleSheet,
+  Font,
 } from "@react-pdf/renderer";
 import { InvoiceData } from "./invoiceTypes";
+
+// The PDF standard fonts (Helvetica et al.) have no Indian Rupee glyph, so every
+// amount rendered as a broken mark. Noto Sans ships one; bundled locally so the
+// render never depends on a network fetch.
+const FONT_DIR = path.join(process.cwd(), "lib/invoice/fonts");
+
+Font.register({
+  family: "Noto Sans",
+  fonts: [
+    { src: path.join(FONT_DIR, "NotoSans-Regular.ttf"), fontWeight: "normal" },
+    { src: path.join(FONT_DIR, "NotoSans-Bold.ttf"), fontWeight: "bold" },
+  ],
+});
 
 // Standard monochrome styling for clean, premium print rendering
 const styles = StyleSheet.create({
   page: {
     padding: 36,
     fontSize: 9,
-    fontFamily: "Helvetica",
+    fontFamily: "Noto Sans",
     color: "#18181b",
     backgroundColor: "#ffffff",
   },
