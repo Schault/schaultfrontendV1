@@ -4,8 +4,8 @@ const nextConfig = {
   // trace an fs path, so include them in the serverless bundle explicitly.
   experimental: {
     outputFileTracingIncludes: {
-      "/api/payments/verify": ["./lib/invoice/fonts/**"],
-      "/api/payments/webhook": ["./lib/invoice/fonts/**"],
+      "/api/payments/verify": ["./lib/invoice/fonts/**", "./public/assets/schault-logo-email.png"],
+      "/api/payments/webhook": ["./lib/invoice/fonts/**", "./public/assets/schault-logo-email.png"],
     },
   },
   images: {
