@@ -8,9 +8,10 @@ interface WaitlistViewProps {
   waitlist: any[];
   setWaitlist: React.Dispatch<React.SetStateAction<any[]>>;
   setSelectedWaitlistUser: (user: any) => void;
+  updateWaitlistUserStatus?: (userId: number | string, status: string) => Promise<boolean>;
 }
 
-export default function WaitlistView({ waitlist, setWaitlist, setSelectedWaitlistUser }: WaitlistViewProps) {
+export default function WaitlistView({ waitlist, setWaitlist, setSelectedWaitlistUser, updateWaitlistUserStatus }: WaitlistViewProps) {
   const [sizeFilter, setSizeFilter] = useState("ALL");
   const [genderFilter, setGenderFilter] = useState("ALL");
   const [notifyFilter, setNotifyFilter] = useState("ALL");
@@ -35,20 +36,31 @@ export default function WaitlistView({ waitlist, setWaitlist, setSelectedWaitlis
     });
   }, [waitlist, sizeFilter, genderFilter, notifyFilter]);
 
-  const triggerBulkEmail = () => {
-    const eligibleCount = filteredWaitlist.filter(w => w.notified_status === "Not Notified").length;
-    if (eligibleCount === 0) { toast("NO NEW WAITLIST MEMBERS TO NOTIFY", { icon: "ℹ️" }); return; }
-    setWaitlist(prev => prev.map(w => {
-      const isMatch = filteredWaitlist.some(f => f.id === w.id);
-      if (isMatch && w.notified_status === "Not Notified") return { ...w, notified_status: "Email Sent" };
-      return w;
-    }));
-    toast.success(`LAUNCH NOTIFICATIONS DEPLOYED TO ${eligibleCount} LEADS`);
+  const triggerBulkEmail = async () => {
+    const eligible = filteredWaitlist.filter(w => w.notified_status === "Not Notified");
+    if (eligible.length === 0) { toast("NO NEW WAITLIST MEMBERS TO NOTIFY", { icon: "ℹ️" }); return; }
+
+    if (updateWaitlistUserStatus) {
+      for (const user of eligible) {
+        await updateWaitlistUserStatus(user.id, "Email Sent");
+      }
+    } else {
+      setWaitlist(prev => prev.map(w => {
+        const isMatch = filteredWaitlist.some(f => f.id === w.id);
+        if (isMatch && w.notified_status === "Not Notified") return { ...w, notified_status: "Email Sent" };
+        return w;
+      }));
+      toast.success(`LAUNCH NOTIFICATIONS DEPLOYED TO ${eligible.length} LEADS`);
+    }
   };
 
-  const handleMarkNotified = (userId: number, status: string) => {
-    setWaitlist(prev => prev.map(w => { if (w.id === userId) return { ...w, notified_status: status }; return w; }));
-    toast.success(`STATUS SHIFTED TO ${status.toUpperCase()}`);
+  const handleMarkNotified = async (userId: number | string, status: string) => {
+    if (updateWaitlistUserStatus) {
+      await updateWaitlistUserStatus(userId, status);
+    } else {
+      setWaitlist(prev => prev.map(w => { if (w.id === userId) return { ...w, notified_status: status }; return w; }));
+      toast.success(`STATUS SHIFTED TO ${status.toUpperCase()}`);
+    }
   };
 
   return (

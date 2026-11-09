@@ -76,7 +76,7 @@ export default function SettingsView({ settings, setSettings }: SettingsViewProp
         {/* Carrier keys configuration */}
         <div className="space-y-3">
           <span className="text-[11px] font-black tracking-[0.2em] text-black uppercase block border-b border-[#e4e4e7] pb-3">
-            LOGISTICS API ENCRYPTION KEYS (MOCK)
+            LOGISTICS API ENCRYPTION KEYS
           </span>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {["Delhivery Key", "Bluedart Token", "Shiprocket Webhook"].map((carrier, idx) => (

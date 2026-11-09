@@ -1,7 +1,7 @@
 "use client";
 
 import Footer from "@/components/Footer";
-import ThreeModelViewer from "@/components/ThreeModelViewer";
+import ThreeModelViewer, { preloadModel } from "@/components/ThreeModelViewer";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -55,17 +55,17 @@ const SOLE_MODELS: ModelOption[] = [
   {
     name: "Sole Black",
     path: "/assets/models/customizer/sole/sole_black.glb",
-    image : '/images/sole_2.webp',
+    image : '/images/sole_black.png',
   },
   {
     name: "Sole White",
     path: "/assets/models/customizer/sole/sole_white.glb",
-    image : '/images/sole_1.webp',
+    image : '/images/sole_white.png',
   },
   {
     name: "Coffee",
     path: "/assets/models/customizer/sole/Lower_Coffee.glb",
-    image : '',
+    image : '/images/sole_coffee.png',
   },
   // {
   //   name: "Dark Blue",
@@ -80,7 +80,7 @@ const SOLE_MODELS: ModelOption[] = [
   {
     name: "Olive",
     path: "/assets/models/customizer/sole/Lower_Olive.glb",
-    image : '',
+    image : '/images/sole_olive.png',
   },
 ];
 
@@ -169,6 +169,7 @@ export default function CreateYourOwnShoePage() {
                       <button
                         key={model.name}
                         disabled={isSwitchingModel}
+                        onMouseEnter={() => preloadModel(model.path)}
                         onClick={() => setSelectedUpper(model)}
                         className={`group flex flex-col items-center gap-2 rounded-lg border-2 p-3 transition ${
                           isSwitchingModel ? "cursor-not-allowed opacity-60" : "cursor-pointer"
@@ -202,6 +203,7 @@ export default function CreateYourOwnShoePage() {
                       <button
                         key={model.name}
                         disabled={isSwitchingModel}
+                        onMouseEnter={() => preloadModel(model.path)}
                         onClick={() => setSelectedSole(model)}
                         className={`group flex flex-col items-center gap-2 rounded-lg border-2 p-3 transition ${
                           isSwitchingModel ? "cursor-not-allowed opacity-60" : "cursor-pointer"
@@ -223,6 +225,7 @@ export default function CreateYourOwnShoePage() {
                     ))}
                   </div>
                 )}
+
               </div>
             </div>
           </section>

@@ -240,4 +240,131 @@ export const BLOG_POSTS: BlogPost[] = [
       <p class="font-bold text-black/80 mt-4">#SwitchYourStyle</p>
     `,
   },
+  {
+    slug: "schault-featured-in-times-of-india-replaceable-shoe-sole-revolution",
+    title: "Schault Featured in Times of India: The Replaceable Sole Revolution Has Arrived",
+    excerpt: "Times of India covers Schault's breakthrough modular footwear innovation - an IIT Kanpur startup that lets you swap your worn-out sole for just ₹800 instead of buying a whole new pair for ₹1,500.",
+    category: "Editorial",
+    publishedAt: "September 10, 2026",
+    readTime: "4 min read",
+    image: "/images/times-of-india-article.jpg",
+    featured: false,
+    author: {
+      name: "Harsh Maheshwari",
+      role: "Founder & CEO, Schault",
+      avatar: "/images/harsh.jpg",
+    },
+    content: `
+      <p>Big news for the Schault family  we made it to the pages of <strong>Times of India</strong>! The story, headlined <em>"Ab Pura Joota Nahi, Sol Badalne Ka Aaya Zamana"</em> (Translation: <em>"Now, the era of replacing just the sole - not the whole shoe - has arrived"</em>), captures something we have believed since day one: the way the world buys footwear is fundamentally broken, and it is time to fix it.</p>
+
+      <h3>What the Coverage Highlighted</h3>
+      <p>The Times of India piece, filed from Kanpur, spotlighted how <strong>Harsh Maheshwari</strong> - a final-year BTech student at IIT Kanpur - engineered a separable shoe sole that can be replaced independently of the upper. What the article made crystal clear was the economics that make this a genuine consumer breakthrough:</p>
+      <ul class="list-disc pl-6 space-y-2 text-black/70 my-4">
+        <li><strong>Full shoe price:</strong> ₹1,500 - for when you want to start fresh.</li>
+        <li><strong>Replacement sole price:</strong> ₹800 - for when only the sole wears out.</li>
+        <li><strong>Savings per cycle:</strong> ₹700 kept in your pocket instead of thrown away on a part that was still perfectly good.</li>
+      </ul>
+      <p>The journalist also drew attention to the broader vision: traditional footwear locks consumers into a cycle of wasteful full-pair replacement, while Schault's modular system breaks that cycle entirely.</p>
+
+      <h3>The Story Behind the Story</h3>
+      <p>What the article captured beautifully was Harsh's origin story. Walking through his hostel corridors one evening, frustrated by a pair of shoes he was about to discard - sole worn through, upper perfectly intact - he asked the question that would eventually become a startup: <em>"Why am I replacing the entire shoe when only one part failed?"</em></p>
+      <p>That question led to eighteen months of research, seven physical prototypes, a filed patent, and eventually, a product that Times of India readers across India are now learning about for the first time.</p>
+
+      <h3>What This Media Moment Means</h3>
+      <p>Getting coverage in a publication like Times of India is not just a milestone - it is a market signal. It tells us that the conversation around <strong>modular footwear</strong>, <strong>replaceable shoe soles</strong>, and <strong>sustainable shoe technology</strong> has moved beyond startup circles and into mainstream Indian households.</p>
+      <p>The response since the article dropped has been extraordinary. We have heard from:</p>
+      <ul class="list-disc pl-6 space-y-2 text-black/70 my-4">
+        <li>Customers excited to finally have a shoe they do not have to throw away.</li>
+        <li>Potential manufacturing partners curious about the interlocking mechanism.</li>
+        <li>Investors who recognised the razor-and-blade business model we have been building toward.</li>
+      </ul>
+
+      <h3>The Numbers That Matter</h3>
+      <p>The article's framing - ₹1,500 for a full shoe, ₹800 for a replacement sole - is deceptively simple. But the implications are significant:</p>
+      <ul class="list-disc pl-6 space-y-2 text-black/70 my-4">
+        <li>Over a five-year period, a traditional shoe buyer might replace three full pairs: <strong>₹4,500 spent</strong>.</li>
+        <li>A Schault buyer buys one base pair and three replacement soles over the same period: <strong>₹3,900 spent</strong> - with zero compromises on freshness or style.</li>
+        <li>And the planet saves the manufacturing cost and landfill burden of two complete pairs of shoes.</li>
+      </ul>
+
+      <blockquote>
+        <strong>From the article:</strong> "The idea is simple but the engineering is complex - creating a sole that locks securely enough for everyday wear, yet detaches easily enough for any user to swap at home, required extensive R&D and a novel patent."
+      </blockquote>
+
+      <h3>What Comes Next</h3>
+      <p>This press moment is a launchpad, not a finish line. Here is what we are working toward:</p>
+      <ul class="list-disc pl-6 space-y-2 text-black/70 my-4">
+        <li>Scaling our D2C shop so customers across India can order both base shoes and replacement soles online.</li>
+        <li>Closing our pre-seed funding round to accelerate manufacturing capacity.</li>
+        <li>Expanding the sole design catalogue so customers can personalise their refresh, not just replace it.</li>
+      </ul>
+      <p>If the Times of India coverage brought you here, welcome. The best is absolutely still to come.</p>
+
+      <div class="bg-black/5 p-6 rounded-2xl my-6 space-y-2">
+        <p class="font-bold text-black/90">Ready to try modular footwear yourself?</p>
+        <p class="text-sm text-black/70">Browse our <a href="/shop" class="text-[#0350F0] underline font-semibold">full shoe collection</a>, or design your own pair in our <a href="/create-your-own-shoe" class="text-[#0350F0] underline font-semibold">3D Customizer</a>. When your sole wears out, ordering a replacement is just a click away.</p>
+      </div>
+    `,
+  },
+  {
+    slug: "schault-receives-dpiit-startup-india-recognition-certificate",
+    title: "Schault Receives Official DPIIT Recognition: Certified as a Startup India Fashion Tech Company",
+    excerpt: "Schault Private Limited has been officially recognised by the Department for Promotion of Industry and Internal Trade (DPIIT) under the Startup India programme - a milestone that validates our modular footwear innovation on the national stage.",
+    category: "Editorial",
+    publishedAt: "May 15, 2026",
+    readTime: "3 min read",
+    image: "/images/dpiit-certificate.png",
+    featured: false,
+    author: {
+      name: "Harsh Maheshwari",
+      role: "Founder & CEO, Schault",
+      avatar: "/images/harsh.jpg",
+    },
+    content: `
+      <p>We are thrilled to announce a landmark moment in Schault's journey: <strong>Schault Private Limited has been officially recognised as a startup by the Department for Promotion of Industry and Internal Trade (DPIIT)</strong>, Government of India, under the Startup India initiative.</p>
+      <p>The Certificate of Recognition, bearing certificate number <strong>DIPP262094</strong>, was issued on <strong>15th May 2026</strong> and is valid until <strong>24th April 2036</strong> - a decade of recognition that reflects the long-term potential DPIIT sees in our technology and our mission.</p>
+
+      <h3>What DPIIT Recognition Means</h3>
+      <p>Being recognised under the <strong>Startup India</strong> programme is not just a badge - it is a formal endorsement from the Indian government that a company is building something genuinely innovative and commercially significant. To receive recognition, a startup must demonstrate that it is:</p>
+      <ul class="list-disc pl-6 space-y-2 text-black/70 my-4">
+        <li><strong>Working on innovation, development, or improvement</strong> of products or services.</li>
+        <li><strong>Creating a scalable business model</strong> with high potential for job creation or wealth generation.</li>
+        <li><strong>Early-stage:</strong> Not more than ten years from the date of incorporation and with turnover below ₹200 crore for any financial year.</li>
+      </ul>
+      <p>Schault has been recognised specifically under the <strong>'Fashion' Industry</strong> and <strong>'Fashion Technology' sector</strong> - fitting for a company reimagining how footwear is designed, used, and replaced.</p>
+
+      <h3>Our Founding Story - Incorporated April 25, 2026</h3>
+      <p>Schault Private Limited was incorporated on <strong>25th April 2026</strong> - a date that marks the formal beginning of our corporate journey, though the real story started much earlier. What began as a late-night frustration in an IIT Kanpur hostel room - <em>why replace the whole shoe when only the sole failed?</em> - evolved through seven hardware prototypes, a filed patent, and an IIT-backed research programme before we formalised as a company.</p>
+      <p>In less than a month of incorporation, we received our DPIIT recognition - a reflection of how much validated work preceded the company's formal founding.</p>
+
+      <h3>What This Unlocks for Schault</h3>
+      <p>DPIIT recognition opens tangible doors for early-stage startups. For Schault, this means:</p>
+      <ul class="list-disc pl-6 space-y-2 text-black/70 my-4">
+        <li><strong>Tax Benefits:</strong> Eligibility for income tax exemption under Section 80-IAC and angel tax exemption under Section 56(2)(viib).</li>
+        <li><strong>Government Procurement:</strong> Preferred access to government tender processes without prior turnover experience requirements.</li>
+        <li><strong>IPR Fast-Tracking:</strong> Access to the DPIIT-facilitated Patent Facilitation Programme for faster processing of our modular footwear patent.</li>
+        <li><strong>Credibility Signal:</strong> A trusted, government-backed validation for investors, manufacturing partners, and enterprise buyers evaluating us.</li>
+      </ul>
+
+      <h3>A Note from Our Founder</h3>
+      <blockquote>
+        "Receiving DPIIT recognition within our first month as a company is incredibly motivating. It tells us that the Government of India sees the same gap in the footwear market that we have been working to solve. This is just the beginning - we are building a product and a company that will change how Indian consumers think about their shoes."
+        <br/><br/>- <strong>Harsh Maheshwari, Founder & CEO, Schault</strong>
+      </blockquote>
+
+      <h3>The Road Ahead</h3>
+      <p>This recognition comes at a pivotal moment. We are actively:</p>
+      <ul class="list-disc pl-6 space-y-2 text-black/70 my-4">
+        <li>Launching our direct-to-consumer shop with our first collection of modular leather shoes.</li>
+        <li>Raising a pre-seed round to fund manufacturing scale-up and customer acquisition.</li>
+        <li>Expanding our 3D customiser tool so every customer can design their perfect modular pair.</li>
+      </ul>
+      <p>The DPIIT certificate is not our destination - it is a milestone on a much longer journey. Every pair of Schault shoes sold is one more step toward a future where replacing a sole costs less than a lunch, and throwing away a whole shoe because the bottom wore out is a thing of the past.</p>
+
+      <div class="bg-black/5 p-6 rounded-2xl my-6 space-y-2">
+        <p class="font-bold text-black/90">Be part of the modular footwear movement</p>
+        <p class="text-sm text-black/70">Explore our collections at <a href="/shop" class="text-[#0350F0] underline font-semibold">Schault Shop</a> or build your own custom pair in our <a href="/create-your-own-shoe" class="text-[#0350F0] underline font-semibold">3D Shoe Customizer</a>.</p>
+      </div>
+    `,
+  },
 ];

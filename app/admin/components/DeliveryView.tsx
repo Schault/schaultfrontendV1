@@ -38,9 +38,11 @@ interface DeliveryViewProps {
   orders: any[];
   setOrders: React.Dispatch<React.SetStateAction<any[]>>;
   setSelectedOrderId: (id: string) => void;
+  updateOrderStatus?: (orderId: string, newStatus: string, note?: string) => Promise<boolean>;
+  updateOrderDetails?: (orderId: string, updates: { payment_status?: string; waybill?: string; estimated_delivery?: string }) => Promise<boolean>;
 }
 
-export default function DeliveryView({ orders, setOrders, setSelectedOrderId }: DeliveryViewProps) {
+export default function DeliveryView({ orders, setOrders, setSelectedOrderId, updateOrderStatus, updateOrderDetails }: DeliveryViewProps) {
   const [selectedCourier, setSelectedCourier] = useState<string>("ALL");
   const [selectedTransitStatus, setSelectedTransitStatus] = useState<string>("ALL");
 
@@ -63,25 +65,37 @@ export default function DeliveryView({ orders, setOrders, setSelectedOrderId }: 
     });
   }, [shipments, selectedCourier, selectedTransitStatus]);
 
-  const handleBulkMarkDelivered = () => {
+  const handleBulkMarkDelivered = async () => {
     const activeIds = filteredShipments.filter(s => s.fulfillment_status !== "Delivered").map(s => s.id);
     if (activeIds.length === 0) { toast("NO SHIPMENTS AWAITING DELIVERY STATUS", { icon: "ℹ️" }); return; }
-    setOrders(prev => prev.map(o => {
-      if (activeIds.includes(o.id)) return { ...o, fulfillment_status: "Delivered", tracking: { ...o.tracking, status: "On Time", location: "Delivered - Confirmed via bulk override", delivered_at: new Date().toISOString() } };
-      return o;
-    }));
-    toast.success(`MARKED ${activeIds.length} ORDERS AS DELIVERED`);
+
+    if (updateOrderStatus) {
+      for (const id of activeIds) {
+        await updateOrderStatus(id, "Delivered", "Bulk status mark as delivered");
+      }
+    } else {
+      setOrders(prev => prev.map(o => {
+        if (activeIds.includes(o.id)) return { ...o, fulfillment_status: "Delivered", tracking: { ...o.tracking, status: "On Time", location: "Delivered - Confirmed via bulk override", delivered_at: new Date().toISOString() } };
+        return o;
+      }));
+      toast.success(`MARKED ${activeIds.length} ORDERS AS DELIVERED`);
+    }
   };
 
   const handleBulkSMSAlert = () => { toast.success("SMS METRICS TRIGGERED: DISPATCHING VIA SMS SYSTEM"); };
 
-  const handleUpdateLocation = (orderId: string, location: string) => {
+  const handleUpdateLocation = async (orderId: string, location: string) => {
     if (!location.trim()) return;
-    setOrders(prev => prev.map(o => {
-      if (o.id === orderId) return { ...o, tracking: { ...o.tracking, location: location.trim() } };
-      return o;
-    }));
-    toast.success(`AWB LOCATION RE-ROUTE SAVED FOR ${orderId}`);
+
+    if (updateOrderDetails) {
+      await updateOrderDetails(orderId, { waybill: location.trim() });
+    } else {
+      setOrders(prev => prev.map(o => {
+        if (o.id === orderId) return { ...o, tracking: { ...o.tracking, location: location.trim(), awb: location.trim() } };
+        return o;
+      }));
+      toast.success(`AWB LOCATION RE-ROUTE SAVED FOR ${orderId}`);
+    }
   };
 
   return (
