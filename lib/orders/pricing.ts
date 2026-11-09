@@ -5,6 +5,14 @@ import { CreateOrderItemInput } from "./create-order-pipeline";
 // checkout UI. ponytail: hardcoded map, move to a `coupons` table if marketing needs more.
 export const COUPON_PER_UNIT_DISCOUNT: Record<string, number> = {};
 
+// Percentage coupons. Keep in sync with the checkout UI (app/checkout/page.tsx).
+export const PERCENT_COUPONS: Record<string, number> = { SCHAULT20: 0.2, LOVE30: 0.3 };
+
+/** Discounted unit price, rounded to whole rupees. Shared with the checkout UI so display == charge. */
+export function discountedUnitPrice(unitPrice: number, percent: number): number {
+  return Math.round(unitPrice * (1 - percent));
+}
+
 export interface RawCartItem {
   variant_id: string;
   quantity: number;
@@ -79,49 +87,37 @@ export async function computeOrderPricing(
     };
   });
 
-  const perUnit = coupon ? COUPON_PER_UNIT_DISCOUNT[coupon] || 0 : 0;
-  const totalQty = normalized.reduce((s, i) => s + i.quantity, 0);
-  let discount = Math.min(perUnit * totalQty, subtotal);
-
-  if (coupon === "SCHAULT20") {
-    discount = Math.round(subtotal * 0.20);
-  } else if (coupon === "LOVE30") {
-    discount = Math.round(subtotal * 0.30);
-  } else if (coupon === "DEVTEST99") {
-    discount = Math.max(subtotal - 1, 0);
-  }
-
-  const total = subtotal - discount;
-
-  // Invariant guard for the money path: fails loudly if the arithmetic above ever breaks.
-  if (total < 0 || total > subtotal) {
-    throw new Error("Pricing computation produced an invalid total");
-  }
-
   // order_items.line_total is a DB-generated column (unit_price * quantity), and a
-  // DB trigger requires orders.total == SUM(order_items.line_total). Fold the
-  // discount into unit_price here so that invariant holds when the RPC inserts rows.
-  if (coupon === "SCHAULT20") {
+  // DB trigger requires orders.total == SUM(order_items.line_total). So the discount
+  // is folded into unit_price, and total is DERIVED from the line totals — never
+  // computed separately, or rounding (e.g. 2999 * 0.8 = 2399.20) breaks the invariant.
+  const percent = coupon ? PERCENT_COUPONS[coupon] : undefined;
+  const perUnit = coupon ? COUPON_PER_UNIT_DISCOUNT[coupon] || 0 : 0;
+
+  if (percent) {
     items.forEach((item) => {
-      item.unit_price = Number((item.unit_price * 0.80).toFixed(2));
-      item.line_total = Number((item.unit_price * item.quantity).toFixed(2));
-    });
-  } else if (coupon === "LOVE30") {
-    items.forEach((item) => {
-      item.unit_price = Number((item.unit_price * 0.70).toFixed(2));
-      item.line_total = Number((item.unit_price * item.quantity).toFixed(2));
+      item.unit_price = discountedUnitPrice(item.unit_price, percent);
+      item.line_total = item.unit_price * item.quantity;
     });
   } else if (perUnit > 0) {
     items.forEach((item) => {
       item.unit_price = Number((item.unit_price - perUnit).toFixed(2));
       item.line_total = Number((item.unit_price * item.quantity).toFixed(2));
     });
-  } else if (coupon === "DEVTEST99" && discount > 0) {
-    // ponytail: test-only coupon, dumps the whole discount onto the last line item.
-    // Fine for test payments; remove alongside the DEVTEST99 backdoor before launch.
+  } else if (coupon === "DEVTEST99" && process.env.CASHFREE_ENV === "sandbox") {
+    // ponytail: sandbox-only ₹1 test coupon; ignored in production. Dumps the whole
+    // discount onto the last line item.
     const last = items[items.length - 1];
-    last.unit_price = Number(((last.line_total - discount) / last.quantity).toFixed(2));
+    last.unit_price = Number(((last.line_total - Math.max(subtotal - 1, 0)) / last.quantity).toFixed(2));
     last.line_total = Number((last.unit_price * last.quantity).toFixed(2));
+  }
+
+  const total = Math.round(items.reduce((s, i) => s + i.line_total, 0) * 100) / 100;
+  const discount = Math.round((subtotal - total) * 100) / 100;
+
+  // Invariant guard for the money path: fails loudly if the arithmetic above ever breaks.
+  if (total < 0 || total > subtotal) {
+    throw new Error("Pricing computation produced an invalid total");
   }
 
   return { items, subtotal, discount, total };

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import toast from "react-hot-toast";
+import { PERCENT_COUPONS, discountedUnitPrice } from "@/lib/orders/pricing";
 
 declare global {
   interface Window {
@@ -50,9 +51,10 @@ export default function CheckoutPage() {
   const [postalCode, setPostalCode] = useState("");
 
   const itemTotalQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
+  // Same per-unit rounding as the server (lib/orders/pricing.ts) so the shown total matches the charge.
+  const couponPercent = appliedCoupon ? PERCENT_COUPONS[appliedCoupon] : undefined;
   const discountAmount =
-    appliedCoupon === "SCHAULT20" ? Math.round(totalPrice * 0.20) :
-    appliedCoupon === "LOVE30" ? Math.round(totalPrice * 0.30) :
+    couponPercent ? items.reduce((s, i) => s + (i.price - discountedUnitPrice(i.price, couponPercent)) * i.quantity, 0) :
     appliedCoupon === "DEVTEST99" ? Math.max(totalPrice - 1, 0) :
     0;
   const shippingFee = 100;
