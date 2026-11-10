@@ -4,7 +4,6 @@ export interface CompanyInformation {
   email: string;
   phone: string;
   website: string;
-  gstin: string;
 }
 
 export interface ShippingAddressInfo {

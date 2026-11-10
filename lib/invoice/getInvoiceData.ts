@@ -1,6 +1,7 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { InvoiceData, InvoiceItem, CustomerInformation } from "./invoiceTypes";
 import { DEFAULT_COMPANY_INFO } from "./constants";
+import { paymentMethodLabel } from "@/lib/payments/gateway";
 
 /**
  * Step 1 — Fetch Order Data and format into InvoiceData
@@ -28,6 +29,7 @@ export async function getInvoiceData(
       total,
       status,
       payment_status,
+      payment_gateway,
       created_at,
       paid_at,
       shipping_address,
@@ -123,7 +125,7 @@ export async function getInvoiceData(
     invoiceDate: formattedInvoiceDate,
     paymentDate: formattedPaymentDate,
     paymentStatus: (order.payment_status || "PAID").toUpperCase(),
-    paymentMethod: "Razorpay (Online Payment)",
+    paymentMethod: paymentMethodLabel(order.payment_gateway),
     company: DEFAULT_COMPANY_INFO,
     customer,
     items: invoiceItems,

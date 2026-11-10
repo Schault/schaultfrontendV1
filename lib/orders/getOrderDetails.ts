@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { OrderDetail, OrderItemDetail, OrderStatus, TimelineEntry } from "@/lib/types/order";
+import { paymentMethodLabel } from "@/lib/payments/gateway";
 
 /**
  * Server Helper: Fetch complete order details for a specific order.
@@ -31,8 +32,9 @@ export async function getOrderDetails(orderId: string): Promise<OrderDetail | nu
       invoice_generated_at,
       status,
       payment_status,
-      razorpay_order_id,
-      razorpay_payment_id,
+      payment_gateway,
+      gateway_order_id,
+      gateway_payment_id,
       total,
       created_at,
       paid_at,
@@ -112,9 +114,9 @@ export async function getOrderDetails(orderId: string): Promise<OrderDetail | nu
     invoice_generated_at: order.invoice_generated_at || null,
     status: (order.status as OrderStatus) || "confirmed",
     payment_status: (order.payment_status || "paid").toUpperCase(),
-    payment_method: "Razorpay (Online Payment)",
-    razorpay_order_id: order.razorpay_order_id || null,
-    razorpay_payment_id: order.razorpay_payment_id || null,
+    payment_method: paymentMethodLabel(order.payment_gateway),
+    gateway_order_id: order.gateway_order_id || null,
+    gateway_payment_id: order.gateway_payment_id || null,
     total: Number(order.total) || 0,
     created_at: order.created_at,
     paid_at: order.paid_at || order.created_at,

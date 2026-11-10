@@ -46,8 +46,8 @@ export interface OrderDetail {
   status: OrderStatus;
   payment_status: string;
   payment_method?: string;
-  razorpay_order_id?: string | null;
-  razorpay_payment_id?: string | null;
+  gateway_order_id?: string | null;
+  gateway_payment_id?: string | null;
   total: number;
   created_at: string;
   paid_at?: string | null;

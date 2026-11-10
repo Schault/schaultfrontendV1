@@ -99,10 +99,7 @@ export default async function OrderDetailsPage({
             </div>
 
             <div className="flex items-center">
-              <DownloadInvoiceButton
-                orderId={order.id}
-                hasInvoiceUrl={Boolean(order.invoice_url)}
-              />
+              <DownloadInvoiceButton orderId={order.id} />
             </div>
           </div>
         </div>
@@ -162,8 +159,8 @@ export default async function OrderDetailsPage({
             <PaymentInformationCard
               paymentStatus={order.payment_status}
               paymentMethod={order.payment_method}
-              razorpayPaymentId={order.razorpay_payment_id}
-              razorpayOrderId={order.razorpay_order_id}
+              gatewayPaymentId={order.gateway_payment_id}
+              gatewayOrderId={order.gateway_order_id}
               paidAt={order.paid_at}
               invoiceNumber={order.invoice_number}
             />
