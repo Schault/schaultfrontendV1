@@ -104,9 +104,13 @@ export async function computeOrderPricing(
       item.unit_price = Number((item.unit_price - perUnit).toFixed(2));
       item.line_total = Number((item.unit_price * item.quantity).toFixed(2));
     });
-  } else if (coupon === "DEVTEST99" && process.env.CASHFREE_ENV === "sandbox") {
-    // ponytail: sandbox-only ₹1 test coupon; ignored in production. Dumps the whole
-    // discount onto the last line item.
+  } else if (
+    coupon === "DEVTEST99" &&
+    (process.env.CASHFREE_ENV === "sandbox" || process.env.ALLOW_TEST_COUPON === "true")
+  ) {
+    // ponytail: ₹1 test coupon. Always on in sandbox; in production only while the
+    // ALLOW_TEST_COUPON=true env var is set (remove it right after testing — anyone
+    // can use the code while it's on). Dumps the whole discount onto the last line item.
     const last = items[items.length - 1];
     last.unit_price = Number(((last.line_total - Math.max(subtotal - 1, 0)) / last.quantity).toFixed(2));
     last.line_total = Number((last.unit_price * last.quantity).toFixed(2));
